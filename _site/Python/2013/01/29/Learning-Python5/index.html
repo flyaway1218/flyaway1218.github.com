@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Learning Python》学习笔记——5.字符串</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《Learning Python》学习笔记——5.字符串
+
+</div>
+
+
+      <div class="content">
+        
+
+<p>Python字符串——一个有序的字符的集合。
+Python的字符串被划分为不可变序列，意味着它们不可以在原处修改。
+常见的字符串常量和表达式。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">操作</th>
+      <th style="text-align: left">解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">s=&rsquo;&rsquo;</td>
+      <td style="text-align: left">空字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s=&rdquo;spam&rsquo;s&rdquo;</td>
+      <td style="text-align: left">双引号和单引号相同</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s=&rsquo;s\np\ta\x00m&rsquo;</td>
+      <td style="text-align: left">转义序列</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s=&rdquo;&rdquo;&rdquo;&hellip;&rdquo;&rdquo;&rdquo;</td>
+      <td style="text-align: left">三重引号字符串块</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s=r&rsquo;\temp\spam&rsquo;</td>
+      <td style="text-align: left">Raw字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s=b&rsquo;spam&rsquo;</td>
+      <td style="text-align: left">Python3.0中的字节字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s=u&rsquo;spam&rsquo;</td>
+      <td style="text-align: left">仅在Python2.6中使用的Unicode字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s1+s2</td>
+      <td style="text-align: left">合并</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s * 3</td>
+      <td style="text-align: left">重复</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s[i]</td>
+      <td style="text-align: left">索引</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s[i:j]</td>
+      <td style="text-align: left">分片</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">len(s)</td>
+      <td style="text-align: left">长度</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&ldquo;a %s parrot&rdquo; % kind</td>
+      <td style="text-align: left">字符串格式化表达式</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&ldquo;a {0} parrot&rdquo;.format(kind)</td>
+      <td style="text-align: left">Python2.6和Python3.0中的字符串格式化方法</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.find(&lsquo;pa&rsquo;)</td>
+      <td style="text-align: left">字符串方法调用:搜索</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.rstrip()</td>
+      <td style="text-align: left">移除空格</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.replace(&lsquo;pa&rsquo;,&rsquo;xx&rsquo;)</td>
+      <td style="text-align: left">替换</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.split(&lsquo;,&rsquo;)</td>
+      <td style="text-align: left">用展位符分隔</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.isdigit()</td>
+      <td style="text-align: left">内容测试</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.lower()</td>
+      <td style="text-align: left">短信息转换</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.endswidth()</td>
+      <td style="text-align: left">结束测试</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&lsquo;spam&rsquo;.join(strlist)</td>
+      <td style="text-align: left">插入分隔符</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">s.encode(&lsquo;latin-1&rsquo;)</td>
+      <td style="text-align: left">Unicode编码</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">for x in S:print(x)</td>
+      <td style="text-align: left">迭代</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&lsquo;spam&rsquo; in X</td>
+      <td style="text-align: left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">[c * 2 for c in S]</td>
+      <td style="text-align: left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">map(ord,S)</td>
+      <td style="text-align: left">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="section">字符串常量</h1>
+
+<h2 id="section-1">单双引号字符串是一样的</h2>
+
+<p>在Python中，单引号和双引号字符是可以互换的
+此外，Python自动在任意的表达式中合并相邻的字符串常量，尽管可以简单地在它们之间增加+操作符来明确地表示这是一个合并操作。</p>
+
+<h2 id="section-2">用转义序列代表特殊字节</h2>
+
+<p>反斜杠用来引入特殊的字节编码——转义序列。
+转义序列让我们能够在字符串中嵌入不容易通过键盘输入的字节。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">转义</th>
+      <th style="text-align: left">意义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">\newline</td>
+      <td style="text-align: left">忽视(连续)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\</td>
+      <td style="text-align: left">反斜杠(保留)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">'</td>
+      <td style="text-align: left">单引号(保留&rsquo;)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">"</td>
+      <td style="text-align: left">双引号(保留&rdquo;)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\a</td>
+      <td style="text-align: left">响铃</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\b</td>
+      <td style="text-align: left">倒退</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\f</td>
+      <td style="text-align: left">换页</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\n</td>
+      <td style="text-align: left">新行(换行)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\r</td>
+      <td style="text-align: left">返回</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\t</td>
+      <td style="text-align: left">水平制表符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\v</td>
+      <td style="text-align: left">垂直制表符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\N{id}</td>
+      <td style="text-align: left">Unicode数据库ID</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\uhhhh</td>
+      <td style="text-align: left">Unicode16位的十六进制值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\UHHHHHHHH</td>
+      <td style="text-align: left">Unicode32位的十六进制值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\xhh</td>
+      <td style="text-align: left">十六进制</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\ooo</td>
+      <td style="text-align: left">八进制</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\0</td>
+      <td style="text-align: left">Null(不是字符串结尾)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\other</td>
+      <td style="text-align: left">不转义(保留)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="raw">raw字符串抑制转义</h2>
+
+<p>如果字母r(大写或小写)出现在字符串的第一引号的前面，它将会关闭转移机制。</p>
+
+<h2 id="section-3">三重引号编写多行字符串块</h2>
+
+<p>Python还有一种三重引号的字符串常量格式，有时称作块字符串。这个形式以三重引号开始(单引号双引号都可以)，并紧跟任意行数的文本，并且以开始时同样的三重引号结尾。</p>
+
+<h1 id="section-4">实际应用中的字符串</h1>
+
+<h2 id="section-5">索引和分片</h2>
+
+<p><strong>索引(S[i])获取特定偏移的元素:</strong></p>
+
+<ul>
+  <li>第一个元素的偏移为0</li>
+  <li>负偏移索引意味着从最后或右边反向进行计数</li>
+  <li>S[0]获取了第一个元素</li>
+  <li>S[-2]获取了倒数第二个元素</li>
+</ul>
+
+<p><strong>分片(S[i:j])提取对应的部分作为一个序列:</strong></p>
+
+<ul>
+  <li>上边界并不包含在内</li>
+  <li>如果没有给出的话，分片的边界默认为0和序列的长度</li>
+  <li>S[1:3]获取了从偏移为1的元素，直到但不包括偏移为3的元素</li>
+  <li>S[1:]获取了从偏移为1直到末尾(偏移为序列长度)之间的元素</li>
+  <li>S[:3]获取了从偏移为0直到但是不包括偏移为3之间的元素</li>
+  <li>S[:-1]获取了从偏移为0直到但不包括最后一个元素之间的元素</li>
+  <li>S[:]获取了从偏移0到末位之间的所有元素，这有效地实现了顶层S拷贝</li>
+</ul>
+
+<p>分片表达式，还可以有第三个索引参数，用作步长，完整形式的分片变成了:X[I:J:K],这表示:<strong>索引X对象中的元素，从偏移为I直到偏移为J-1，每隔K元素索引一次</strong>。</p>
+
+<h2 id="section-6">字符串转换工具</h2>
+
+<p>int():将字符串转换为数字
+str():将数字转换为字符串表达形式
+float():将字符串转换为浮点数</p>
+
+<p><strong>字符串代码转换</strong></p>
+
+<p>ord():将单个字符转换为对应的ASCII码
+chr():获取ASCII码并将其转化为对应的字符</p>
+
+<h1 id="section-7">字符串方法</h1>
+
+<p>除了表达式运算符之外，字符串还提供了一系列的方法去实现更复杂的文本处理任务。方法就是与特定的对象相关联在一起的函数。从技术角度来讲，它们附属于对象的属性，而这些属性不过是些可调用的函数罢了。</p>
+
+<p>字符串是不可变的，所以不能在远处直接对其进行修改。为了在已存在字符串中创建新的文本值，我们可以通过分片和合并这样的操作来建立新的字符串。</p>
+
+<h1 id="section-8">字符串格式化表达式</h1>
+
+<p>如今的Python中的字符串格式化可以以两种形式实现:</p>
+
+<p><strong>字符串格式化表达式</strong></p>
+
+<p>这是从Python诞生的时候就有的最初的技术；这是基于C语言的&rdquo;printf&rdquo;模型，并且在大多数现有的代码中使用。</p>
+
+<p><strong>字符串格式化方法调用</strong></p>
+
+<p>这是Python2.6和Python3.0新增加的技术，这是Python独有的方法，并且和字符串格式化表达式的功能有很大重叠。</p>
+
+<div class="highlight"><pre><code class="python"><span class="s">&#39;That is </span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="s"> bird!&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;dead&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>上述代码的结果就是:That is 1 dead bird!</p>
+
+<p>从技术上讲，字符串的格式化表达式往往是可选的——通常你可以使用多次的多字符串的合并和转换达到类似的目的。然后格式化允许我们将多个步骤合并为一个简单的操作，这一功能相当强大。</p>
+
+<p>需要注意的是:格式化总是会返回新的字符串作为结果，而不是对左侧的字符串进行修改。</p>
+
+<p>字符串格式化代码</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">代码</th>
+      <th style="text-align: left">意义　　　　　　　　　　　　</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">s</td>
+      <td style="text-align: left">字符串(或任何对象)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">r</td>
+      <td style="text-align: left">s,但使用repr，而不是str</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">c</td>
+      <td style="text-align: left">字符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">d</td>
+      <td style="text-align: left">十进制(整数)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">i</td>
+      <td style="text-align: left">整数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">u</td>
+      <td style="text-align: left">无号(整数)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">o</td>
+      <td style="text-align: left">八进制数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">x</td>
+      <td style="text-align: left">十六进制数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">X</td>
+      <td style="text-align: left">x，但打印大写</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">e</td>
+      <td style="text-align: left">浮点指数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">E</td>
+      <td style="text-align: left">e,但打印大写</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">f</td>
+      <td style="text-align: left">浮点十进制</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">F</td>
+      <td style="text-align: left">浮点十进制</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">g</td>
+      <td style="text-align: left">浮点e或f</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">G</td>
+      <td style="text-align: left">浮点E或f</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">%</td>
+      <td style="text-align: left">常量%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>事实上，在格式化字符串中，表达式左侧的转换目标支持多种转换操作，这些操作自由一套相当严谨的语法，转换目标的通用结构看上去是这样的:
+<code>%[(name)][flags][width][.precision]typecode</code>
+有关格式化目标的语法在Python的标准手册中都有完整的介绍。</p>
+
+<h2 id="section-9">基于字典的字符串格式化</h2>
+
+<p>字符串的格式化同时也允许左边的转换目标来引用右边字典中的键来提取对应的值。</p>
+
+<div class="highlight"><pre><code class="python"><span class="s">&quot;</span><span class="si">%(n)d</span><span class="s"> </span><span class="si">%(x)s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">{</span><span class="s">&quot;n&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;x&quot;</span><span class="p">:</span><span class="s">&quot;spam&quot;</span><span class="p">}</span>
+</code></pre></div>
+
+<p>以上代码的结果是:&rsquo;1 spam&rsquo;</p>
+
+<h1 id="section-10">字符串格式化调用方法</h1>
+
+<h2 id="section-11">基础知识</h2>
+
+<p>简而言之，Python2.6和Python3.0(及其以后的版本)中的新的字符串对象的format方法使用主体字符串作为模板，并且接受任意多个表示将要根据模板替换的值的参数。在主体字符串中，花括号通过为止或关键字指出替换目标及将要插入的参数。</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">template</span><span class="o">=</span><span class="s">&#39;{0},{1} and {2}&#39;</span>
+<span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;spam&#39;</span><span class="p">,</span><span class="s">&#39;ham&#39;</span><span class="p">,</span><span class="s">&#39;eggs&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>上述代码的结果是&rsquo;spam,ham and eggs&rsquo;</p>
+
+<h2 id="section-12">添加键、属性和偏移量</h2>
+
+<p>格式化字符串可以指定对象属性和字典键，方括号指定字典键，而点表示位置或关键字所引用的一项对象属性。</p>
+
+<div class="highlight"><pre><code class="python"><span class="kn">import</span> <span class="nn">sys</span>
+<span class="s">&#39;My {1[spam] runs {0.platform}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="p">,{</span><span class="s">&#39;spam&#39;</span><span class="p">:</span><span class="s">&#39;laptop&#39;</span><span class="p">})</span>
+</code></pre></div>
+
+<p>上述代码运行的结果是:&rsquo;My laptop runs win32&rsquo;</p>
+
+<h2 id="section-13">添加具体格式化</h2>
+
+<p>格式化的语法:</p>
+
+<div class="highlight"><pre><code class="python"><span class="p">{</span><span class="n">fieldname</span><span class="err">!</span><span class="n">conversionflag</span><span class="p">:</span><span class="n">formatspec</span><span class="p">}</span>
+</code></pre></div>
+
+<ul>
+  <li>fieldname是指定参数的一个数字或关键字，后面跟着可选的&rdquo;.name&rdquo;或[index]成分引用</li>
+  <li>conversionflag可以是r,s后者a分别是在该值上对repr、str或ascii内置函数的一次调用</li>
+  <li>formatspec指定了如何表示该值，包括字段宽度、对齐方式、补零、小数点精度等细节，并且以一个可选的数据类型编码结束</li>
+</ul>
+
+<p>更多细节可以查看Python的库手册。</p>
+
+<h2 id="section-14">为什么要新的格式化方法</h2>
+
+<p>格式化方法相对于原来的字符串格式化表达式有以下几个特点:</p>
+
+<ul>
+  <li>拥有%表达式所没有的一些额外功能</li>
+  <li>可以更加明确地进行替代值引用</li>
+  <li>考虑到操作符会有一个更容易记忆的方法名</li>
+  <li>不支持用于单个和多个替代之大小写的不同语法</li>
+</ul>
+
+<h1 id="section-15">通常意义下的类型分类</h1>
+
+<h2 id="section-16">同样分类的类型共享其操作集合</h2>
+
+<p>在Python中有三个主要类型(以及操作)的分类:</p>
+
+<ul>
+  <li>数字(整数、浮点数、二进制、分数等)
+支持加法和乘法</li>
+  <li>序列(字符串、列表、元组)
+支持索引、分片和合并等</li>
+  <li>映射(字典)
+支持通过键的索引等</li>
+</ul>
+
+<p>索引、分片以及其他的序列操作对于所有的序列来说都是同样有效的，对象的类型将会告诉Python去执行什么样的任务。</p>
+
+<h2 id="section-17">可变类型能够在原处修改</h2>
+
+<p>Python中的主要核心类型划分为如下两类:</p>
+
+<ul>
+  <li>不可变类型(数字、字符串、元组、不可变集合)
+不可变的分类中没有哪个对象类型支持原处修改，尽管我们总是可以运行表达式来创建新的对象并将其结果分配给变量</li>
+  <li>可变类型(列表、字典、可变集合)
+相反，可变的类型总是可以通过操作原处修改，而不用创建新的对象</li>
+</ul>
+
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

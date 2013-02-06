@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Pages</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+Pages
+
+</div>
+
+
+      <div class="content">
+        
+
+<div class="row">
+  <div class="span12">
+    
+
+<h2>All Pages</h2>
+<ul>
+
+
+
+
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/sitemap.txt">Sitemap</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">About Flyaway</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/index.html">Flyaway's Wiki</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/atom.xml">Atom Feed</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li class="active"><a href="/pages.html" class="active">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/index1.html">Hello World!</a></li>
+      	
+      
+    
+  
+
+
+
+</ul>
+
+  </div>
+</div>
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

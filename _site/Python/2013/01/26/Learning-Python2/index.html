@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Learning Python》学习笔记——2.介绍Python对象类型</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《Learning Python》学习笔记——2.介绍Python对象类型
+
+</div>
+
+
+      <div class="content">
+        
+
+<p>Python程序可以分解成模块、语句、表达式以及对象:</p>
+
+<ol>
+  <li>程序又模块构成</li>
+  <li>模块包含语句</li>
+  <li>语句包含表达式</li>
+  <li>表达式建立并处理对象</li>
+</ol>
+
+<h1 id="section">为什么使用内置类型</h1>
+
+<ul>
+  <li>内置对象使程序更容易编写</li>
+  <li>内置对象时扩展的组件</li>
+  <li>内置对象往往比定制的数据结构更有效率</li>
+  <li>内置对象是语言标准的一部分</li>
+</ul>
+
+<h2 id="python">Python的核心数据类型</h2>
+
+<p>在Python程序中处理的每一样东西都是一种对象，内置对象如下表所示:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">对象类型</th>
+      <th style="text-align: left">例子 常量/创建</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">数字</td>
+      <td style="text-align: left">1234,3.1415,3+4j,Deciaml,Fraction</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">字符串</td>
+      <td style="text-align: left">&lsquo;spam&rsquo;,&rdquo;guido&rsquo;s&rdquo;,b&rsquo;a\xolc&rsquo;</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">列表</td>
+      <td style="text-align: left">[1,[2,&rsquo;three&rsquo;],4]</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">字典</td>
+      <td style="text-align: left">{&lsquo;food&rsquo;:&rsquo;spam&rsquo;,&rsquo;taste&rsquo;:&rsquo;yum&rsquo;}</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">元组</td>
+      <td style="text-align: left">(1,&rsquo;spam&rsquo;,4,&rsquo;U&rsquo;)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">文件</td>
+      <td style="text-align: left">myfile = open(&lsquo;egg&rsquo;,&rsquo;r&rsquo;)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">集合</td>
+      <td style="text-align: left">set(&lsquo;abc&rsquo;),{&lsquo;a&rsquo;,&rsquo;b&rsquo;,&rsquo;c&rsquo;}</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">其他类型</td>
+      <td style="text-align: left">类型、None、布尔型</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">编程单元类型</td>
+      <td style="text-align: left">函数、模块、类</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">与实现相关的类型</td>
+      <td style="text-align: left">编译的代码堆栈跟踪</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>像函数、模块和类这样的编程单元在Python中也是对象，它们由def、class、import和lamdba这样的语句和表达式创建，并且可以在脚本间自由地传递，存储在其他对象中。</p>
+
+<p>Python中没有类型声明，运行的表达式的语法决定了创建和使用的对象的类型。一旦创建了一个对象，它就和操作集合绑定了，例如只能对字符串进行字符串相关的操作。</p>
+
+<p>Python是动态类型的(<strong>它自动跟踪你的类型而不是要求声明代码</strong>)，但是他也是强类型语言。(<strong>你只能对一个对象进行适合该类型的有效操作</strong>)</p>
+
+<h1 id="section-1">数字</h1>
+
+<p>Python中的数字支持一般的数学运算，包括加法(+),乘法(*),除法(/),整除(//),取模(%),乘方(**)。</p>
+
+<h1 id="section-2">字符串</h1>
+
+<p>从严格意义上说，字符串是单个字符的字符串的序列，其他类型的序列还包括列表和元组。</p>
+
+<h2 id="section-3">序列的操作</h2>
+
+<p><strong>索引</strong></p>
+
+<p>作为序列，字符串支持针对各个元素位置顺序的操作。在Python中，索引是从0开始的，但是我们也可以反向索引，从最后一个开始，-1代表最后一个元素，-2代表倒数第二个元素，以此类推。比较好的记忆方法是:负的索引号简单地与字符串长度相加，就得到了正向的索引号。</p>
+
+<p><strong>分片</strong></p>
+
+<p>除了简单的从位置进行索引，序列也支持一种分片(slice)操作，这是一种一步就能够提取整个分片(slice)的方法:</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">S</span> <span class="o">=</span> <span class="s">&#39;Spam&#39;</span>
+<span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</code></pre></div>
+
+<p>它们的一般形式为X[I:J],表示&rdquo;取出在X中从偏移量为I，直到但不包括偏移量为J的内容&rdquo;，结果就是返回一个新的对象。
+在一个分片中，左边界默认为0，并且右边界默认为分片序列的长度。</p>
+
+<p><strong>合并</strong></p>
+
+<p>作为一个序列，字符串也支持使用加号进行合并(将两个字符串合并成为一个新的字符串)。</p>
+
+<h2 id="section-4">不可变性</h2>
+
+<p>字符串在Python具有不可变性，<strong>也就是说在创建后不能就地改变</strong>，但是你总是可以通过建立一个新的字符串并以同一个变量名对其进行赋值，因为Python在运行过程中会清理旧对象。</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">S</span> <span class="o">=</span> <span class="s">&#39;Spam&#39;</span>
+<span class="n">S</span> <span class="o">=</span> <span class="s">&#39;z&#39;</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+</code></pre></div>
+
+<p>在Python中，每一个对象都可以分为不可变性或可变性，在核心类型中，数字、字符串和元组是不可变的，列表和字典是可变的。</p>
+
+<h2 id="section-5">类型特定的方法</h2>
+
+<p>到目前为止讲到的操作都是Python中序列对象共有的，包括列表和元组。字符串也有一些自己特殊的方法。</p>
+
+<p><strong>find</strong></p>
+
+<p>字符串的find方法是一个基本的子字符串查找的操作。(它将返回一个传入子字符串的偏移量，或者没有找到的情况下返回-1)</p>
+
+<p><strong>replace</strong></p>
+
+<p>replace方法将会对全局进行搜索和替换。</p>
+
+<p>这些字符串的方法都不会改变原来的字符串，只是会生成一个新的字符串对象作为返回对象。</p>
+
+<p>注意:尽管序列操作是通用的，但方法不通用(虽然某些类型共享某些方法名)。一条简明的法则是这样的:<strong>可作用于多种类型的通用型操作都是以内置函数或表达式的形式出现的[例如,len(X),X[0]]，但是类型特定的操作是以方法调用的形式出现的。[例如,aString.find(&lsquo;x&rsquo;)]</strong></p>
+
+<h2 id="section-6">寻求帮助</h2>
+
+<p>想要查看对象详细的方法，可以调用内置的<code>dir</code>函数，它将返回一个列表，其中包含了对象的所有属性。(对象属性包括方法)
+<code>dir</code>函数简单地给出了方法的名称，要查询它们是做什么的，你可以将其传递给<code>help</code>函数。</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">S</span> <span class="o">=</span> <span class="s">&#39;Spam&#39;</span>
+<span class="nb">dir</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">help</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">replace</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="section-7">编写字符串的其他方法</h2>
+
+<p>在Python中，反斜线转义序列表示特殊的字符，Python允许字符串包括在单引号或双引号中。(它们代表着相同的东西)
+Python也支持原始(raw)字符串常量，即去掉反斜线转义机制。</p>
+
+<h2 id="section-8">模式匹配</h2>
+
+<p>Python的字符串对象能够支持基于模式的文本处理，详细的内容后面介绍。</p>
+
+<h1 id="section-9">列表</h1>
+
+<p>Python的列表对象是这个语言提供的最通用的序列。列表是一个任意类型的对象的位置相关的有序集合，它没有固定的大小。</p>
+
+<h2 id="section-10">序列操作</h2>
+
+<p>由于列表是序列的一种，列表支持之前提到的所有序列操作,包括索引、切片等操作。</p>
+
+<h2 id="section-11">类型特定的操作</h2>
+
+<p>Python的列表与其他语言中的数组有些类似，但要强大得多。其中一个方面就是，列表没有固定类型的约束，一个列表中的元素可以是各种不同的类型，其次列表是没有固定大小的，它能够按照需要自己增加或减少列表大小。</p>
+
+<ul>
+  <li>append:扩充列表的大小并在列表的尾部插入一项</li>
+  <li>pop:移除给定偏移量的一项，从而让列表减小</li>
+  <li>insert:在任意位置插入元素</li>
+  <li>remove:按照值移除元素</li>
+</ul>
+
+<p>需要注意的是，大多数列表的方法都会就地改变列表对象，而不是创建一个新的列表。</p>
+
+<h2 id="section-12">边界检查</h2>
+
+<p>尽管列表没有固定的大小，Python仍不允许引用不存在的元素，超出列表末尾之外的索引总是会导致错误。</p>
+
+<h2 id="section-13">嵌套</h2>
+
+<p>Python核心数据类型的一个优秀的特性就是它们支持任意的嵌套，能够以任意的组合对其进行嵌套，并可以多个层次进行嵌套。</p>
+
+<h1 id="section-14">字典</h1>
+
+<p>Python中的字典是完全不同的东西:它们不是序列，而是一种映射(mapping)。映射是一个其他对象的集合，但是它们是通过键而不是相对位置来存储的。实际上，映射并没有任何可靠的从左至右的顺序。它们简单地讲键映射到值。字典是Python核心对象集合中的唯一的一种映射类型，也具有可变性——可以就地改变，并可以随需求增大或减少，就像列表那样。</p>
+
+<h2 id="section-15">映射操作</h2>
+
+<p>作为常量编写时，字典编写在大括号中，并包含一系列的&rdquo;键:值&rdquo;对。通过键索引一个字典往往是Python中编写搜索的最快方法。
+字典的索引操作使用的是和序列相同的语法，但是在方括号中的元素是键，而不是相对位置。</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">D</span><span class="o">=</span><span class="p">{}</span>
+<span class="n">D</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">=</span><span class="s">&#39;Bob&#39;</span>
+<span class="n">D</span><span class="p">[</span><span class="s">&#39;job&#39;</span><span class="p">]</span><span class="o">=</span><span class="s">&#39;dev&#39;</span>
+<span class="n">D</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">40</span>
+</code></pre></div>
+
+<h2 id="section-16">重访嵌套</h2>
+
+<div class="highlight"><pre><code class="python"><span class="n">rec</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:{</span><span class="s">&#39;first&#39;</span><span class="p">:</span><span class="s">&#39;Bob&#39;</span><span class="p">,</span><span class="s">&#39;last&#39;</span><span class="p">:</span><span class="s">&#39;Smith&#39;</span><span class="p">},</span>
+			 <span class="s">&#39;job&#39;</span><span class="p">:[</span><span class="s">&#39;dev&#39;</span><span class="p">,</span><span class="s">&#39;mgr&#39;</span><span class="p">],</span>
+			 <span class="s">&#39;age&#39;</span><span class="p">:</span><span class="mf">40.5</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>如上面代码所示，Python的核心数据类型是非常灵活的，可以轻松的建立复杂的信息结构。</p>
+
+<h2 id="for">键的排序:for循环</h2>
+
+<p>之前说过，字典中是没有顺序的，全部都是以键来进行索引的，但是，如果确实需要强调顺序的时候，可以这样做:</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">D</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+		<span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="s">&#39;=&gt;&#39;</span><span class="p">,</span><span class="n">D</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+</code></pre></div>
+
+<p>sorted是内置函数，sorted调用返回结果并对各种对象类型进行排序。</p>
+
+<h2 id="if">不存在的键:if测试</h2>
+
+<p>尽管我们能够通过给新的键赋值来扩展字典，但是获取一个不存在的键仍然是一个错误.可以利用in和if进行判断:</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">D</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">D</span><span class="p">:</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">&#39;missing&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h1 id="section-17">元组</h1>
+
+<p>元组基本上就像一个不可以改变的列表，就像列表一样，元组是序列，但是它具有不可变性，和字符串类似。从语法上讲，它们编写在圆括号中而不是方括号中，他们支持任意类型、任意嵌套以及常见的序列操作。</p>
+
+<p>元组还有两个专有的可调用方法:</p>
+
+<ul>
+  <li>index:返回元素的偏移值</li>
+  <li>count:返回元素在元组中出现的次数</li>
+</ul>
+
+<h2 id="section-18">为什么要用元组</h2>
+
+<p>元组在实际应用并不如列表那么常用，但是它的关键在于不可变性。如果在程序中以列表的形式传递一个对象的集合，它可能在任何地方改变，如果使用元组的话，就不能。也就是说，元组提供了一种完整性约束，这对于我们这里所编写的更大型的程序来说是方便的。</p>
+
+<h1 id="section-19">文件</h1>
+
+<p>文件对象是Python代码对计算机上外部文件的主要接口。虽然文件时核心类型，但是它有些特殊:没有特定的常量语法来创建文件。要创建一个文件对象，需要调用内置的open函数以字符串的形式传递给它一个外部的文件名以及一个处理模式的字符串。</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;data.txt&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Hello</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;World</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h1 id="section-20">总结</h1>
+
+<ul>
+  <li>Python中的核心对象有:数字、字符串、列表、字典、元组、文件和集合。</li>
+  <li>其中，数字、字符串和元组具有不可变性。</li>
+  <li>字符串、元组、列表是属于序列的，是有顺序的。</li>
+  <li>字典不属于序列，它是没有顺序的。</li>
+  <li>Python中的关键思想之一:<strong>不要把代码限制在特定的类型上，使代码自动适用于多种类型</strong>。</li>
+</ul>
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

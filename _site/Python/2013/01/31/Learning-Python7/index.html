@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Learning Python》学习笔记——7.元组、文件及其他</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《Learning Python》学习笔记——7.元组、文件及其他
+
+</div>
+
+
+      <div class="content">
+        
+
+<h1 id="section">元组</h1>
+
+<p>元组由简单的对象构成。元组与列表非常类似，只不过元组不能再原处修改(它们是不可变的)，通常是写成圆括号(而不是方括号)中一系列项。它的属性有:</p>
+
+<ul>
+  <li>任意对象的有序集合</li>
+  <li>通过偏移存取</li>
+  <li>属于不可变序列类型</li>
+  <li>固定长度、异构、任意嵌套</li>
+  <li>对象引用的数组</li>
+</ul>
+
+<h2 id="section-1">实际应用中的元组</h2>
+
+<p><strong>元组的特殊语法:逗号和圆括号</strong></p>
+
+<p>因为圆括号也可以把表达式括起来，如果圆括号里的单一对象时元组对象而不是一个简单的表达式，需要对Python进行特别说明。如果确实想得到一个元组，只要在这一单个元素之后、关闭圆括号之前加上一个逗号就可以了。</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">40</span><span class="p">,)</span>
+</code></pre></div>
+
+<p>上述代码中，第一行的x是一个整数，第二行的y则是一个包含了一个元素40的元组。</p>
+
+<p><strong>转换、方法以及不可变性</strong></p>
+
+<p>元组的操作和字符串及列表是一致的，值得注意的区别在于&rdquo;+&rdquo;、&rdquo;*&ldquo;以及分片操作应用于元组时将返回新元组，并且元组不提供字符串、列表和字典中的方法。</p>
+
+<h2 id="section-2">为什么有了列表还要元组</h2>
+
+<p>元组的不可变性提供了某种完整性，这样你可以确保元组在程序中不会被另一个引用修改，而列表就没有这样的保证了。</p>
+
+<h1 id="section-3">文件</h1>
+
+<p>内置open函数后创建一个Python文件对象，可以作为计算机上的一个文件链接。在调用open之后，你可以通过调用返回的文件对象的方法来读写相关外部文件。</p>
+
+<p>常见文件运算</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">操作</th>
+      <th style="text-align: left">解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">output=open(r&rsquo;C:\spam&rsquo;,&rsquo;w&rsquo;)</td>
+      <td style="text-align: left">创建输出文件(&lsquo;w&rsquo;指写入)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">output=open(&lsquo;data&rsquo;,&rsquo;r&rsquo;)</td>
+      <td style="text-align: left">创建只读文件(&lsquo;r&rsquo;值只读)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">output=open(&lsquo;data&rsquo;)</td>
+      <td style="text-align: left">与上一行相同(&lsquo;r&rsquo;是默认值)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">aString=intput.read()</td>
+      <td style="text-align: left">把整个文件读进单一字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">aString=intput.read(N)</td>
+      <td style="text-align: left">读取之后的N个字节(一或多个)到一个字符串中</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">aString=input.readline()</td>
+      <td style="text-align: left">读取下一行(包括行末标识符)到一个字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">aList=input.readlines()</td>
+      <td style="text-align: left">读取整个文件到字符串列表</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">output.write(aString)</td>
+      <td style="text-align: left">写入字节字符串到文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">output.writelines(alist)</td>
+      <td style="text-align: left">把列表内所有字符串写入文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">output.close()</td>
+      <td style="text-align: left">手动关闭(当文件收集完成时会替你关闭文件)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">output.flush()</td>
+      <td style="text-align: left">把输出缓冲区刷到硬盘中，但不关闭文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">anyFile.seek(N)</td>
+      <td style="text-align: left">修改文件位置到偏移量N处，以便进行下一个操作</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">for line in open(&lsquo;data&rsquo;):use line</td>
+      <td style="text-align: left">文件迭代器一行一行地读取</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">open(&lsquo;f.txt&rsquo;,encoding=&rsquo;latin-1&rsquo;)</td>
+      <td style="text-align: left">Python3.0 Unicode文本文件(str字符串)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">open(&lsquo;f.bin&rsquo;,&rsquo;rb&rsquo;)</td>
+      <td style="text-align: left">Python3.0 二进制byte文件(bytes字符串)　　　</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-4">打开文件</h2>
+
+<p>为了打开一个文件，程序会调用内置open函数，首先是外部文件名，接着是处理模式。模式使用字符串&rsquo;r&rsquo;代表以只读方式打开文件(默认值)，&rsquo;w&rsquo;代表以写的方式打开文件，&rsquo;a&rsquo;代表追加模式。</p>
+
+<h2 id="section-5">使用文件</h2>
+
+<p>一旦存在一个文件对象，就可以调用其方法来读写相关的外部文件。不管在任何情况下，Python程序中的文本文件都采用字符串的形式，读取文件时会返回字符串形式的文本。</p>
+
+<p>上面表格中的方法是子常用的读写方法，如下是一些基础用法的提示:</p>
+
+<ul>
+  <li>文件迭代器是最好的读取行的工具</li>
+  <li>内容是字符串，不是对象
+当你把数据写入文件时，Python不会自动把对象转换为字符串，你必须传递一个已经格式化的字符串。</li>
+  <li>close是通常选项</li>
+  <li>文件是缓冲的并且是可查找的</li>
+</ul>
+
+<h2 id="section-6">实际应用中的文件</h2>
+
+<p><strong>用pickle存储Python的原生对象</strong></p>
+
+<p>pickle模块是能够让我们直接在文件中存储几乎任何Python对象的高级工具，也并不要求我们把字符串转换来转换去，它就像是超集通用的数据格式化和解析工具。</p>
+
+<h1 id="section-7">重访类型分类</h1>
+
+<p>关于对象类型，有以下的一些药店需要记住:</p>
+
+<ul>
+  <li>对象根据分类共享操作；</li>
+  <li>只有可变对象(列表、字典和集合)可以原处修改，我们不能原处修改数字、字符串或元组</li>
+  <li>数字类型包括了:整数、浮点数、复数、小数和分数</li>
+  <li>集合类似于一个无值的字典的键，但是，它们不能映射为值，并且没有顺序；因此，集合不是一个映射类型或者一个序列类型，frozenset是集合的一个不可变的版本</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">对象类型</th>
+      <th style="text-align: left">分类</th>
+      <th style="text-align: left">是否可变</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">数字</td>
+      <td style="text-align: left">数值</td>
+      <td style="text-align: left">否</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">字符串</td>
+      <td style="text-align: left">序列</td>
+      <td style="text-align: left">否</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">列表</td>
+      <td style="text-align: left">序列</td>
+      <td style="text-align: left">是</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">字典</td>
+      <td style="text-align: left">对应</td>
+      <td style="text-align: left">是</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">元组</td>
+      <td style="text-align: left">序列</td>
+      <td style="text-align: left">否</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">文件</td>
+      <td style="text-align: left">扩展</td>
+      <td style="text-align: left">N/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Sets</td>
+      <td style="text-align: left">集合</td>
+      <td style="text-align: left">是</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">frozenset</td>
+      <td style="text-align: left">集合</td>
+      <td style="text-align: left">否</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">bytearray(3.0)</td>
+      <td style="text-align: left">序列</td>
+      <td style="text-align: left">是</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="vs-">引用 VS 拷贝</h1>
+
+<p>引用的一大优点是:你可以在程序范围内任何地方传递大型对象而不必途中产生拷贝。</p>
+
+<p>如果确实需要拷贝，有如下的方法:</p>
+
+<ul>
+  <li>没有限制条件的分片表达式(L[:])能够复制序列</li>
+  <li>字典copy方法(X.copy())能够复制字典</li>
+  <li>有些内置函数(例如:list)能够生成拷贝(list(L))</li>
+  <li>copy标准库模块能够生成完整拷贝</li>
+</ul>
+
+<p>关于拷贝还需要注意的是:无条件值的分片以及字典copy方法只能做顶层复制。也就是说，不能够复制嵌套的数据结构。如果需要一个深层嵌套的数据结构的完整的、完全独立的拷贝，那么就要使用标准的copy模块，包括<code>import copy</code>语句，并进行这样的拷贝:<code>x = copy.deepcopy(Y)</code>。</p>
+
+<h1 id="section-8">比较、相等性和真值</h1>
+
+<p>所有的Python对象也可以支持比较操作，测试相等性、相对大小等.Python的比较总是检查复合对象的所有部分，直到可以得出结果为止。事实上，当嵌套对象存在时，Python能够自动遍历数据结构，并从左到右递归地应用比较，要多深就走多深。过程中首次发现的差值将决定比较的结果。
+有两种方式可以测试相等性:</p>
+
+<ul>
+  <li>&rdquo;==&rdquo;操作符测试值的相等性。Python运行相等测试</li>
+  <li>&ldquo;is&rdquo;表达式测试对象的一致性。Python测试二者是否是同一个对象</li>
+</ul>
+
+<p>一般来说，Python中不同的类型的比较方法如下:</p>
+
+<ul>
+  <li>数字通过相对大小进行比较</li>
+  <li>字符串按照字典顺序，一个字符接一个字符地对比进行比较(&ldquo;abc&rdquo;&lt;&rdquo;ac&rdquo;)</li>
+  <li>列表和元组从左到右对每部分进行比较</li>
+  <li>字典通过排序之后的(键、值)列表进行比较。</li>
+  <li>数字混合类型比较在Python3.0中是错误的</li>
+</ul>
+
+<h2 id="python">Python中真和假的含义</h2>
+
+<p>在Python中，整数0代表假，整数1代表真。</p>
+
+<p>除此之外，Python也把任意的空数据结构视为假，把任何非空数据结构视为真。真和假的概念是Python中每个对象的固有属性:每个对象不是真就是假:</p>
+
+<ul>
+  <li>数字如果非零，则为真 </li>
+  <li>其他对象如果非空，则为真</li>
+</ul>
+
+<p><strong>None对象</strong></p>
+
+<p>Python还有一个特殊的对象:None，总被认为是假，一般都是起到一个空的占位作用</p>
+
+<h2 id="type">Type对象</h2>
+
+<p>事实上，即使是类型本身在Python中也是对象类型</p>
+
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

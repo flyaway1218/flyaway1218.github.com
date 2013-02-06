@@ -1,0 +1,124 @@
+/*
+Wiki v1.0
+author: flyaway
+time: 2013-2-2
+blog:
+Designed for wiki page
+*/
+
+/********override soome defaults************/
+
+body{
+	font-size:16px;
+	background-color:#000000;
+	color:#bbbbbb;
+	font-family:'Courier New';
+}
+p{
+	font-size:16px;
+	padding-left:20px;
+}
+
+strong{
+	font-weight:900;
+	text-shadow:rgba(255,255,255,.5) 1px 1px 3px;
+}
+a,a:hover,a:visited{
+	text-decoration:none;
+	color:#00ff00;
+}
+ol {
+	padding:0 0 0 20px;
+}
+table{
+	margin:10px 0 10px 20px;
+}
+table,th,td{
+	border:1px solid rgb(238,238,238);
+	padding:0 10px 0 10px;
+}
+
+h1{
+	font-size:20px;
+	color:#3cad96;
+	margin-top:30px;
+	margin-bottom:10px;
+	padding-left:10px;
+	border-left:5px solid #366d9c;
+}
+h2{
+	font-size:20px;
+	color:#3c55b6;
+	margin:10px 0 5px 20px;
+}
+
+pre {
+	background-color:#111111;
+	color:#ffffff;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+}
+code{
+	background:#002b36;
+	color:#667b00;
+	display:inline;
+	border:2px solid #5555ff;
+	border-width:0 1px 1px 0;
+	-moz-border-radius:1px;
+	-webkit-border-radius:1px;
+	border-radius:1px;
+
+}
+
+footer{
+	border-top:1px dashed #999;
+	margin:20px 20px 0 20px;
+	padding-top:10px;
+	text-align:right;
+	font-size:12px;
+	color:#999;
+}
+.header{
+	margin:20px 0 0 30px;
+}
+.header ul{
+	float:left;
+	display:block;
+}
+
+.header ul li{
+	display:block;
+	float:left;
+	margin:0 10px;
+	padding:10px 0;
+	border-bottom:5px solid #555;
+}
+.span12 ul{
+	display:none;
+}
+.title{
+	color:#5555ff;
+	font-weight:bold;
+	text-align:center;
+	font-size:28px;
+	border-bottom:3px solid #5555ff;
+	margin:20px 20px 20px 20px;
+	padding-bottom:20px;
+}
+.span12{
+/*	padding:0 0 0 20px;*/
+}
+
+.content{
+	padding:0 40px  0 20px;
+}
+
+.highlight{
+	margin:0 20px 0 20px;
+}	
+
+
+.test{
+	background-color:white;
+}

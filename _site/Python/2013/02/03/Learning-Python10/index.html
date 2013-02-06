@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Learning Python》学习笔记——10.if测试和语法规则</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《Learning Python》学习笔记——10.if测试和语法规则
+
+</div>
+
+
+      <div class="content">
+        
+
+<h1 id="if">if语句</h1>
+
+<h2 id="section">通用格式</h2>
+
+<p>if语句一般形式如下:</p>
+
+<div class="highlight"><pre><code class="python3"><span class="k">if</span> <span class="o">&lt;</span><span class="n">test1</span><span class="o">&gt;</span><span class="p">:</span>
+	<span class="o">&lt;</span><span class="n">statements1</span><span class="o">&gt;</span>
+<span class="k">elif</span> <span class="o">&lt;</span><span class="n">test2</span><span class="o">&gt;</span><span class="p">:</span>
+	<span class="o">&lt;</span><span class="n">statements2</span><span class="o">&gt;</span>
+<span class="k">else</span><span class="p">:</span>
+	<span class="o">&lt;</span><span class="n">statements3</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p>另外需要注意的是，Python中是没有<code>switch/case</code>语句的</p>
+
+<h1 id="python">Python语法规则</h1>
+
+<p>Python的语法特性:</p>
+
+<ul>
+  <li>语句是逐个运行的。</li>
+  <li>块和语句的边界会自动检测</li>
+  <li>复合语句=首行+&rdquo;:&rdquo;+缩进语句</li>
+  <li>空白行、空格以及注释通常都会忽略</li>
+  <li>文档字符串(docstring)会忽略，但会保存并由工具显示</li>
+</ul>
+
+<h2 id="section-1">代码分隔符</h2>
+
+<p>Python会自动以行缩进检测块的边界，也就是程序代码左侧的空白空间。缩进至右侧相同距离的所有语句属于同一块的代码，换句话说，块内的语句会垂直对齐，就好像在一栏之内。更深层的嵌套块就是比所在块进一步向右缩进</p>
+
+<p>缩进的时候，可以使用空格也可以使用制表符，Python不在乎你怎么缩进，只在乎缩进是否一致。
+不过，最好的是使用空格进行缩进，因为一个制表符在不同的编辑器中呈现的效果是不同的，其次也最好不要使用制表符和空格符混合使用</p>
+
+<h2 id="section-2">语句的分隔符</h2>
+
+<ul>
+  <li>如果使用语法括号对，语句就可以横跨数行</li>
+  <li>如果语句以反斜杠结尾，就可横跨数行</li>
+  <li>字符串常量有特殊规则</li>
+  <li>其他规则</li>
+</ul>
+
+<h1 id="section-3">真值测试</h1>
+
+<p>在Python中:</p>
+
+<ul>
+  <li>任何非零数字或非空对象都为真</li>
+  <li>数字零、空对象以及特殊对象None都被认作是假</li>
+  <li>比较和相等测试会递归地应用在数据结构中</li>
+  <li>比较和相等测试会返回True或False(1和0的特殊版本)</li>
+  <li>布尔and和or运算会返回真或假的操作对象</li>
+  <li>Python中的and、or运算都是短路运算</li>
+</ul>
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

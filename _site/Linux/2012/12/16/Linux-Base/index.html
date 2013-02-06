@@ -1,0 +1,3643 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Linux学习——基础篇</title>
+    <meta name="description" content="学习《鸟哥的Linux私房菜》做的笔记">
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+Linux学习——基础篇
+
+</div>
+
+
+      <div class="content">
+        
+
+<h1 id="linux">Linux是什么</h1>
+
+<h2 id="linux-1">Linux内核版本</h2>
+
+<p><strong>注意</strong>:通常来说我们所说的应该Linux应该是指OS中的内核，而不是指整个OS。Linux就是一个OS最底层的内核及其提供的内核工具。</p>
+
+<p>版本号的格式:主版本.次版本.释出版本-修改版本。</p>
+
+<p>举例:2.6.18-92.e15</p>
+
+<ul>
+  <li>主、次版本号为奇数:开发中的版本号。如2.5.xx，这种内核通常是内核开发工程师所使用的，主要用来添加和测试新功能。</li>
+  <li>主、次版本号为偶数:稳定的版本号。如2.6.xx，这种内核是开发成熟的，一般用于PC或企业版本中，重点是为用户提供稳定的版本。</li>
+  <li>释出版本: 释出版本是指，在主、次版本架构不变的情况下，新增功能累积到一定的程度后所新释出的内核版本。</li>
+  <li>修改版本: 由于Linux是使用GPL授权的，所以每个人都能修改器内核版本，你可以对某个版本的内核进行修改，而修改后的版本就是修改版本了。</li>
+</ul>
+
+<h2 id="linux-distributoins">Linux Distributoins</h2>
+
+<p><strong>Linux Distributions = Kernel + Softwares + Tools + Documents</strong></p>
+
+<p>Linux Distribution的中文翻译:可完全安装套件</p>
+
+<h1 id="section">主机规划与磁盘分区</h1>
+
+<h2 id="linux-2">Linux与硬件的搭配</h2>
+
+<p><strong>强调：各个组件或设备在Linux下面都是一个文件。</strong></p>
+
+<h3 id="linux-3">各硬件设备在Linux中的文件名</h3>
+
+<p><strong>几乎所有的硬件设备文件都在/dev目录内</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">设备</th>
+      <th style="text-align: center">设备在Linux内的文件名</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">IDE硬盘</td>
+      <td style="text-align: center">/dev/hd[a-d]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">SCSI/SATA/USB硬盘</td>
+      <td style="text-align: center">/dev/sd[a-p]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">U盘</td>
+      <td style="text-align: center">/dev/sd[a-p]与SATA相同</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">软驱</td>
+      <td style="text-align: center">/dev/fd[0-1]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">打印机</td>
+      <td style="text-align: center">25针:/dev/lp[0-2]\USB:/dev/usb/lp[0-15]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">鼠标</td>
+      <td style="text-align: center">USB:/dev/usb/mouse[0-15]\PS2:/dev/psaux</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">当前CD ROM/DVD ROM</td>
+      <td style="text-align: center">/dev/cdrom</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">当前鼠标</td>
+      <td style="text-align: center">/dev/mouse</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">磁带机</td>
+      <td style="text-align: center">IDE:/dev/ht0\SCSI:/dev/st0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-1">磁盘分区</h2>
+
+<h3 id="section-2">磁盘连接的方式与设备文件名的关系</h3>
+
+<p>对于老式计算机来说，一般有两个IDE接口，而一个IDE扁平电缆可以连接两个设备，所以一共可以连接4个IDE设备。这两个IDE接口通常称为IDE1(primary)和IDE2(secondary)，而同一根电缆上的两个接口被区分为Master(主设备)与Slave(从设备)。</p>
+
+<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;-|
+|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;:|:&mdash;&mdash;&mdash;&mdash;&ndash;:|
+| IDE1(Priary)         |    /dev/hda     |     /dev/hdb   |
+| IDE2(Secondary)      |    /dev/hdc     |     /dev/hdd   |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;-|</p>
+
+<p>与IDE不同，SATA/USB/SCSI等磁盘接口都是用SCSI模块来驱动的，但是并没有特定的设备顺序，它们的命名方式是根据<strong>Linux内核检测到磁盘的顺序</strong>\另外，USB只有开机完成后才被系统识别。</p>
+
+<h3 id="section-3">磁盘的组成复习</h3>
+
+<p>每个扇区为512bytes</p>
+
+<p>磁盘的第一个扇区十分重要，其中记录了两个关于磁盘的重要的信息:</p>
+
+<ul>
+  <li><strong>主引导分区(Master Boot Record,MBR)</strong>:可以安装引导加载程序的地方，有446bytes.</li>
+  <li><strong>分区表</strong>:记录整块硬盘分区的状态,有64bytes.</li>
+</ul>
+
+<h3 id="section-4">磁盘分区表</h3>
+
+<p>柱面是文件系统的最小单位，也是分区的最小单位。</p>
+
+<p>在分区表的64bytes中，总共可以分为4组记录区，每组记录区中记录了该区段的起始与结束的柱面号。这个4组记录区被称为主(Primary)或扩展(Extended)分区，其中，扩展(Extened)分区不能超过1个，也就是说，主分区可以有多个(不超过4个),而不止1个。</p>
+
+<p><strong>分区命名</strong></p>
+
+<p>分区的命名方式是在设备文件名后加上数字，其中1-4是保留给Primary或Extended使用的。</p>
+
+<p>例子:<br />
+/dev/hda1
+/dev/hda2</p>
+
+<p><strong>扩展分区</strong></p>
+
+<p>磁盘的第一个扇区中的64Bytes只能记录4个分区信息，因此我们可以利用额外的扇区来记录更多的分区信息。扩展分区就是用来做这项工作的。扩展分区的目的是使用额外的扇区来记录信息，<strong>扩展分区本身并不能内拿来格式化。</strong>由扩展分区继续分出来的分区称为逻辑分区(logical parition),同时需要注意的是，由于逻辑分区是由扩展分区继续分出来的，所以<strong>逻辑分区可以使用的柱面范围就是扩展分区所设定的范围。</strong>由1-4这四个号码是保留给Primary和Extended所使用的，所以<strong>逻辑分区的设备名称是从5开始的，这很重要！</strong></p>
+
+<p><strong>总结</strong></p>
+
+<ul>
+  <li>其实所谓的&rdquo;分区&rdquo;只是针对第一个扇区中的64bytes的分区表进行设置而已。</li>
+  <li>硬盘默认的分区表仅能写入四组分区信息</li>
+  <li>这四组分区信息我们称为主或扩展分区</li>
+  <li>分区的最小单位是柱面</li>
+  <li>主分区和扩展分区最多可以由四个(硬盘的限制)</li>
+  <li>扩展分区最多只能由一个(OS的限制)</li>
+  <li>逻辑分区是由扩展分区持续切割出来分区</li>
+  <li>能够被格式化后作为数据访问的分区为主分区与逻辑分区。扩展分区无法格式化</li>
+  <li>逻辑分区的数量依OS而不同，在Linux中，IDE硬盘最多有59个逻辑分区(5-63号)，SATA硬盘则有11个逻辑分区(5-15号)</li>
+  <li>分区其实就是以柱面为单位的“连续”磁盘空间。</li>
+  <li>考虑到磁盘的连续性，一般建议将扩展分区的柱面号码分配在最后面的柱面内。</li>
+</ul>
+
+<h3 id="section-5">开机流程与主引导分区</h3>
+
+<p>整个开机流程应该是这样的</p>
+
+<ul>
+  <li>BIOS:开机主动执行的韧体，会认识第一个可开机的设备。(韧体就是写入到硬件上的一个软件程序)</li>
+  <li>MBR: 第一个可开机设备的第一个扇区内的主引导分区块，内包含了引导加载程序。</li>
+  <li>引导加载程序(Boot loader):一支可读取内核文件来执行的软件。</li>
+  <li>内核文件: 开始操作系统的功能。</li>
+</ul>
+
+<p>Boot loader是安装在MBR上的一套软件，由于MBD只有446Bytes，所以这个引导加载程序是非常小而完美的。引导加载程序的主要任务如下：</p>
+
+<ul>
+  <li>提供菜单:用户可以选择不同的开机选项，这也是多重引导的重要功能</li>
+  <li>载入内核文件: 直接指向可开机的程序区段来开始OS</li>
+  <li>转交其他Loader: 将引导加载功能转交给其他loader负责。</li>
+</ul>
+
+<p><strong>注意:引导加载程序除了可以安装在MBR之外，还可以安装在每个分区的引导扇区</strong></p>
+
+<p><strong>总结</strong></p>
+
+<ul>
+  <li><strong>每个分区都拥有自己的启动扇区</strong></li>
+  <li>实际可开机的内核文件是放置到各分区内的</li>
+  <li>Loader只会认识自己的系统分区内的可开机内核文件，以及其他loader。</li>
+  <li>Loader可直接指向或间接地将管理权转交给另一个管理程序。</li>
+</ul>
+
+<h1 id="man-page">首次登陆与在线求助man page</h1>
+
+<h2 id="section-6">在命令行模式下执行命令</h2>
+
+<h3 id="section-7">开始执行命令</h3>
+
+<p>命令行模式登陆后取得的程序被称为shell，这个程序负责最外层跟用户的通信工作。</p>
+
+<p><strong>第一个被输入的数据绝对是命令或者是可执行文件</strong>，无论命令中有几个空格，shell都视为一格。</p>
+
+<p>另外需要注意的是，在Linux中，大小写是敏感的。</p>
+
+<h2 id="linuxman-page">Linux系统的在线求助系统man page</h2>
+
+<p>man是manual的简写。</p>
+
+<p>man中的数字说明表</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">代号</th>
+      <th style="text-align: center">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><strong>1</strong></td>
+      <td style="text-align: center"><strong>用户在shell环境中可以操作的命令或可执行文件。</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">系统内核可调用的函数与工具等。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">一些常用的函数与函数库，大部分为C的函数库。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">设备文件的说明，通常在/dev下的文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>5</strong></td>
+      <td style="text-align: center"><strong>配置文件或者是某些文件的格式</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td style="text-align: center">游戏</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td style="text-align: center">惯例与协议等，例如Linux文件系统、网络协议、ASCII code等说明</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>8</strong></td>
+      <td style="text-align: center"><strong>系统管理员可用的管理命令。</strong>　　　　　　　　　　　　　　</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">跟kernel有关的文件</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-8">正确的关机方法</h2>
+
+<p>要关机时需要注意下面几件事情</p>
+
+<ul>
+  <li>查看系统的使用状态。
+    <ul>
+      <li>who:查看还有谁登陆在系统上</li>
+      <li>netstat -a:查看网络的联机状态</li>
+      <li>ps -aux:查看后台执行的程序</li>
+    </ul>
+  </li>
+  <li>通知在线用户关机的时刻</li>
+  <li>正确的关机命令使用
+    <ul>
+      <li>sync:将数据同步写入到硬盘中</li>
+      <li>shutdown:惯用的关机命令</li>
+      <li>reboot,halt,poweroff:重启、关机</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code>shutdown -h now</code>:立刻关机</p>
+
+<h1 id="linux-4">Linux的文件权限与目录配置</h1>
+
+<h2 id="section-9">用户与用户组</h2>
+
+<p><strong>Linux用户身份与用户组记录的文件</strong></p>
+
+<ul>
+  <li>用户账号信息:/etc/passwd</li>
+  <li>个人密码:/etc/shadow</li>
+  <li>所有组名记录:/etc/group</li>
+</ul>
+
+<h2 id="linux-5">Linux文件权限概念</h2>
+
+<h3 id="linux-6">Linux文件属性</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">1</th>
+      <th style="text-align: center">2</th>
+      <th style="text-align: center">3</th>
+      <th style="text-align: center">4</th>
+      <th style="text-align: center">5</th>
+      <th style="text-align: center">6</th>
+      <th style="text-align: center">7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">drwx&mdash;&mdash;</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">4096</td>
+      <td style="text-align: center">Sep 5 0:37</td>
+      <td style="text-align: center">.gconf</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>对这七列信息的详细说明:</p>
+
+<ul>
+  <li>
+    <p>第一列代表这个文件的类型与权限(一共有10个字符)</p>
+
+    <ul>
+      <li>
+        <p>第一个字符代表这个文件是&rdquo;目录、文件或链接文件&rdquo;</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: center">字符</th>
+              <th style="text-align: left">说明</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center">[d]</td>
+              <td style="text-align: left">目录</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[-]</td>
+              <td style="text-align: left">文件</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[</td>
+              <td style="text-align: left">]</td>
+              <td>连接文件</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[b]</td>
+              <td style="text-align: left">设备文件里面的可供存储的接口设备</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[c]</td>
+              <td style="text-align: left">设备文件里面的串行端口设备</td>
+              <td>&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>接下来的字符，以3个为一组，均是&rdquo;rwx&rdquo;的3个参数的组合。</p>
+
+        <pre><code>[r]:可读[read] [w]:可写[write] [x]:可执行[execute]
+
+**注意:这3个权限的位置不会改变，如果没有权限，就会出现减号[-]而已**
+ 		
+第一组为"文件所有者的权限" 第二组为"同用户组的权限" 第三组为"其他非本用户组的权限"
+</code></pre>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>第二列表示有多少文件名连接到此节点</p>
+
+    <p>每个文件都会将它的权限与属性记录到文件系统的i-node中，不过我们使用的目录树却是使用文件名来记录，因此每个文件名就会连接到一个i-node。这个属性记录的就是有多少不同的文件名连接到同一个i-node号码。</p>
+  </li>
+  <li>
+    <p>第三列表示这个文件(或目录)的&rdquo;所有者账号&rdquo;</p>
+  </li>
+  <li>
+    <p>第四列表示这个文件的所属用户组</p>
+  </li>
+  <li>
+    <p>第五列为这个文件的大小，默认单位是B</p>
+  </li>
+  <li>
+    <p>第六列为这个文件的创建日期或是最近的修改日期</p>
+  </li>
+  <li>
+    <p>第七列为该文件名</p>
+
+    <p>特殊情况:如果文件名之前多了个&rdquo;.&rdquo;,那么这个文件为&rdquo;隐藏文件&rdquo;。</p>
+  </li>
+</ul>
+
+<h3 id="section-10">如何改变文件属性与权限</h3>
+
+<ul>
+  <li>chgrp:改变文件所属用户组</li>
+  <li>chown:改变文件所有者</li>
+  <li>chmod:改变文件的权限</li>
+</ul>
+
+<p><strong>chmod</strong></p>
+
+<p>可以使用数字来表示各个权限:</p>
+
+<ul>
+  <li>r:4</li>
+  <li>w:2</li>
+  <li>x:1</li>
+</ul>
+
+<p>rwx = 4+2+1=7
+r-x = 4+0+1=5</p>
+
+<h3 id="section-11">目录与文件的权限意义</h3>
+
+<p>文件权限对于一般文件和目录是不同的:</p>
+
+<p><strong>文件的权限</strong></p>
+
+<p>文件是实际含有数据的地方，包括一般文本文件、数据库内容文件、二进制可执行文件等。</p>
+
+<ul>
+  <li>r:可读取此文件的实际内容，如读取文本文件的文字内容等。</li>
+  <li>w:可以编辑、新增或者是修改该文件的内容(<strong>但不含删除该文件</strong>)</li>
+  <li>x:该文件具有可以被系统执行的权限。</li>
+</ul>
+
+<p>我们的文件是否能被执行则是由是否具有&rdquo;x&rdquo;这个权限来决定，而跟文件名是没有绝对的关系。</p>
+
+<p><strong>目录的权限</strong></p>
+
+<p>文件是存放实际数据的所在，目录主要的内容是记录文件名列表，文件名与目录有强烈的关联。</p>
+
+<ul>
+  <li>r:表示具有读取目录结构列表的权限</li>
+  <li>
+    <p>w:可写入的权限，对目录来说这是很强大的。因为它表示你具有更改目录结构列表的权限，也就是下面这些权限:</p>
+
+    <pre><code>  - 新建的文件与目录 
+  - 删除已经存在的文件与目录(不论该文件的权限如何)
+  - 将已存在的文件或目录进行重命名
+  - 转义该目录内的文件、目录位置
+</code></pre>
+  </li>
+  <li>x:表示用户能否进入该目录成为工作目录的用途</li>
+</ul>
+
+<h3 id="linux-7">Linux文件种类与扩展名</h3>
+
+<p><strong>一个Linux文件能不能被执行，与它的第一列的10个属性有关，与文件名根本一点关系都没有。</strong></p>
+
+<h2 id="linux-8">Linux目录配置</h2>
+
+<h3 id="linuxfhs">Linux目录配置标准:FHS</h3>
+
+<p>FHS:Filesystem Hierarchy Standard</p>
+
+<p>FHS依据文件系统使用的频繁与否与是否允许用户随意改动，而将目录定义成为四种交互作用的形态：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">&nbsp;</th>
+      <th style="text-align: center">可分享的(shareable)</th>
+      <th style="text-align: center">不可分享的(unshareable)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">不变的(static)</td>
+      <td style="text-align: center">/usr(软件放置处)\/opt(第三方软件)</td>
+      <td style="text-align: center">/etc(配置文件)\/boot(开机与内核文件)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">可变动的(variable)</td>
+      <td style="text-align: center">/var/mail(用户邮件信箱)\/var/spool/news(新闻组)</td>
+      <td style="text-align: center">/var/rub(程序相关)\/var/lock(程序相关)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>可分享的</strong>:可以分享给其他系统挂在使用的目录
+<strong>不可分享的</strong>:自己机器上运行的设备文件或者是与程序有关的socket文件等
+<strong>不变的</strong>:一些不会经常变动的数据，例如函数库、文件说明文件、系统管理员所管理的主机服务配置文件等。
+<strong>可变动的</strong>:经常改变的数据，例如登陆文件、新闻组等。</p>
+
+<p>FHS所定义的三个目录:
+- /(root,根目录):与开机系统有关
+- /usr(UNIX software resource):与软件安装/执行有关
+- /var(variable):与系统运作过程有关</p>
+
+<p><strong>根目录(/)的意义与内容</strong>
+FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装的软件最好不要与根目录放在同一个分区内，保持根目录越小越好。如此不但性能较好，根目录所在的文件系统也较不容易发生问题。</p>
+
+<p><strong>注意</strong>:开机过程中仅有根目录会被挂载，其他分区则是在完成之后才会进行挂载行为。所以有些目录不可与根目录分开，下面五个目录是不可与根目录分开的:
+- /etc: 配置文件
+- /bin: 重要执行文件
+- /dev: 所需要的设备文件
+- /lib: 执行文件所需的函数库与内核所需的模块
+- /sbin: 重要的系统执行文件
+<strong>这个五个目录千万不可与根目录分开放在不同的分区</strong></p>
+
+<p><strong>/usr的意义与内容</strong>
+FHS建议所有软件开发者应该将他们的数据合理地分别放置到这个目录下的子目录，而不要自行新建该软件自己独立的目录。</p>
+
+<p><strong>/var的意义与内容</strong>
+/var目录主要针对常态性变动的文件，包括缓存(cache)、登录文件(log file)以及某些软件所产生的文件。</p>
+
+<h1 id="linux-9">Linux文件与目录管理</h1>
+
+<h2 id="section-12">目录与路径</h2>
+
+<h3 id="section-13">相对路径与绝对路径</h3>
+
+<p>绝对路径:路径的写法一定由根目录/写起。<br />
+相对路径:路径的写法不是由/写起。</p>
+
+<h3 id="section-14">目录的相关操作</h3>
+
+<p><strong>特殊的目录</strong>
+|&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+|     符号    |                 意义                 |
+|:&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;:|
+|      .      |  代表此层目录                        |
+|      ..     |  代表上一层目录                      |
+|      -      |  代表前一个工作目录                  |
+|      ~      |  代表“目前用户身份”所在的主文件夹  |
+|  ~account   |  代表account这个用户的主文件夹       |
+|&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
+
+<p>常用的处理目录的命令:
+- cd:切换目录
+- pwd:显示当前目录
+- mkdir:新建一个新的目录
+- rmdir:删除一个空的目录</p>
+
+<blockquote>
+  <p>详细的命令解释与说明，可以参看《鸟哥基础篇》P163~165</p>
+</blockquote>
+
+<h3 id="path">关于执行文件路径的变量:$PATH</h3>
+
+<p><strong>结论</strong>
+- 不同身份用户默认的PATH不同，默认能够随意执行的命令也不同
+- PATH是可以被修改的
+- 本目录(.)最好不要被放置到PATH中</p>
+
+<h2 id="section-15">文件与目录管理</h2>
+
+<p><strong>cp</strong>:复制文件或目录
+-p:连同文件的属性一起复制过去，而非使用默认属性(备份常用)
+-u:若destination比source旧才更新destination</p>
+
+<h2 id="section-16">文件内容查阅</h2>
+
+<ul>
+  <li>cat:由第一行开始显示文件内容</li>
+  <li>tac:从最后一行开始显示，可以看出tac是cat的倒写形式</li>
+  <li>nl:显示的时候，顺便输出行号</li>
+  <li>more:一页一页地显示文件内容</li>
+  <li>less:与more类似，但是比more更好的是，它可以往前翻页</li>
+  <li>head:只看头几行</li>
+  <li>tail:只看结尾几行</li>
+  <li>od:以二进制的方式读取文件内容</li>
+</ul>
+
+<h3 id="touch">修改文件时间或创建新文件:touch</h3>
+
+<p>文件的三个时间属性:
+- modification time(mtime):当该文件的&rdquo;内容数据&rdquo;更改时，就会更新这个时间。内容数据指的是文件的内容，而不是文件的属性或权限。
+- status time(ctime):当该文件的&rdquo;状态&rdquo;改变时，就会更新这个时间，举例来说，像是权限与属性被更改了，都会更新这个时间。
+- access time(atime):当&rdquo;该文件的内容被取用&rdquo;时，就会更新这个读取时间。举例来说，我们使用cat读取文件，就会更新这个文件的atime。</p>
+
+<p><strong>在默认情况下，ls显示出来的是该文件的mtime，也就是这个文件的内容上次被更改的时间</strong></p>
+
+<p>touch最经常被使用的情况:
+- 创建一个空的文件
+- 将某个文件日期修改为目前日期(mtime和atime)</p>
+
+<h2 id="section-17">文件与目录的默认权限与隐藏权限</h2>
+
+<h3 id="umask">文件默认权限:umask</h3>
+
+<p>unmask指定:&rdquo;目前用户在新建文件或目录时候的权限默认值&rdquo;，unmask的分数指的是&rdquo;该默认值需要减掉的权限&rdquo;</p>
+
+<p>默认情况下:
+文件的默认权限:-rw-rw-rw-
+目录的默认权限:drwdrwdrw</p>
+
+<p><strong>注意:umask的分数是指该默认值需要减掉的权限</strong></p>
+
+<p>举例:
+新建文件时:(-rw-rw-rw-)-(&mdash;&ndash;w&ndash;w&ndash;)==&gt;-rw-r&ndash;r&ndash;
+新建目录时:(drwdrwdrw)-(d&mdash;-w&ndash;w&ndash;)==&gt;drwxr-xr-x</p>
+
+<h3 id="chattrlsattr">文件隐藏属性chattr,lsattr</h3>
+
+<ul>
+  <li>chattr:设置文件的隐藏属性</li>
+  <li>lsattr:显示文件的隐藏属性</li>
+</ul>
+
+<p>具体的属性说明请参见《鸟哥的基础篇》P183</p>
+
+<p>比较重要的是:
+a:当设置a之后，这个文件就只能增加数据，而不能删除也不能修改数据，只有root才能设置这个属性
+i:i可以让一个文件&rdquo;不能删除&rdquo;、改名、设置连接也无法写入或添加数据。只有root才能设置这个属性</p>
+
+<h3 id="suidsgidsbit">文件特殊权限:SUID,SGID,SBIT</h3>
+
+<p><strong>SetUID(SUID)</strong>
+- SUID权限仅对二进制程序有效
+- 执行者对于该程序具有x的可执行权限
+- 本权限仅在执行该程序过程中有效
+- 执行者将具有该程序所有者的权限</p>
+
+<p><strong>Set GID(SGID)</strong>
+- SGID对二进制程序有用
+- 程序执行者对于该程序来说，需具备x的权限
+- 执行者在执行的过程中将会获得该程序用户组的支持</p>
+
+<p><strong>Sicky Bit(SBIT)</strong>
+- 当用户对于此目录具有w,x权限，即具有写入的权限时 
+- 当用户在该目录下创建文件或目录时，仅有自己与root才有权力删除该文件</p>
+
+<h3 id="file">查看文件类型:file</h3>
+
+<p>可以通过file命令来查某个文件的基本数据</p>
+
+<h2 id="section-18">命令与文件的查询</h2>
+
+<h3 id="section-19">脚本文件名的查询</h3>
+
+<p>which:寻找&rdquo;执行文件&rdquo;
+which是根据PATH所规范的路径去查询&rdquo;执行文件&rdquo;的文件名</p>
+
+<h3 id="section-20">文件名的查找</h3>
+
+<ul>
+  <li>whereis:寻找特定文件(利用数据库查找,速度快)</li>
+  <li>locate:依据/var/lib/mlocate内的数据库记载,找出用户输入的关键字文件名</li>
+  <li>updatedb:根据/etc/updatedb.conf的设置去查找系统硬盘内的文件名，并更新/var/lib/mlocate内的数据库文件</li>
+  <li>find:直接查找硬盘上的文件(速度慢)</li>
+</ul>
+
+<h1 id="linux-10">Linux磁盘与文件系统管理</h1>
+
+<h2 id="ext2">认识EXT2文件系统</h2>
+
+<h3 id="section-21">文件系统特性</h3>
+
+<p>目前我们在格式化时已经不再说成针对分区来格式化了，通常我们可以称呼<strong>一个可被挂载的数据为一个文件系统而不是一个分区</strong></p>
+
+<p>Ext2文件系统:
+- super block:记录此文件系统的整体信息，包括inode/block的总量、使用量、剩余量，以及文件系统的格式与相关信息等
+- inode:记录文件的属性，一个文件占用一个inode，同时记录此文件的数据所在的block号码
+- block:实际记录文件的内容，若文件太大时，会占用多个block</p>
+
+<h3 id="linuxext2inode">Linux的Ext2文件系统(inode)</h3>
+
+<p><strong>文件系统一开始就将inode与block规划好了，除非重新格式化(或者利用resize2fs等命令更改文件系统大小),否则indoe与block固定后就不再变动。</strong></p>
+
+<p>如果文件系统高达数百GB时，那么将所有的inode与block放置在一起将是很不明智的决定，因为inode与block的数量太大时，不容易管理。因此Ext2文件系统在格式化的时候基本上是区分为多个块组的，每个块组都有独立的inode/block/superblock系统。</p>
+
+<p>在整体规划中，<strong>文件系统最前面有一个启动删除(boot sector)，这个启动扇区可以安装引导装载程序</strong>，这个设计可以用来制作出多重引导环境。</p>
+
+<p>每一个块组(block group)都有以下六部分组成:</p>
+
+<ol>
+  <li><strong>data block(数据块)</strong>
+     data block是用来放置文件内容的地方，在Ext2文件系统中所支持的block大小有1KB,2KB及4KB三种。每个block都有编号,方便inode的记录。由于block大小而产生的Ext2文件系统限制如表所示:</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Blcok大小</th>
+      <th style="text-align: center">1KB</th>
+      <th style="text-align: center">2KB</th>
+      <th style="text-align: center">4KB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">最大单一文件限制</td>
+      <td style="text-align: center">16GB</td>
+      <td style="text-align: center">256GB</td>
+      <td style="text-align: center">2TB</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">最大文件系统总容量</td>
+      <td style="text-align: center">2TB</td>
+      <td style="text-align: center">8TB</td>
+      <td style="text-align: center">16TB</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code>	注意事项:
+		- 原则上，block的大小与数量在格式化完后就不能再改变了(除非重新格式化)
+		- 每个block内最多只能够放置一个文件的数据
+		- 如果文件大于block的大小，则一个文件会占用多个block数量
+		- 若文件小于block，则该block的剩余空间就不能再被使用了(导致空间浪费)
+</code></pre>
+
+<ol>
+  <li>
+    <p><strong>inodetable(indoe表格)</strong>
+     inode记录的文件数据至少有下面这些:
+         - 该文件的访问模式(read/write/excute)
+         - 该文件的所有者与组(owner/group)
+         - 该文件的大小
+         - 该文件创建或状态改变的时间(ctime)
+         - 最近一次的读取时间(atime)
+         - 最近修改的时间(mtime)
+         - 定义文件特性的标志(flag),如SetUID等。
+         - 该文件真正内容的指向(pointer)</p>
+
+    <pre><code> inode的数量与大小也是在格式化时就已经固定了。
+	
+ 每个inode大小均固定为128bytes
+ 每个文件仅会占用一个inode而已,因此，文件系统能够创建的文件数量与inode的数量有关
+</code></pre>
+  </li>
+  <li>
+    <p><strong>Superblock</strong>
+     Superblock是记录整个文件系统相关信息的地方，没有Superblock，就没有这个文件系统了。它记录的信息主要有:
+         - block与inode的总量
+         - 未使用与已使用的inode/block数量
+         - block与inode的大小(block为1K,2K,4K   inode为128bytes)
+         - 文件系统的挂载时间、最近一次写入数据的时间、最近一次检验磁盘(fsck)的时间等文件系统的相关信息
+         - 一个validbit数值，若此文件系统已被挂载，则validbit为0，若未被挂载，则validbit为1</p>
+
+    <pre><code> 此外，需要特别注意的是，整个文件系统应该只有一个Superblock,但是后续的block group不一定含有superblock，若含有，则这个superblock应该是第一个block group内superblock的备份。
+</code></pre>
+  </li>
+  <li>
+    <p><strong>File system Descritption(文件系统描述说明)</strong>
+     这个区段可以描述每个block group的开始于结束的block号码，以及说明每个区段(superblock,bitmap,inodemap,data block)分别介于哪一个block号码之间。这部分也能够用dumpe2fs来查看的。</p>
+  </li>
+  <li>
+    <p><strong>block bitmap(块对照表)</strong>
+     记录使用与未使用的block号码</p>
+  </li>
+  <li>
+    <p><strong>inode bitmap(inode对照表)</strong>
+     记录使用与未使用的inode号码</p>
+  </li>
+</ol>
+
+<h3 id="section-22">与目录树的关系</h3>
+
+<p><strong>目录</strong></p>
+
+<p>当我们在Linux下的Ext2文件系统新建一个目录时，Ext2会分配一个inode与至少一块block给该目录。此时，
+inode:记录该目录的相关权限与属性
+block:记录这个目录下的文件名与该文件所占用的inode号码数据(<strong>目录并不会只占用一个block,当该目录下文件太多时，系统会多分配一个block</strong>)</p>
+
+<p><strong>目录树与读取</strong></p>
+
+<p>正因为Ext2中文件名是记录在目录的block中的，所以新增/删除/重命名文件名与目录的w权限有关，要读取某个文件，必然会经过其父目录的indoe与block</p>
+
+<p>由于目录树是由根目录开始读起，因此系统通过挂载信息可以找到挂载点的inode号码(通常一个文件系统的最顶层inode号码会由2号开始)，此时就能够得到根目录的inode内容，并依据inode读取根目录的block内的文件名数据，再一层层地往下读到正确的文件名。</p>
+
+<h3 id="ext2ext3">Ext2/Ext3文件的访问与日志文件系统的功能</h3>
+
+<p>当我们新增一个文件时，此时文件系统的行为是:</p>
+
+<ol>
+  <li>先确定用户对于欲添加文件的目录是否具有w与x的权限，若有的话才能添加</li>
+  <li>根据inode bitmap找到没有使用的inode号码，并将新文件的权限/属性写入</li>
+  <li>根据block bitmap找到没有使用中的block号码，并将实际的数据写入block中，且更新inode的block指向数据</li>
+  <li>将刚才写入的inode与block数据同步更新inode bitmap与block bitmap,并更新superblock</li>
+</ol>
+
+<p>通常来说，我们将inode table与data block称为数据存放区域，而superblock、block bitmap与inode bitmap等区段就被称为metadata(中间数据)</p>
+
+<p><strong>日志文件系统</strong></p>
+
+<p>在文件系统中规划出一个块，该块专门记录写入或修订文件时的步骤，那就可以简化一致性检查的步骤了，也就是说:
+1. 预备:当系统要写入一个文件时，会先在日志记录块中记录某个文件准备要写入的信息。
+2. 实际写入:开始写入文件的权限与数据;开始更新mata data的数据
+3. 结束:完成数据与meta data的更新之后，在日志记录块中完成该文件的记录</p>
+
+<h3 id="linux-11">Linux文件系统的操作</h3>
+
+<p>Linux系统上的文件系统与内存有非常大的关系:
+- 系统会将常用的文件数据放置到主存储器的缓冲区，以加速文件系统的读/写
+- Linux的物理内存最后都会被用光，这是正常的情况，可加速系统性能
+- 你可以手动使用sync来强迫内存中设置为Dirty的文件会写到磁盘中
+- 若正常关机时，关机命令会主动调用sync来将内存的数据回写入磁盘内
+- 但若不正常关机(如断点、死机或其他不明原因),由于数据尚未回写到磁盘内，因此重新启动后可能会花很多时间在进行磁盘检查，甚至可能导致文件系统的损毁(非磁盘损坏)</p>
+
+<h3 id="mount-point">挂载点(mount point)的意义</h3>
+
+<p>将文件系统与目录树结合的操作我们称为<strong>挂载</strong>
+<strong>挂载一定是目录，该目录为进入该文件系统的入口</strong>
+文件系统只有被挂载到目录树中才能被使用</p>
+
+<h2 id="section-23">文件系统的简单操作</h2>
+
+<h3 id="dfdu">磁盘与目录的容量:df,du</h3>
+
+<p>df:列出文件系统的整体磁盘使用量
+du:评估文件系统的磁盘使用量</p>
+
+<p>df命令主要读取的数据几乎都是针对整个文件系统，因此读取的范围主要是在Super block内信息，所以命令显示结果的速度非常迅速
+du命令其实会直接到文件系统内去查找所有的文件数据，所以会显示得比较慢</p>
+
+<h3 id="in">连接文件:In</h3>
+
+<p>Linux中的连接文件有两种:一种是类似Windows的快捷方式功能的文件，另一种则是通过文件系统的inode连接来产生新文件名，而不是产生新文件</p>
+
+<p><strong>hard link(硬连接或实际连接)</strong></p>
+
+<p>提出问题:有没有可能多个文件名对应到同一个inode号码呢？
+hard link只是在某个目录下新建一条文件名连接到某个inode号码的关联记录而已(类似于指针，指向同一个inode号码/内存地址)</p>
+
+<ul>
+  <li>hard link仅能够在单一文件系统中进行，不能跨文件系统</li>
+  <li>hard link不能连接到目录</li>
+  <li>hard link不会占用inode和block</li>
+  <li>每一个目录的<code>.</code>与<code>..</code>均是hard link实现的，所以当新建一个目录时，它的连接数至少是2(一个是目录名,一个是自己的<code>.</code>),同时它的父目录的连接数会加1(新目录的<code>..</code>)</li>
+</ul>
+
+<p>命令: <code>ln  /etc/crontab /root/crontab</code></p>
+
+<p><strong>symbolic link(符号连接，也即快捷方式)</strong></p>
+
+<p>基本上，symbolic link就是在创建一个独立的文件，而这个文件会让数据的读取指向它连接的那个文件名。
+symbolic link是可以和Windows中的快捷方式画上等号，由symbolic link创建的文件作为一个独立的新文件，所以会占用掉inode与block</p>
+
+<ul>
+  <li>symbolic link是可以连接目录的</li>
+</ul>
+
+<p>命令:<code>ln -s /etc/crontab crontab2</code></p>
+
+<blockquote>
+  <p>ln命令默认是创建hard link，加上<code>-s</code>时，是创建symbolic link</p>
+</blockquote>
+
+<h2 id="section-24">磁盘的分区、格式化、检验与挂载</h2>
+
+<p>为系统新增一个硬盘时，有以下动作需要完成</p>
+
+<ol>
+  <li>对磁盘分区，以新建可用的分区</li>
+  <li>对该分区进行格式化(format),以创建系统可用的文件系统</li>
+  <li>对刚才新建好的文件系统进行检验</li>
+  <li>在Linux系统上，需要创建挂载点(也即是目录)，并将它挂在上来</li>
+</ol>
+
+<h3 id="fdisk">磁盘分区:fdisk</h3>
+
+<p>fdisk只有root才能执行</p>
+
+<h3 id="section-25">磁盘挂载与卸载</h3>
+
+<p>进行挂载之前，最好要确定几件事情:</p>
+
+<ul>
+  <li>单一文件系统不应该被重复挂载在不同的挂载点(目录)中</li>
+  <li>单一目录不应该重复挂载多个文件系统</li>
+  <li>作为挂载点的目录理论上应该是空目录才行</li>
+</ul>
+
+<p>如果你要用来挂载的目录里面并不是空的，那么挂载的文件系统之后，原目录下的东西就会暂时消失，被隐藏掉了，但不是被覆盖，新分区卸载之后，原来数据会再次显示出来。</p>
+
+<p>mount:挂载
+umount:卸载</p>
+
+<h2 id="section-26">设置开机挂载</h2>
+
+<h3 id="etcfstabetcmtab">开机挂载/etc/fstab及/etc/mtab</h3>
+
+<p>系统挂载的限制:</p>
+
+<ul>
+  <li>根目录/是必须挂载的，而且一定要先于其他mount point被挂载进来</li>
+  <li>其他挂载点必须为已新建的目录，可任意指定，但一定要遵守必须的系统目录架构原则</li>
+  <li>所有挂载点在同一时间之内，只能挂载一次</li>
+  <li>所有分区在同一时间之内，只能挂载一次</li>
+  <li>如若进行挂载，你必须现将工作目录移到挂载点之外</li>
+</ul>
+
+<p>/etc/fstab中的内容:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Devic</th>
+      <th style="text-align: center">Mount point</th>
+      <th style="text-align: center">filesystem</th>
+      <th style="text-align: center">parameters</th>
+      <th style="text-align: center">dump</th>
+      <th style="text-align: center">fsck</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">LABEL=/1</td>
+      <td style="text-align: center">/</td>
+      <td style="text-align: center">ext3</td>
+      <td style="text-align: center">defaults</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">LABEL=/home</td>
+      <td style="text-align: center">/home</td>
+      <td style="text-align: center">ext3</td>
+      <td style="text-align: center">defaults</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">LABEL=/boot</td>
+      <td style="text-align: center">/boot</td>
+      <td style="text-align: center">ext3</td>
+      <td style="text-align: center">defaults</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这六个字段非常重要</p>
+
+<p><strong>第一列</strong>:磁盘设备文件名或设备的Label
+<strong>第二列</strong>:挂载点
+<strong>第三列</strong>:磁盘分区的文件系统
+<strong>第四列</strong>:文件系统参数
+<strong>第五列</strong>:能否被dump备份命令作用。0代表不要被dump备份，1代表要每天进行dump操作，2代表其他不定日期的dump备份操作
+<strong>第六列</strong>:是否以fsck检验扇区。0代表不要检验，1表示最早检验，2也是代表要检验，不过1会比较早被检验。通常根目录是1，其他是2就可以了。</p>
+
+<h2 id="section-27">内存交换空间</h2>
+
+<p>一共有三种方式来创建swap:</p>
+
+<ul>
+  <li>装系统时就设置好</li>
+  <li>设置一个swap分区</li>
+  <li>创建一个虚拟内存的文件</li>
+</ul>
+
+<h3 id="swap">使用物理分区构建swap</h3>
+
+<ol>
+  <li><strong>分区</strong>:先使用fdisk在你的磁盘中分出一个分区给系统作为swap。由于Linux的fdisk默认会将分区的ID设置为Linux的文件系统，所以你可能还得要设置一下system ID就是了。</li>
+  <li><strong>格式化</strong>:利用新建swap格式的&rdquo;mkswap 设备文件名&rdquo;就能够格式化分区成为swap格式</li>
+  <li><strong>使用</strong>:最后将该swap设备启动，方法为&rdquo;swapon 设备文件名&rdquo;</li>
+  <li><strong>查看</strong>:最终通过free命令来查看内存的使用情况</li>
+</ol>
+
+<h3 id="swap-1">使用文件构建swap</h3>
+
+<ol>
+  <li>使用dd命令新增一个大容量的文件</li>
+  <li>使用mkswap将这个文件格式化为swap的文件格式</li>
+  <li>使用swapon来启动这个swap</li>
+  <li>使用swapoff关掉swap file</li>
+</ol>
+
+<h1 id="section-28">文件与文件系统的压缩与打包</h1>
+
+<h2 id="linux-12">Linux系统常见的压缩命令</h2>
+
+<p>常见的压缩文件扩展名:
+*.z					compress程序压缩的文件
+*.gz				gzip程序压缩的文件(<strong>常用</strong>)
+*.bz2				bzip2程序压缩的文件(<strong>常用</strong>)
+*.tar				tar程序打包的数据，并没有压缩过
+*.tar.gz		tar程序打包的文件，其中经过gzip的压缩
+*.tar.bz2		tar程序打包的文件，其中经过bzip2的压缩</p>
+
+<h3 id="gzipzcat">gzip,zcat</h3>
+
+<p>目前gzip可以解开compress、zip与gzip等软件所压缩的文件。
+gzip所新建的文件的后缀名是.gz
+另外值得一说的是，使用gzip压缩的文件能在Windows系统中被winRAR解压缩
+<strong>注意:默认情况下使用gzip压缩之后，源文件就不存在了</strong></p>
+
+<h3 id="bzip2bzcat">bzip2,bzcat</h3>
+
+<p>gzip是用来替代compress的，而bzip2是用来替代gzip的，它比gzip还要好用。
+用法和gzip几乎一样</p>
+
+<h2 id="tar">打包命令:tar</h2>
+
+<p>gzip和bzip2只能压缩单个文件，不能压缩多个文件，此时为了能把多个文件压缩到一起，要使用tar命令。
+tar命令可以将多个目录或文件打包成一个大文件，同时还可以通过gzip/bzip2的支持，将该文件同时进行压缩。</p>
+
+<p>最简单的使用tar就只要记忆下面的方式即可:</p>
+
+<ul>
+  <li>压缩:<code>tar -jcv -f filename.tar.bz2</code>+要被压缩的文件或目录名称</li>
+  <li>查询:<code>tar -jtv -f filename.tar.bz2</code></li>
+  <li>解压缩:<code>tar -jxv -f filename.tar.bz2 -C</code>+欲解压缩的目录</li>
+</ul>
+
+<p><strong>注意，命令中的<code>-f filename</code>必须紧紧连在一起，-f的位置不能和其他参数交换</strong></p>
+
+<h2 id="section-29">光盘写入工具</h2>
+
+<p>在命令行中实现刻录行为，通常的做法是这样的:</p>
+
+<ul>
+  <li>先将所需要备份的数据构建成为一个镜像文件(iso)，利用mkisofs命令来处理</li>
+  <li>将该镜像文件刻录至光盘或DVD当中，利用cdrecord命令来处理</li>
+</ul>
+
+<h1 id="vim">vim程序编辑器</h1>
+
+<p>这部分内容之前已经学过了，这里不再重复了。</p>
+
+<h1 id="bash">认识与学习bash</h1>
+
+<h2 id="bashshell">认识bash这个shell</h2>
+
+<h3 id="shell">硬件、内核shell</h3>
+
+<p>我们必须通过&rdquo;Shell&rdquo;将我们输入的命令与内核通信，好让内核可以控制硬件来正确无误地工作
+其实Shell的功能只是提供用户操作系统一个接口。</p>
+
+<p>每个用户都可以设置自己的所有使用的shell版本，这个信息是存储在<code>/etc/passwd</code>中的，系统默认采用是的bash，但是是可以修改的。</p>
+
+<p>系统合法的shell均写在<code>/etc/shells</code>中</p>
+
+<h3 id="bash-shell">bash shell的功能</h3>
+
+<p>bash中的命令历史是存储在用户主文件夹的.bash_history中，不过需要注意的是，~./bash_history中记录的是前一次登陆以前所执行过的命令，而至于这一次登陆所执行的命令都被暂存在临时内存中，当你成功注销系统后，该命令记忆才会记录到.bash_history当中</p>
+
+<p>通过type命令我们可以知道每个命令是否为bash的内置命令</p>
+
+<p>在bash中可以通过&rdquo;[Enter]&rdquo;来对[Enter]进行转义</p>
+
+<h2 id="shell-1">Shell的变量功能</h2>
+
+<h3 id="echounset">变量的显示与设置:echo,unset</h3>
+
+<p>变量的显示:echo   echo ${}</p>
+
+<p>变量的修噶:直接用&rdquo;=&rdquo;连接变量与它的内容			myname=flyway</p>
+
+<p>变量设置的规则:</p>
+
+<ol>
+  <li>变量与变量内容以一个等号&rdquo;=&rdquo;来连接</li>
+  <li>等号两边不能直接接空格</li>
+  <li>变量名称只能是英文字母与数字，但是开头字符不能是数字</li>
+  <li>变量内容若有空格符可使用双引号或单引号将变量内容结合起来
+     <code>var="lang is $LANG"</code>     那么<code>echo $var</code>可得&rdquo;lang is en_US&rdquo;
+     <code>ar='lang is $LANG'</code>      那么<code>echo $var</code>可得&rdquo;lang is $LANG&rdquo;</li>
+  <li>可用转义字符&rdquo;"将特殊符号编程一般字符</li>
+  <li>在一串命令中，还需要通过其他命令提供的信息，可以使用反单引号&rdquo;<code>命令</code>&ldquo;或&rdquo;$(命令)&rdquo;。
+     <code>version=$(unname -r)</code>	再	<code>echo $version</code>	可得 &ldquo;2.6.18-128.el5&rdquo;</li>
+  <li>若该变量为了增加变量内容时，则可用$(变量)或&rdquo;$变量名称&rdquo;累加内容<code>echo $var</code>
+     <code>PATH="$PATH":/home/bin</code></li>
+  <li>若该变量需要其他其他子进程执行，则需要以export来是变量变成环境变量:
+     <code>export PATH</code></li>
+  <li>通常大写字符为系统默认变量，自行设置变量可以使用小写字符，方便判断</li>
+  <li>取消变量的方法为使用&rdquo;unset 变量名称&rdquo;</li>
+</ol>
+
+<h3 id="section-30">环境变量的功能</h3>
+
+<p>系统中的变量一般可以分为三种:系统环境变量、与bash接口有关的变量和用户自定义变量</p>
+
+<p>env可以用来查看环境变量与常见环境变量说明</p>
+
+<p>环境变量的分析:</p>
+
+<ul>
+  <li>HOME:代表用户的主文件夹</li>
+  <li>SHELL:它说明了当前这个环境使用的shell是哪个程序。Linux默认使用/bin/bash的</li>
+  <li>HISTSIZE:我们曾今执行过的命令可以被系统记录下来，而记录的&rdquo;条数&rdquo;则是由这个值来设置的。</li>
+  <li>MAIL:使用mail命令在收信时系统会去读取的邮件信箱文件(mailbox)</li>
+  <li>PATH:执行文件查找的路径，目录与目录之间用冒号&rdquo;:&rdquo;隔开，由于文件的查找是依序由PATH的变量内的目录来查询，所以目录顺序也是重要的。</li>
+  <li>LANG:语系数据，这很重要。中文编码通常是zh_CN.gb2312或者是zh_CN.UTF-8</li>
+  <li>RANDOM:&rdquo;随机数&rdquo;的变量，随机数生成器，生成介于0~32767之间</li>
+</ul>
+
+<p>可以用set查看所有的变量,包含环境变量、与bash接口有关的变量和自定义变量
+其中比较重要的有以下几个:</p>
+
+<ul>
+  <li>
+    <p>PS1(提示符的设置)
+      这个东西就是我们的&rdquo;命令提示符&rdquo;,当我们每次按下[Enter]按键去执行某个命令后，最后要再次出现提示符时，就会主动去读取这个变量值。变量值中符号的意义:</p>
+
+    <ul>
+      <li><code>\d</code>:可显示出&rdquo;星期月日&rdquo;的日期格式，如&rdquo;Mon Feb 2&rdquo;</li>
+      <li><code>\H</code>:完整的主机名</li>
+      <li><code>\h</code>:仅取主机名的在第一个小数点之前的名字</li>
+      <li><code>\t</code>:显示时间,为24小时格式的&rdquo;HH:MM:SS&rdquo;</li>
+      <li><code>\T</code>:显示时间,为12小时格式的&rdquo;HH:MM:SS&rdquo;</li>
+      <li><code>\A</code>:显示时间,为24小时格式的&rdquo;HH:MM&rdquo;</li>
+      <li><code>\@</code>:显示时间,为12小时格式的&rdquo;am/pm&rdquo;样式</li>
+      <li><code>\u</code>:目前用户的账号名称</li>
+      <li><code>\w</code>:BASH的版本信息</li>
+      <li><code>\W</code>:完整的工作目录名称，由根目录写起的目录名称。但主文件夹会以~替代</li>
+      <li><code>\#</code>:利用basename函数取得工作目录名称，所以仅会列出最后一个目录名</li>
+      <li><code>\$</code>:提示符，如果是root时，提示符为#，否则就是$</li>
+    </ul>
+  </li>
+  <li>$(关于shell的PID)
+  <code>$</code>本身也是变量，这个代表的是目前这个Shell的线程代号，即所谓的PID。</li>
+  <li>？(关于上个执行命令的回传码)
+  在bash里这个变量很重要，这个变量是上一个执行的命令所回传的值。当我们执行某个命令时，这些命令会回传一个执行后的代码。一般来说，如果成功执行该命令，则会回传一个0值。</li>
+  <li>OSTYPE,HOSTTYPE,MACHTYPE(主机硬件与内核的等级)
+      32位CPU:i386、i586、i586、
+      64位CPU:x86_64</li>
+  <li>export:自定义变量转换成环境变量
+      <strong>子进程仅会继承父进程的环境变量，子进程不会继承父进程的自定义变脸</strong>
+      可以通过export命令来将一个自定义变量转变为环境变量</li>
+</ul>
+
+<h3 id="locale">影响显示结果的语系变量(locale)</h3>
+
+<p>locale:表示用户的语言环境,不仅仅是指编码方式。locale包含很多习惯定义，一共有十二类:
+- LC_CTYPE:字符(文字)辨识的编码
+- LC_NUMERIC:数字系统显示的信息
+- LC_TIME:时间系统的显示数据
+- LC_COLLATE:字符串的比较和排序习惯
+- LC_MONETARY:货币格式的显示
+- LC_MESSAGES:信息提示，主要是菜单、错误信息等
+- LC_NAME:姓名书写方式
+- LC_ADDRESS:地址书写方式
+- LC_TELEPHONE:电话号码的书写方式
+- LC_MEASUREMENT:度量衡表达方式
+- LC_PAPER:默认纸张尺寸的大小
+- LC_IDENTIFICATION:对locale自身包含信息的概述</p>
+
+<p>系统所支持的locale文件放置在<code>/usr/share/i18n/locales</code>中</p>
+
+<p>可以通过locale列出当前系统所支持的语系,当前所使用的语系文件都放置在<code>/usr/lib/locale/</code>目录中</p>
+
+<p>整体系统默认的语系定义在<code>/etc/sysconfig/i18n</code>中</p>
+
+<p>可以修改当前系统的locale，修改其十二个类别，然后重新生成当前系统所使用的语系文件，覆盖<code>/usr/lib/locale/</code>中的语系文件</p>
+
+<h3 id="section-31">变量的有效范围</h3>
+
+<p>基本上可以这么理解:</p>
+
+<p>环境变量=全局变量
+自定义变量=局部变量</p>
+
+<h3 id="readarraydeclare">变量键盘读取、数组与声明:read,array,declare</h3>
+
+<p><strong>read</strong><br />
+read [-pt] variable
+读取来自键盘输入的变量
+-p:后面可以接提示符
+-t:后面可以接等待的秒数，不会一直等待用户</p>
+
+<p><strong>declare/tepeset</strong><br />
+declare [-aixr] variable
+声明变量的类型
+-a:将变量定义成为数组
+-i:将变量定义成为整数数字
+-x:用法与export相同，将后面的变量编程环境变量
+-r:将变量设置成readonly类型，该变量不可被更改内容，也不能重设</p>
+
+<p>在默认情况下，bash对于变量有几个基本的定义:
+- 变量类型默认为&rdquo;字符串&rdquo;
+- bash环境中的数值运算，默认最多仅能到达整数类型</p>
+
+<h3 id="ulimit">与文件系统及程序的限制关系:ulimit</h3>
+
+<p>我们的bash是可以限制用户的某些系统资源的，包括可以打开的文件数量、可以使用的CPU时间、可以使用的内存总量等。
+可以使用ulimit进行设置。</p>
+
+<h3 id="section-32">变量内容的删除、替代与替换</h3>
+
+<p><strong>删除与替换</strong>
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|
+|  变量设置方式                |                 说明                                           |
+|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|
+|  ${变量#关键字}              |  若变量内容从头开始的数据符合&rdquo;关键字&rdquo;，则将符合的最短数据删除  |
+|  ${变量##关键字}             |  若变量内容从头开始的数据符合&rdquo;关键字&rdquo;，则将符合的最长数据删除  |
+|  ${变量%关键字}              |  若变量内容从尾向前的数据符合&rdquo;关键字&rdquo;，则将符合的最短数据删除  |
+|  ${变量%%关键字}             |  若变量内容从尾向前的数据符合&rdquo;关键字&rdquo;，则将符合的最长数据删除  |
+|  ${变量/旧字符串/新字符串}   |  若变量内容符合&rdquo;旧字符串&rdquo;，则第一个旧字符串会被新字符串替换    |
+|  ${变量//旧字符串/新字符串}  |  若变量内容符合&rdquo;旧字符串&rdquo;，则全部的旧字符串会被新字符串替换    |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|</p>
+
+<p><strong>替代</strong>
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+|  变量设置方式      |  str没有设置         |  str为空字符串       |  str已设置非空字符串  |
+|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|
+|  var=${str-expr}   |  var=expr            |  var=                |  var=$str             |
+|  var=${str:-expr}  |  var=expr            |  var=expr            |  var=$str             |
+|  var=${str+expr}   |  var=                |  var=expr            |  var=expr             |
+|  var=${str:+expr}  |  var=                |  var=                |  var=expr             |
+|  var=${str=expr}   |  var=expr\str=expr  |  str不变\var=       |  str不变\var=$str    |
+|  var=${str:=expr}  |  var=expr\str=expr  |  var=expr\str=expr  |  str不变\var=$str    |
+|  var=${str?expr}   |  expr输出至stderr    |  var=                |  var=str              |
+|  var=${str:?expr}  |  expr输出至stderr    |  expr输出至stderr    |  var=str              |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
+
+<h2 id="section-33">命令别名与历史命令</h2>
+
+<h3 id="aliasunslias">命令别名设置:alias,unslias</h3>
+
+<p>alias 别名=&rdquo;命令 参数&rdquo;</p>
+
+<p>别名可以替代现有命令，也可以创造新命令。用于简便地输入长命令。例如
+- alias shutdown=&rdquo;shutdown -h now&rdquo;
+- alias rm=&rdquo;rm -i&rdquo;
+- alias ll=&rdquo;ls -al&rdquo;</p>
+
+<h3 id="history">history</h3>
+<p>可以通过history命令列出之前所有的历史命令</p>
+
+<h2 id="bash-shell-1">Bash Shell的操作环境</h2>
+
+<h3 id="section-34">路径与命令查找顺序</h3>
+
+<p>同一个命令被执行的顺序:</p>
+
+<ol>
+  <li>以相对/绝对路径执行命令，例如<code>/bin/ls</code>或<code>./ls</code></li>
+  <li>由alias找到该命令来执行</li>
+  <li>由bash内置的命令来执行</li>
+  <li>通过$PATH这个变量的顺序找到第一个命令来执行</li>
+</ol>
+
+<h3 id="bashetcissueetcmotd">bash的登录与欢迎信息:<code>/etc/issue</code>,<code>/etc/motd</code></h3>
+
+<p>登录界面的字符串是写在<code>/etc/issue</code>中的，这个文件内容可以使用反斜杠作为变量调用:
+|&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+|:&mdash;-:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;:|
+|  \d  |  本地端时间的日期  													 |
+|  \l  |  显示第几个终端机接口                         |
+|  \m  |  显示硬件的等级(i386/i486/i586/i686&hellip;)       |
+|  \n  |  显示主机的网络名称                           | 
+|  \o  |  显示domain name                              |
+|  \r  |  操作系统的版本(相当于uname -r)               | 
+|  \t  |  显示本地端时间的时间                         | 
+|  \s  |  操作系统的名称                               |
+|  \v  |  操作系统的版本                               |
+|&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
+
+<p><strong>注意</strong>
+当使用telnet远程连接主机的时候，主机的登陆界面就会显示<code>/issue.net</code>而不是<code>/etc/issue</code></p>
+
+<p>如果想要让用户登陆后取得一些信息，例如你想要让大家都知道的信息，那么可以将信息写入到<code>/etc/motd</code></p>
+
+<h3 id="bash-1">bash的环境配置文件</h3>
+
+<p>bash在启动时直接读取一些配置文件，以规划好bash的操作环境
+之前谈到的命令别名、自定义变量在你注销bash之后就会失效，所以如果想要保留你的设置，就得要将这些设置写入配置文件才行。</p>
+
+<p><strong>login与non-login shell</strong>
+login shell:取得bash时需要完整的登录流程
+non-login shell:取得bash接口的方法不需要重复登录的举动，例如在X Window登陆后再以X的图形界面启动终端机</p>
+
+<p><strong>login shell</strong>
+一般来说，login shell其实只会读取两个配置文件:
+1. <code>/etc/profile</code>:这是系统整体的设置，最好不要修改这个文件
+2. <code>~/.bash_profile</code>或<code>~/.bash_login</code>或<code>~/.profile</code>:属于用户个人设置，你要改自己的数据，就写入这里</p>
+
+<p><strong><code>/etc/profile</code></strong>
+这是每个用户登陆取得bash时一定会读取的配置文件
+这个文件设置的变量主要有:
+PATH:会依据UID决定PATH变量要不要含有sbin系统命令目录
+MAIL:依据账号设置好用户的mailbox到<code>/var/spool/mail/账号名</code>
+USER:根据用户的账号设置此变量内容
+HOSTNAME:依据主机的hostname命令决定此变量内容
+HISTSIZE:历史命令记录条数。
+<code>/etc/profile</code>还会去调用外部的设置数据</p>
+
+<p><strong><code>~/.bash_profile</code>(login shell才会读)</strong>
+bash在读完了整体环境配置的<code>/etc/profile</code>并借此调用其他配置文件后，接下来则是会读取用户的个人配置文件。在login shell的bash环境中，所读取的个人偏好配置文件其实主要有三个，依序分别是:
+1. ~/.bash_profile
+2. ~/.bash_login
+3. ~/.profile
+其实bash的login shell只会读取上面三个文件的其中一个，而读取的顺序则是依照上面的顺序</p>
+
+<p><strong>source:读入环境配置文件的命令</strong>
+可以通过<code>source 配置文件名</code>的方式来将配置文件读入到bash中，而不需要重新登录</p>
+
+<p><strong>~/.bashrc(non-lgoin shell会读)</strong>
+当以non-login shell登陆时，bash还会主动调用<code>/etc/bashrc</code>文件，这个文件帮我们定义了下面的数据:
+- 依据不同的UID规定umask的值
+- 依据不同的UID规定提示符(就是PS1变量)
+- 调用/etc/profile.d/*.sh的设置</p>
+
+<p><strong>其他相关的配置文件</strong>
+- <code>/etc/man.config</code>:这个文件的内容规定了使用man的时候man page的路径到哪里去寻找
+- <code>~/.bash_histroy</code>:历史命令记录的地方
+- <code>~/.bash_logout</code>:记录了当我注销bash后系统再帮我做完师门操作后才离开</p>
+
+<h3 id="sttyset">终端机的环境设置:stty,set</h3>
+
+<p>我们可以利用<code>stty -a</code>来列出目前环境中所有的按键列表,注意，如果出现<code>^</code>，则表示[Ctrl]那个按键的意思
+几个重要的代表意义是:
+- eof:End of File的意思，代表结束输入
+- erase:向后删除字符
+- intr:送出一个interrupt(中断)的信号给目前正在运行的程序
+- kill:删除目前命令行上的所有文字
+- quit:送出一个quit信号给目前正在运行的进程
+- start:在某个进程停止后，重新启动它的输出
+- stop:停止目前屏幕的输出
+- susp:送出一个terminal stop的信号格正在运行的进程</p>
+
+<h3 id="section-35">通配符与特殊符号</h3>
+<p>|&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+| 符号  |           意义                                   |
+|:&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;:|
+|  *    |  代表0个到无穷多个任意字符                       |
+|  ？   |  代表一定有一个任意字符                          |
+|  []   |  同样代表一定有一个在中括号内的字符(非任意字符)  |
+|  [-]  |  代表在编码顺序内的所有字符                      |
+|  [^]  |  逆向选择                                        |
+|&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
+
+<p>bash中的特殊符号,理论上你的&rdquo;文件名&rdquo;尽量不要使用到上述的字符</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">符号</th>
+      <th style="text-align: center">内容</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">#</td>
+      <td style="text-align: center">批注符号,这个最常被使用在script中，视为说明，其后的数据均不执行</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">\</td>
+      <td style="text-align: center">转义符号,将&rdquo;特殊字符或通配符&rdquo;还原成一般字符</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&nbsp;</td>
+      <td style="text-align: center">&nbsp;</td>
+      <td>管道(pipe)，分隔两个管道命令的界定</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">;</td>
+      <td style="text-align: center">连续命令执行分隔符，连续性命令的界定(注意，与管道命令并不相同)</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">~</td>
+      <td style="text-align: center">用户主文件夹</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$</td>
+      <td style="text-align: center">使用变量前导符，即是变量之前需要加的变量替代值</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&amp;</td>
+      <td style="text-align: center">作业控制(job control),将命令变成背景下工作</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">!</td>
+      <td style="text-align: center">逻辑运算意义上的&rdquo;非&rdquo;(not)的意思</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/</td>
+      <td style="text-align: center">目录符号，路径分隔的符号</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&gt;,&raquo;</td>
+      <td style="text-align: center">数据流重定向，输出导向，分别是&rdquo;替换&rdquo;与&rdquo;累加&rdquo;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&lt;,&laquo;</td>
+      <td style="text-align: center">数据流重定向，输入导向</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&rsquo;&rsquo;</td>
+      <td style="text-align: center">单引号，不具有变量置换的功能</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&rdquo;&rdquo;</td>
+      <td style="text-align: center">具有变量置换的功能</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">``</td>
+      <td style="text-align: center">两个&rdquo;`&ldquo;中间为可以先执行的命令，也可以使用$()</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">()</td>
+      <td style="text-align: center">在中间为子shell的起始与结束</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">{}</td>
+      <td style="text-align: center">在中间为命令块的组合</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-36">数据流重定向</h2>
+
+<h3 id="section-37">什么是数据流重定向</h3>
+
+<p><strong>standard output</strong>:命令所回传的正确的信息
+<strong>standard error output</strong>:命令执行失败后，所回传的错误信息</p>
+
+<p>数据流重定向可以将standard output与standard error output分别传送到其他的文件或设备去</p>
+
+<p>重定向的特殊字符:
+1. 标准输入(stdin):代码为0，使用&lt;或&laquo;
+2. 标准输出(stdout):代码为1，使用&gt;或&raquo;
+3. 标准错误输出(stderr):代码为2，使用2&gt;或2&raquo;</p>
+
+<p>重定向文件的创建方式:
+1. 该文件若不存在，系统会自动将它创建
+2. 当这个文件存在时，若使用的是&gt;或2&gt;，则系统会将这个文件清空，然后再将数据写入
+3. 若使用的是&raquo;或2&raquo;，则系统会在这个文件的最下方追加进去</p>
+
+<p>例子:
+ll / &gt; ~/rootfile</p>
+
+<p>总结:
+- 1&gt;:以覆盖的方式将正确的数据输出到指定的文件或设备上
+- 1&raquo;:以累加的方式将正确的数据输出到指定的文件或设备上
+- 2&gt;:以覆盖的方式将错误信息的数据输出到指定的文件或设备上
+- 2&raquo;:以累加的方式将错误信息的数据输出到指定的文件或设备上</p>
+
+<p><strong>黑洞</strong>
+可以将需要忽略的信息输出导向到<code>/dev/null</code>中，这个<code>/dev/null</code>可以吃掉任何导向这个设备的信息</p>
+
+<p><strong>写入到同一个文件</strong>
+如果要将正确的返回数据和错误信息的数据写入到同一个文件中，但又没有使用特殊的语法，此时两条数据可能会交叉写入该文件内，造成次序的混乱</p>
+
+<p>find /home -name .bashrc &gt; list 2&gt; list    #错误
+find /home -name .bashrc &gt; list 2&gt;&amp;1       #正确
+find /home -name .bashrc &amp;&gt; list           #正确</p>
+
+<p><strong>重定向的使用情况</strong>
+- 屏幕输出信息很重要，而且我们需要将它保存下来的时候
+- 后台执行中的程序，不希望它干扰屏幕正常的输出结果时
+- 一些系统的例行命令的执行结果，希望它可以存下来时
+- 一些执行命令的可能已知错误信息时，想用<code>2&gt; /dev/null</code>将它丢掉时
+- 错误信息与正确信息需要分别输出时</p>
+
+<h3 id="section-38">命令执行的判断依据:;,&amp;&amp;,||</h3>
+
+<p>不考虑命令相关性的连续命令执行可以使用分号来分隔命令</p>
+
+<p><strong>$?命令回传码与&amp;&amp;或||</strong>
+若前一个命令执行的结果为正确，在Linux下面会回传一个$?=0的值，那么我们可以通过这个变量来判断命令是否被正确执行。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">命令执行情况</th>
+      <th style="text-align: center">说明</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">cmd1 &amp;&amp; cmd2</td>
+      <td style="text-align: center">若cmd1执行完毕且正确执行($?=0),则开始执行cmd2\若cmd1执行完毕且为错误($?!=0),则cmd2不执行</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">cmd1</td>
+      <td style="text-align: center">&nbsp;</td>
+      <td>cmd2</td>
+      <td>若cmd1执行完毕且正确执行($?=0),则cmd2不执行\若cmd1执行完毕且为错误($?!=0),则开始执行cmd2</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>注意</strong>:&amp;&amp;与</td>
+      <td>&nbsp;</td>
+      <td>放置的顺序其实是很重要的，因为命令永远是从左往右执行的。通常来说，假设判断式是这样的:</td>
+    </tr>
+    <tr>
+      <td><code>cmd1 &amp;&amp; cmd2 || cmd3</code></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="section-39">管道命令</h2>
+
+<p>bash命令执行的时候有输出的数据会出现，那么如果这群数据必须要经过几道手续之后才能得到我们所想要的格式，这就牵涉到管道(pipe)命令了。
+管道命令使用的是&rdquo;|&rdquo;这个界定符号</p>
+
+<p><code>ls -al /etc | less</code></p>
+
+<p>管道命令<code>|</code>仅能够处理经由前面一个命令传来的正确信息，也就是standard output的信息，对于standard error 并没有直接处理的能力
+每个管道后面接的第一个数据必定是&rdquo;命令&rdquo;，而且这个命令必须要能够接受standard input的数据才行，这样的命令可以是&rdquo;管道命令&rdquo;
+管道命令主要有两个需要注意的地方:
+- 管道命令仅会处理standard output，对于standard error output会予以忽略
+- 管道命令必须要能够接受来自前一个命令的数据成为standard input继续处理才行</p>
+
+<h3 id="cutgrep">选取命令:cut,grep</h3>
+
+<p>所谓选取命令，就是将一段数据经过分析后，取出我们所想要的，或者是经由分析关键字，取得我们所想要的那一行
+不过需要注意的是，一般来说，选取信息通常是针对&rdquo;行&rdquo;来分析的，并不是整篇信息分析的</p>
+
+<p><strong>cut</strong>
+这个命令可以将一段信息的某一段&rdquo;切&rdquo;出来，处理的信息以&rdquo;行&rdquo;为单位
+参数:
+-d:后面接分隔字符，与-f一起使用
+-f:依据-d的分隔符将一段信息切割成为数段，用-f取出第几段的意思
+-c:以字符(characters)的单位取出固定字符区间</p>
+
+<p>cut主要的用途在于将同一行里面的数据进行分解，最常使用在分析一些数据或文字数据的时候。这是因为有时我们会以某些字符当做切割的参数，然后来将数据加以切割，以取得我们所需要的数据。</p>
+
+<p><strong>grep</strong>
+<code>grep [-acinv] [--color=auto] '查找字符串' filename</code>
+参数:
+-a:将binary文件以text文件的方式查找数据
+-c:计算找到&rsquo;查找字符串&rsquo;的次数
+-i:忽略大小写的不同，所以大小写视为相同
+-n:顺便输出行号
+-v:反向选择，即显示出没有&rsquo;查找字符串&rsquo;内容的那一行
+&ndash;color=auto:可以将找到的关键字部分加上颜色显示</p>
+
+<p>grep是一个很棒的命令，grep可以解析一行文字，取得关键字，若该行又存在关键字，就会整行列出来</p>
+
+<h3 id="sortwcuniq">排序命令:sort,wc,uniq</h3>
+
+<p><strong>sort</strong>
+sort是很有趣的命令，它可以帮我们进行排序，而且可以依据不同的数据类型来排序。</p>
+
+<p><strong>uniq</strong>
+uniq可以将重复的数据仅列出一个显示，这个命令用来将重复的行删除掉只显示一个。</p>
+
+<p><strong>wc</strong>
+这个命令可以帮助我们计算输出的信息的整体数据</p>
+
+<h3 id="tee">双向重定向:tee</h3>
+
+<p>tee命令会同时将数据流送到文件与大屏幕，而输出到屏幕的，其实就是stdout，可以让下个命令继续处理</p>
+
+<h3 id="trcoljoinpasteexpand">字符转换命令:tr,col,join,paste,expand</h3>
+
+<p><strong>tr</strong>
+tr可以用来删除一段信息当中的文字，或者是进行文字信息的替换</p>
+
+<p><strong>col</strong>
+col命令可以将[tab]按键替换成为空格键。col经常被利用于将man page转存为纯文本文件以方便查阅的功能</p>
+
+<p><strong>join</strong>
+将两个文件当中有相同数据的那一行加在一起。需要注意的是，在使用join之前，你所需要处理的文件应该要事先经过排序(sort)处理</p>
+
+<p><strong>paste</strong>
+<code>paste</code>直接将两行贴在一起，且中间以[tab]键隔开</p>
+
+<p><strong>expand</strong>
+将[tab]按键转成空格键</p>
+
+<h3 id="split">切割命令:split</h3>
+
+<p>如果你有文件太大，导致一些携带式设备无法复制的问题，split可以帮你将一个大文件依据文件大小或行数来切割成为小文件，快速又有效</p>
+
+<p><code>split [-bl] file PREFIX</code>
+-b:后面可接欲切割的文件大小，可加单位，例如b,k,m等
+-l:以行数来进行切割
+PREFIX:代表前导符，可作为切割文件的前导文字</p>
+
+<h3 id="xargs">参数代换:xargs</h3>
+
+<p>这个命令就是在产生某个命令的参数。xarg可以读入stdin的数据，并且以空格符或断行字符进行分辨，将stdin的数据分割成为arguments。因为是以空格符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空格符的时候，xargs可能就会误判</p>
+
+<h3 id="section-40">关于减号-的用途</h3>
+
+<p>某些命令需要用到文件名来进行处理，该stdin与stdout可以利用减号&rdquo;-&ldquo;来替代</p>
+
+<h1 id="section-41">正则表达式与文件格式化处理</h1>
+
+<h2 id="section-42">前言:什么是正则表达式</h2>
+
+<p>正则表达式就是处理字符串的方法，它是以行为单位来进行字符串的处理行为，正则表达式通过一些特殊符号的辅助，可以让用户轻易达到查找、删除、替换某特定字符串的处理程序
+正则表达式基本上是一种&rdquo;表示法&rdquo;，只要工具程序支持这种表示法，那么该工具程序就可以用来作为正则表达式的字符串处理之用
+正则表达式的字符串表示方式依照不同的严谨度而分为基础正则表达式与扩展正则表达式</p>
+
+<p><strong>注意:正则表达式和通配符是完全不一样的东西，通配符代表的是bash接口的一个功能，而正则表达式则是一种字符串处理的表示方式</strong></p>
+
+<h2 id="section-43">基础正则表达式</h2>
+
+<p>既然正则表达式是处理字符串的一种表示方式，那么对字符排序有影响的语系数据就会对正则表达式的结果有影响！</p>
+
+<h3 id="section-44">语系对正则表达式的影响</h3>
+
+<p>使用正则表达式时，需要特别留意当时环境的语系为何，否则可能会发现与别人不相同的选取结果</p>
+
+<p>特殊符号:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">特殊符号</th>
+      <th style="text-align: center">代表意义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">[:alnum:]</td>
+      <td style="text-align: center">代表英文大小写字符及数字，即0-9,A-Z,a-z</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:alpha:]</td>
+      <td style="text-align: center">代表任何英文大小写字符，即A-Z,a-z</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:blank:]</td>
+      <td style="text-align: center">代表空格键与[Tab]键</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:cntrl:]</td>
+      <td style="text-align: center">代表键盘上面的控制按键，即包括CR,LF,Tab,Del等</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:digit:]</td>
+      <td style="text-align: center">代表数字而已,即0-9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:graph:]</td>
+      <td style="text-align: center">除了空格符(空格键与[Tab])外的其他所有按键</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:lower:]</td>
+      <td style="text-align: center">代表小写字符，即a-z</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:print:]</td>
+      <td style="text-align: center">代表任何可以被打印出来的字符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:punct:]</td>
+      <td style="text-align: center">代表标点符号，即&rdquo;&rsquo;?!;:#$</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:upper:]</td>
+      <td style="text-align: center">代表大写字符，即A-Z</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:space:]</td>
+      <td style="text-align: center">任何产生空白的字符，包括空格键[Tab]CR等</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">[:xdigit:]</td>
+      <td style="text-align: center">代表十六进制的数字类型，因此包括0-9,A-F,a-f的数字与字符</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section-45">基础正则表达式字符</h3>
+
+<p>基础的正则表达式特殊字符
+|&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|
+|  RE字符 |                                 意义                                                                        |
+|:&mdash;&mdash;-:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|
+|  ^word  |  意义:待查找的字符串(word)在行首                                                                            |
+|  word$  |  意义:待查找的字符串(word)在行尾                                                                            |
+|  .      |  意义:代表一定有一个任意字符串                                                                              |
+|  \      |  意义:转义字符，将特殊符号的特殊意义去除                                                                    |
+|  *      |  意义:重复零个到无穷多个的前一个字符                                                                        |
+| [list]  |  意义:从字符集合的RE字符里面找出想要选取的字符                                                              |
+| [n1-n2] |  意义:从字符集合的RE字符里面找出想要选取的字符范围                                                          |
+| [^list] |  意义:从字符集合的RE字符里面找出不要的字符串或范围                                                          |
+| {n,m} |  意义:连续n到m个的前一个RE字符，若为{n}则是连续n个的前一个RE字符，若为{n}则是连续n个以上的前一个RE字符  |
+|&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|</p>
+
+<h3 id="sed">sed工具</h3>
+
+<p>sed本身也是一个管道命令，可以分析standard input的，而且sed还可以将数据进行替换、删除、新增、选取特定行的功能
+具体使用方式详见《鸟哥》P357-360</p>
+
+<p><strong>注意:grep+sed+正则表达式可以完成很多事情，值得深入学习！</strong></p>
+
+<h2 id="section-46">扩展正则表达式</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">RE字符</th>
+      <th style="text-align: center">意义与范例</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">+</td>
+      <td style="text-align: center">意义:重复一个或一个以上的前一个RE字符</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">意义:零个或一个前一个RE字符</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">&nbsp;</td>
+      <td style="text-align: center">&nbsp;</td>
+      <td>意义:用或(or)的方法找出数个字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">()</td>
+      <td style="text-align: center">意义:找出&rdquo;组&rdquo;字符串</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">()+</td>
+      <td style="text-align: center">意义:多个重复组的判别</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>注意:<code>!</code>在正则表达式中并不是特殊字符</strong></p>
+
+<h2 id="section-47">文件的格式化与相关处理</h2>
+
+<h3 id="printf">格式化打印:printf</h3>
+
+<p>可以使用<code>printf</code>命令来在屏幕上格式化输出数据，其用法和C语言中的<code>printf</code>函数差不多，事实上，C语言中就是的输出就是利用这边的<code>printf</code>命令实现的</p>
+
+<h3 id="awk">awk:好用的数据处理工具</h3>
+
+<p>相比于<code>sed</code>常常作用于一整行的处理，<code>awk</code>则比较倾向于将一行分成数个&rdquo;字段&rdquo;来处理，<code>awk</code>主要是处理每一行的字段内的数据，而默认的字段的分隔符为空格键或[tab]按键</p>
+
+<p><code>awk</code>的运行模式:
+awk &lsquo;条件类型1{动作1}条件类型2{动作2}&hellip;&rsquo; filename</p>
+
+<p><code>awk</code>的内置变量:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">变量名称</th>
+      <th style="text-align: left">代表意义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">NF</td>
+      <td style="text-align: left">每一行($0)拥有的字段总数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">NR</td>
+      <td style="text-align: left">目前<code>awk</code>所处理的是&rdquo;第几行&rdquo;数据</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">FS</td>
+      <td style="text-align: left">目前的分隔符，默认是空格键</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$n</td>
+      <td style="text-align: left">代表每一行的第n个字段，其中$0代表一整行的数据</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section-48">文件比较工具</h3>
+
+<p><strong><code>diff</code></strong>
+<code>diff</code>就是用在比较两个文件之间的区别的，并且是以行为单位的来比较的。一般使用在ASCII纯文本文件的比较上，大部分情况下都是用在同一文件的新旧版本上</p>
+
+<p><strong><code>cmp</code></strong>
+<code>cmp</code>主要也是比较两个文件，它主要利用&rdquo;字节&rdquo;单位去比较。</p>
+
+<p><strong><code>patch</code></strong>
+<code>patch</code>主要是用来将就的文件升级成为新的文件，主要流程是这样的:先比较文件新旧版本的区别(<code>diff</code>命令)，并将区别文件制作成为补丁文件，再由补丁文件更新旧文件即可。</p>
+
+<h1 id="shell-script">学习shell script</h1>
+
+<h2 id="shell-script-1">什么是shell script</h2>
+
+<p>shell script是利用shell功能所写的一个&rdquo;程序&rdquo;(program),这个程序是使用纯文本文件,将一些shell的语法与命令(含外部命令)写在里面，搭配正则表达式、管道命令与数据流重定向等功能，以达到我们所想要的处理目的</p>
+
+<p>shell script用在系统管理上是很好的一项工具，但是用在处理大量数值运算上，就不够好了，因为shell script的速度较慢，且使用的CPU资源较多，造成主机资源的分配不良</p>
+
+<h3 id="script">第一个script的编写与执行</h3>
+
+<p>在shell script的编写中还需要用到下面的注意事项:
+1. 命令的执行时从上而下、从左而右地分析与执行
+2. 命令执行时，命令、参数间的多个空白都会被忽略掉
+3. 空白行也将被忽略掉，并且[Tab]按键所得的空白同样视为空格键
+4. 如果读取到一个Enter符号(CR)，就尝试开始执行该行(或该串)命令
+5. 至于如果一行的内容太多，则可以使用&rdquo;[Enter]&rdquo;来扩展至下一行
+6. &ldquo;#&rdquo;可作为批注，任何加在&rdquo;#&rdquo;后面的数据将全部视为批注文字而被忽略</p>
+
+<p>当编写好一个名为<code>/home/dmtsai/shell.sh</code>的script后，可以通过以下的方法来执行:
+- 直接命令执行:
+		- 绝对路径:使用<code>/home/dmtsai/shell.sh</code>来执行命令
+		- 相对路径:假设工作目录在<code>/home/dmtsai/</code>，则使用<code>./shell</code>来执行
+		- 变量<code>PATH</code>功能<code>:将shell.sh放在</code>PATH<code>指定的目录内
+- 以bash进程来执行:通过</code>bash shell.sh<code>或</code>sh shell.sh`来执行</p>
+
+<p>整个script可以分成数段，大致是这样的:</p>
+
+<ol>
+  <li>第一行<code>#!/bin/bash</code>声明这个script使用的shell名称
+  script中的第一行必须声明这个script所使用的shell名称，否则很可能会无法执行,声明的方式是:<code>#!/bin/bash</code></li>
+  <li>script内容的说明
+  整个script当中，除了第一行的<code>#!</code>是用来声明shell的之外，其他的#都是批注用途。一般来说，一样要养成说明该script的内容与功能、版本信息、作者与联络方式、建立日期、历史记录等习惯。</li>
+  <li>主要环境变量的声明
+  务必要把一些重要的环境变量设置好，<code>PATH</code>与<code>LANG</code>是当中最重要的</li>
+  <li>主要程序部分</li>
+  <li>告知执行结果
+  我们可以利用<code>exit</code>这个命令来让程序中断，并且回传一个数值给系统。(其实就是返回值)</li>
+</ol>
+
+<h3 id="shell-script-2">编写shell script的良好习惯</h3>
+
+<p>养成良好的script的编写习惯，在每个script的文件头处记录好:
+- script的功能
+- script的版本信息
+- script的作者与联络方式
+- script的版权声明方式
+- script的History(历史记录)
+- script内较为特殊的命令，使用&rdquo;绝对路径&rdquo;的方式来执行
+- script执行时需要的环境变量预先声明与设置</p>
+
+<h3 id="shell-script-3">简单的shell script练习</h3>
+
+<h3 id="scriptsourceshscriptscript">script的执行方式区别(source,shscript,./script)</h3>
+
+<p>不同的script执行方式会造成不一样的结果。尤其对bash的环境影响很大。脚本的执行方式除了之前谈到的方式，还可以利用source或小数点(.)来执行。</p>
+
+<ul>
+  <li>利用直接执行的方式来执行script
+  当使用之前提到过的方式(不论是绝对路径、相对路径、<code>$PATH</code>还是利用bash或sh)执行脚本时，该script都会使用一个新的bash环境来执行脚本内的命令，也就是说，使用这种方式时，其实script是在子进程的bash内执行的。重点是，<strong>当子进程完成后，子进程内的各项变量后操作将会结束而不会回传到父进程中</strong></li>
+  <li>利用<code>source</code>来执行脚本:在父进程中执行
+  如果利用<code>source</code>来执行script的话，script会直接在当前的bash进程中执行。这就是为什么你注销系统而要让某些写入<code>~/.bashrc</code>设置生效时，需要使用<code>source ~/.bashrc</code>而不能使用<code>bash ~/.bashrc</code></li>
+</ul>
+
+<h2 id="section-49">善用判断式</h2>
+
+<h3 id="test">利用test命令的测试功能</h3>
+
+<p>当我们需要检测系统上面某些文件或者是相关属性时，利用<code>test</code>这个命令来工作真是好用的不得了
+<code>test</code>有很多测试标志，归纳成下面的表格
+|&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+|:&mdash;&mdash;&mdash;&mdash;&mdash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;:|
+|  测试的标志     |  代表意义                                                                                                    |
+|    -f           |  该文件名是否存在且为文件(file)(常用)                                                                        |
+|    -d           |  该文件名是否存在且为目录(directory)(常用)                                                                   |
+|    -c           |  该文件名是否存在且为一个character device设备                                                                |
+|    -b           |  该文件名是否存在且为一个block device设备                                                                    |
+|    -S           |  该文件名是否存在且为一个Socket文件                                                                          |
+|    -p           |  该文件名是否存在且为一个FIFO(pipe)文件                                                                      |
+|    -L           |  该文件名是否存在且为一个连接文件                                                                            |
+|                 |  关于文件的权限检测                                                                                          |
+|    -r           |  该文件名是否存在且具有&rdquo;可读&rdquo;的权限                                                                          |
+|    -w           |  该文件名是否存在且具有&rdquo;可写&rdquo;的权限                                                                          |
+|    -x           |  该文件名是否存在且具有&rdquo;可执行&rdquo;的权限                                                                        |
+|    -u           |  该文件名是否存在且具有&rdquo;SUID&rdquo;的属性                                                                          |
+|    -g           |  该文件名是否存在且具有&rdquo;SGID&rdquo;的属性                                                                          |
+|    -k           |  该文件名是否存在且具有&rdquo;Sticky bit&rdquo;的属性                                                                    |
+|    -s           |  该文件名是否存在且为&rdquo;非空白文件&rdquo;                                                                            |
+|                 |  两个文件之间的比较                                                                                          |
+|    -nt          |  (newer than)判断file1是否比file2新                                                                          |
+|    -ot          |  (old than)判断file1是否比file2旧|                                                                           |
+|    -et          |  判断file1与file2是否为同一个文件，可用在判断hard link的判定上。主要意义在于判定两个文件是否均指向同一个inode|
+|                 |  关于两个整数之间的判定                                                                                      |
+|    -eq          |  两数值相等(equal)                                                                                           |
+|    -ne          |  两数值不等(not equal)                                                                                       |
+|    -gt          |  n1大于n2(greater than)                                                                                      |
+|    -lt          |  n1小于n2(less than)                                                                                         |
+|    -ge          |  n1大于等于n2(greater than or equal)                                                                         |
+|    -le          |  n1小于等于n2(less than or equal)                                                                            |
+|                 |  判定字符串的数据                                                                                            |
+| Test -z string  |  判定字符串是否为0，若string为空字符串，则为true                                                             |
+| Test -n string  |  判定字符串是否非为0，若string为空字符串，则为false 注:-n也可省略                                            |
+| test str1=str2  |  判定str1是否等于str2，若相等，则回传true                                                                    |
+| Test str1!=str2 |  判定str1是否不等于str2，若相等，则回传false                                                                 |
+|                 |  多重条件判定                                                                                                |
+|    -a           |  两个条件同时成立！如:<code>test -r file -a -x file</code>,则file同时具有r与x权限时，才回传true                         |
+|    -o           |  任何一个条件成立！                                                                                          |
+|    -!           |  反向状态                                                                                                    |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
+
+<h3 id="section-50">利用判断符号[]</h3>
+
+<p>除了使用test以外，我们还可以利用判断符号<code>[]</code>来进行数据的判断
+在使用判断符<code>[]</code>时，需要注意的是:
+- 在中括号[]内每个组件都需要有空格键来分隔
+- 在中括号[]内的变量，最好都以双引号括号起来
+- 在中括号[]内的常量，最好都以单或双引号括起来</p>
+
+<h3 id="shell-script01">shell script的默认变量($0,$1&hellip;)</h3>
+
+<p>可以给一个script设置参数，例如<code>ls -la</code>一样，在script中可以通过一些默认变量来调用传进来的参数</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">默认变量</th>
+      <th style="text-align: center">意义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">$0</td>
+      <td style="text-align: center">该脚本的文件名</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$n</td>
+      <td style="text-align: center">第n个参数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$#</td>
+      <td style="text-align: center">后面接的参数个数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$@</td>
+      <td style="text-align: center">代表&rdquo;$1&rdquo;、&rdquo;$2&rdquo;、&rdquo;$3&rdquo;之意，每个变量是独立的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$*</td>
+      <td style="text-align: center">代表“&rdquo;$1c$2c$3c$4&rdquo;”,其中c为分隔字符，默认为空格</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>另外<code>shift</code>可以造成参数变量号码偏移</p>
+
+<h2 id="section-51">条件判断式</h2>
+
+<h3 id="ifthen">利用if&hellip;then</h3>
+
+<p>判断式如下所示:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="k">if</span> <span class="o">[</span>条件一<span class="o">]</span>; <span class="k">then</span>
+		当条件一成立时，可以进行的命令工作内容
+<span class="k">elif</span> <span class="o">[</span>条件二<span class="o">]</span>; <span class="k">then</span> 
+		当条件二成立时，可以进行的命令工作内容
+<span class="k">else</span>
+		当条件一与条件二均不成立时，可以进行的命令工作内容
+<span class="k">fi</span>
+</code></pre></div>
+
+<h3 id="caseesac">利用case&hellip;esac</h3>
+
+<p>语法如下</p>
+
+<div class="highlight"><pre><code class="bash"><span class="k">case</span> <span class="nv">$变</span>量名称 in			<span class="c">#关键字为case，还有变量前有$</span>
+	<span class="s2">&quot;第一个变量内容&quot;</span><span class="o">)</span>   <span class="c">#每一个变量内容建议用双引号括起来，关键字则为小括号</span>
+			程序段
+			;;							<span class="c">#每个类型结尾要使用两个连续的分号来处理</span>
+	<span class="s2">&quot;第二个变量内容&quot;</span><span class="o">)</span>
+			程序段
+			;;
+	*<span class="o">)</span>									<span class="c">#最后一个变量内容都会用*来代表所有其他值</span>
+			不包含第一个变量内容与第二个变量内容的其他程序执行段
+			;;
+<span class="k">esac</span>									<span class="c">#最终的case结尾！</span>
+</code></pre></div>
+
+<h3 id="function">利用function功能</h3>
+
+<p>函数语法格式为</p>
+
+<div class="highlight"><pre><code class="bash"><span class="k">function </span>fname<span class="o">(){</span>
+		程序段
+<span class="o">}</span>
+</code></pre></div>
+
+<p>由于shell script的执行方式是由上而下、由左而右，因此在shell script当中的function的设置一定要在程序的最前面(其实，简单来说就先定义后使用)</p>
+
+<p><strong>function也是拥有内置变量的。它的内置变量与shell script很类似，函数名称用$0表示，而后接的变量也是用$1,$2&hellip;来表示的</strong></p>
+
+<h2 id="loop">循环(loop)</h2>
+
+<h3 id="section-52">不定循环</h3>
+
+<p>不定循环有两种状态:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="k">while</span> <span class="o">[</span> condition <span class="o">]</span>
+<span class="k">do</span>
+	程序段落
+<span class="k">done</span>
+</code></pre></div>
+
+<p>说明:当condition条件成立时，就进行循环</p>
+
+<div class="highlight"><pre><code class="bash"><span class="k">until</span> <span class="o">[</span>condition<span class="o">]</span>
+<span class="k">do</span>
+	程序段落
+<span class="k">done</span>
+</code></pre></div>
+
+<p>说明:当condition条件成立时，就终止循环;否则就持续进行循环的程序段</p>
+
+<h3 id="section-53">固定循环</h3>
+
+<p>语法是:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">for</span> <span class="n">var</span> <span class="k">in</span> <span class="n">con1</span> <span class="n">con2</span> <span class="n">con3</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="k">do</span>
+		<span class="err">程序段</span>
+<span class="n">done</span>
+</code></pre></div>
+
+<h3 id="section-54">固定循环的数值处理</h3>
+
+<div class="highlight"><pre><code class="bash"><span class="k">for</span> <span class="o">((</span> 初始值;限制值;执行步长 <span class="o">))</span>
+<span class="k">do</span>
+		程序段
+<span class="k">done</span>
+</code></pre></div>
+
+<h2 id="shell-script-4">shell script的追踪与调试</h2>
+
+<p><code>sh [-nvx] script.sh</code>
+参数:
+-n: 不要执行script,仅查询语法的问题
+-v: 在执行script前，先将script的内容输出到屏幕上
+-x: 将使用到的script内容显示到屏幕上，这是很有用的参数！</p>
+
+<h1 id="linuxacl">Linux账号管理与ACL权限设置</h1>
+
+<h2 id="linux-13">Linux的账号与用户组</h2>
+
+<h3 id="uidgid">用户标示符:UID与GID</h3>
+
+<p>虽然我们登录Linux主机的时候，输入的是我们账号，但是其实Linux主机并不会直接认识你的&rdquo;账号名称&rdquo;的，它仅认识ID(一组号码)。ID与账号的对应关系就在<code>/etc/passwd</code>当中</p>
+
+<p>每个登录的用户至少会取得两个ID，一个是用户ID(UserID,简称UID)，一个是用户组ID(GroupID,简称GID)</p>
+
+<p>每一个文件都会有所谓的所有者ID与用户组ID，当我们有要显示文件属性的需求时，系统会依据<code>/etc/passwd</code>与<code>/etc/group</code>内容，找到UID/GID对应的账号名称再显示出来。</p>
+
+<h3 id="section-55">用户账号</h3>
+
+<p>用户登录的流程:
+1. 先寻找<code>/etc/passwd</code>里面是否有你输入的账号，如果没有则跳出;如果有的话则将该账号对应的UID与GID(在<code>/etc/group</code>中)读出来，另外，该账号的主文件夹与shell设置也一并读出
+2. 再来则是核对密码表，这是Linux会进入<code>/etc/shadow</code>里面找出对应的账号与UID，然后核对一下你刚才输入的密码与里面的密码是否相符。
+3. 如果一切都OK的话，就进入shell控管的阶段了。</p>
+
+<p><strong>从上面的情况可以看出，<code>/etc/passwd</code>和<code>/etc/shadow</code>这两个文件是非常重要的，如果要备份Linux系统的账号的话，这个两个文件是必须要备份的</strong></p>
+
+<p>这两个文件的简单介绍:</p>
+
+<p><strong><code>/etc/passwd文件结构</code></strong>
+这个文件构造是这样的:每一行都代表一个账号，有几行就代表有几个账号在你的系统中！不过需要特比留意的是，里面很多账号本来就是系统正常运行所必须要的，我们可以简称它为系统账号，例如bin,daemon,adm,nobody等，这些账号请不要随意删掉。
+每一行信息都是使用&rdquo;:&rdquo;分隔开，共有七个字段，分别是:</p>
+
+<p><code>root:x:0:0:root:/root:/bin/root</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">1</th>
+      <th style="text-align: center">2</th>
+      <th style="text-align: center">3</th>
+      <th style="text-align: center">4</th>
+      <th style="text-align: center">5</th>
+      <th style="text-align: center">6</th>
+      <th style="text-align: center">7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">/root</td>
+      <td style="text-align: center">/bin/root</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>账号名称
+     就是账号，用来对应UID的。</li>
+  <li>密码
+     原来这个字段是用来存放密码的，但是考虑到安全的问题，现在所有的密码都保存在<code>/etc/shadow</code>中，这里就只剩下一个x了</li>
+  <li>
+    <p>UID
+     这个就是用户标识符。通常Linux对UID有几个限制。
+     |&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+     |      id范围   	 				|  该ID用户特性<br />
+     |:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|
+     |  0(系统管理员)   				|  当UID是0时，代表这个账号是&rdquo;系统管理员&rdquo;！所以你要让其他账号名称也具有root权限时，将该账号的UID改为0即可。也就是说一个系统上面的系统管理员不见得只有root。不过，很不建议有多个账号的UID是0。 		                                   |
+     |  1~499(系统账号) 				|  保留给系统使用的的ID，其实除了0之外，其他UID权限与特性并没有不一样。默认500以下的数字让给系统作为保留账号只是一个习惯.由于系统上面启动的服务希望使用较小的权限去运行，因此不希望使用root的身份去执行这些服务，所以我们就得要提供这些运行中程序的所有者账号才行。这些系统账号通常是不可登录的.\格局系统账号的由来，通常系统账号又被分为两种:\1~99:由distribution自行创建的系统账号;\100~499:若用户有系统账号需求时，可以使用的账号UID                                                             |
+     |  500~65535(可登陆账号)  |  给一般用户用的。                                                                                |
+     |&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
+  </li>
+  <li>GID
+     这个与<code>/etc/group</code>有关！其实<code>/etc/group</code>与<code>/etc/passwd</code>差不多，只是它是用来规定组名与GID的对应而已</li>
+  <li>用户信息说明列
+     这个字段基本上没有什么重要用途，只是用来说明这个账号的意义而已。不过，如果你提供使用<code>finger</code>的功能时，这个字段可以提供很多的信息
+6.主文件夹
+     这是用户的主文件夹。默认是<code>/home/yourIDname</code>
+7.Shell
+     指定该账号所使用的bash，需要注意的是，有一个shell可以用来替代成让账号无法取得shell环境的登录操作,那就是<code>sbin/nologin</code></li>
+</ol>
+
+<p><strong><code>/etc/shadow</code></strong>
+很多程序的运行都与权限有关，而权限与UID/GID有关！因此各程序当然需要读取<code>/etc/passwd</code>来了解不同账号权限，因此<code>/etc/passwd</code>的权限需设置为<code>-rw-r--r--</code>，早起的密码也是放在<code>/etc/passwd</code>中的，但是这样很容易被有心人所窃取，所以后来把密码移动到<code>/etc/shadow</code>中，而且还加入很多的密码限制参数在<code>/etc/shadow</code>里面！	
+基本上，shadow同样以&rdquo;:&rdquo;作为分隔符，一共有9个字段，这9个字段的说明如下:
+1. 账号名称
+		密码也需要和账号对应，所以这个文件的第一列就是账号，必须要与<code>/etc/passwd</code>相同才行
+2. 密码
+		这个字段内的数据才是真正的密码，而且是经过加密的密码，在这里只会看到一些特殊符号的字母。
+3. 最近更动密码的日期
+		这个字段记录了改动密码的日期，日期的时间时以1970年1月1日作为1而累加的日期，1971年1月1日则为366.
+4. 密码不可被更改的天数(与第三个字段相比)
+		第四个字段记录了这个账号的密码在最近一次被更改之后需要经过几天才可以再被更改！如果是0的话，表示密码随时可以改动的意思。
+5. 密码需要重新更改的天数(与第3个字段相比)
+		经常更改密码是一个好习惯。为了强制用户更改密码，这个字段可以指定在最近一次更改密码后在多少天数内需要再次更改密码才行。你必须要在这个天数内重新设置你的密码，否则这个账号的密码将会变为过期特性。如果是99999(计算为273年)的话，那就表示密码的更改没有强制性之意
+6. 密码需要更改期限前的警告天数(与第5个字段相比)
+		当账号的密码有效期限快要到的时候(第5个字段)，系统会依据这个字段的设置发出&rdquo;警告&rdquo;给这个账号，提醒他再过n天你的密码就要过期了。
+7. 密码过期后的账号宽限时间(密码失效日)(与第5个字段相比)
+		密码有效日期为&rdquo;更新日期&rdquo;(第3个字段)+&rdquo;重新更改日期&rdquo;(第5个字段)，过了该期限之后用户依旧没有更新密码，那改密码就算过期了。虽然密码过期但是该账号还是可以用来进行其他工作的，包括登录系统取得bash。不过如果密码过期了，那当你登录系统时，系统会强制要求你必须重新设置密码才能登录继续使用，这就是密码过期的特性
+		在密码过期几天后，如果用户还是没有登录更改密码，那么这个账号的密码将会&rdquo;失效&rdquo;，即该账号再也无法使用改密码登录了。要注意<strong>密码过期</strong>与<strong>密码失效</strong>并不相同
+8. 账号失效日期
+		这个日期跟第三个字段一样，都是使用1970年以来的总日数设置。这个字段表示:这个账号在此字段规定的日期之后，将无法再使用。就是所谓的&rdquo;账号失效&rdquo;。此时不论你的密码是否过期，这个&rdquo;账号&rdquo;都不能再被使用。这个字段会被使用通常应该是在&rdquo;收费服务&rdquo;的系统中，你可以规定一个日期让该账号不能再使用。
+9. 保留
+		最后一个字段是保留的，看以后有没有新功能加入</p>
+
+<h3 id="section-56">有效与初始用户组</h3>
+<p>和用户组有关的数据信息是保存在<code>/etc/group</code>和<code>/etc/gshadow</code>中的</p>
+
+<p><strong><code>/etc/group</code></strong>
+这个文件就是记录GID与组名的对应。这个文件每一行代表一个用户组，也是以冒号&rdquo;:&rdquo;作为字段的分隔符，共分为四列，每一个字段的意义是:</p>
+
+<ol>
+  <li>用户组名称
+     就是用户组名称</li>
+  <li>用户组密码
+     通常不需要设置，这个设置通常是给&rdquo;用户组管理员&rdquo;使用的，目前很少有这个机会设置用户组管理员。同样，密码已经移动<code>/etc/gshadow</code>去，因此这个字段只会存在一个&rdquo;x&rdquo;而已</li>
+  <li>GID
+     就是用户组ID。在<code>/etc/passwd</code>第四个字段使用的GID对应的用户组名就是由这里对一个出来的。</li>
+  <li>此用户组支持的账号名称
+     某个账号想要加入此用户组时，将该账号填入这个字段即可。(注意不要有空格)</li>
+</ol>
+
+<p><strong>有效用户组(effective group)与初始用户组(initial group)</strong>
+每个用户在他的<code>/etc/passwd</code>里面的第四列有所谓的GID，这个GID就是所谓的&rdquo;初始用户组(<code>initial group</code>)&rdquo;,也就说，当用户登录系统，立刻就拥有这个用户组的相关权限，因此，每一个账号的初始用户组是不用写入到<code>/etc/group</code>中的
+如果一个账号加入了多个组，那么这个账号新建的文件或目录的组的是什么？这就要检查一下当时的有效用户组了(effective group)</p>
+
+<p><strong>groups:有效与支持用户组的查看</strong>
+		可以直接通过<code>groups</code>命令查看当前账号所支持的用户组。查询结果中的第一个用户组就是当前账号的有效用户组(effective group),通常来说，有效用户组的功能就是新建文件</p>
+
+<p><strong>newgrp:有效用户组的切换</strong>
+可以通过<code>newgrp</code>命令来切换有效用户组，但是想要切换的用户组必须是你已经有支持的用户组</p>
+
+<p><strong><code>/etc/gshadow</code></strong>
+这个文件内同样还是使用冒号&rdquo;:&rdquo;来作为字段的分隔符，一共有四个字段，分别说明如下:
+1. 用户组名
+2. 密码列，同样，开头为!表示无合法密码，所以无用户组管理员
+3. 用户组管理员的账号(相关信息在gpasswd中介绍)
+4. 该用户组的所属的账号(与<code>/etc/group</code>内容相同)</p>
+
+<h2 id="section-57">账号管理</h2>
+
+<h3 id="useraddpasswdusermoduserdel">新增与删除用户:useradd,相关配置文件,passwd,usermod,userdel</h3>
+
+<p>账号可以使用<code>useradd</code>来新建账号，密码则是使用<code>passwd</code>来设置</p>
+
+<p>系统其实已经帮我们规定好了很多的默认值，所以我们可以简单地使用<code>useradd username</code>来创建用户即可,CentOS这些默认值会帮我们处理以下几个项目:</p>
+
+<ol>
+  <li>在<code>/etc/passwd</code>里面创建一行与账号相关的数据，包括创建UID/GID/主文件夹等</li>
+  <li>在<code>/etc/shadow</code>里面将此账号的密码相关参数填入，但是尚未有密码</li>
+  <li>在<code>/etc/group</code>李米娜加入一个与账号名称一模一样的组名</li>
+  <li>在<code>/home</code>下面创建一个与账号同名的目录作为用户主文件夹，且权限为700</li>
+</ol>
+
+<p>使用<code>useradd</code>创建用户账号时，其实会更改不少地方，有以下几个文件:</p>
+
+<ol>
+  <li>用户账号与密码参数方面的文件:<code>/etc/passwd</code>,<code>/etc/shadow</code></li>
+  <li>用户组相关方面的文件:<code>/etc/group</code>,<code>/etc/gshadow</code></li>
+  <li>用户的主文件夹:<code>/home/username</code></li>
+</ol>
+
+<p><strong>useradd参考文件</strong>
+其实，<code>useradd</code>的默认值可以用<code>useradd -D</code>调出来，其中的默认值都是保存在<code>/etc/default/useradd</code>中，可以使用vim查看并修改其内容
+该文件的内容如下:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">GROUP</span><span class="o">=</span>100							<span class="c">#默认的用户组</span>
+<span class="nv">HOME</span><span class="o">=</span>/home						<span class="c">#默认的主文件夹所在目录</span>
+<span class="nv">INACTIVE</span><span class="o">=</span>-1						<span class="c">#密码失效日，在shadow内的第7列  0代表立刻过期，-1代表永不过期</span>
+<span class="nv">EXPIRE</span><span class="o">=</span>								<span class="c">#账号失效日，在shadow内的第8列</span>
+<span class="nv">SHELL</span><span class="o">=</span>/bin/bash				<span class="c">#默认的shell</span>
+<span class="nv">SKEL</span><span class="o">=</span>/etc/skel				<span class="c">#用户主文件夹内容数据参考目录</span>
+<span class="nv">CREATE_MAIL_SPOOL</span><span class="o">=</span>yes <span class="c">#是否主动帮用户创建邮件信箱(mailbox)</span>
+</code></pre></div>
+
+<p>其中有个字段需要特别说明:
+- 关于用户组的角度有两种不同的机制，这两种机制分别是:
+		- 私有用户组机制:系统会创建一个与账号一样的用户组给用户作为初始用户组，这种设置机制会比较有保密性，因为用户都有自己的用户组，而且主文件夹权限将设置为700。使用这种机制将不会参考<code>GROUP=100</code>这个设置。代表性的distribution有RHEL,Fedora,CentOS等
+		- 公共用户组机制:就是以<code>GROUP=100</code>这个设置值作为新建账号的初始用户组，因此每个账号都属于users这个用户组，且默认主文件夹通常的权限会是<code>drwxr-xr-x</code>，由于每个账号都属于users用户组，因此大家都可以互相分享主文件夹内的数据。代表性的distribution如SuSE
+- <code>SKEL=/etc/skel</code>:用户主文件夹参考基准目录。新建用户的主文件夹内的各项数据都是由<code>/etc/skel</code>复制过去的，可以在新建<code>/etc/skel/www</code>这个目录，那么将来新增用户后，在他的主文件夹下就会有www这个目录了</p>
+
+<p><strong><code>/etc/login.defs</code></strong>
+该文件内容如下:</p>
+
+<div class="highlight"><pre><code class="bash">MALL_DIR /var/spool/mail				<span class="c">#用户默认邮件信箱放置目录</span>
+PASS_MAX_DAYS 99999 						<span class="c">#/etc/shadow内的第5列，多久需要更改密码</span>
+PASS_MIN_DAYS 0									<span class="c">#/etc/shadow内的第4列，多久不可重新设置密码天数</span>
+PASS_MIN_LEN	5									<span class="c">#密码最短的字符长度，已被pam模块替代，失去效用！</span>
+PASS_WARN_AGE 7									<span class="c">#/etc/shadow内的第6列，过期前会警告的天数</span>
+
+UID_MIN 500											<span class="c">#用户最小的UID，意即小于500的UID为系统保留</span>
+UID_MAX 6000										<span class="c">#用户能够用的最大UID</span>
+GID_MIN 500											<span class="c">#用户自定义用户组的最小GID，小于500为系统保留</span>
+GID_MAX 6000										<span class="c">#用户自定义用户组的最大GID	</span>
+
+CREATE_HOME	yes									<span class="c">#在不加-M及-m时，是否主动创建用户文件夹</span>
+UMASK	077												<span class="c">#用户主文件夹建的umask，因此权限会是700</span>
+USERGROUPS_ENAB yes							<span class="c">#使用userdel删除时，是否会删除初始用户组</span>
+MD5_CRYPT_ENAB yes							<span class="c">#密码是否经过MD5的加密机制处理</span>
+</code></pre></div>
+
+<p>要注意的是，系统给予一个账号UID时，它是先参考UID_MIN设置值取得最小数值，由<code>/etc/passwd</code>查找最大的UID数值，将二者相比，找出最大的那个再加一就是新账号的UID了。
+<code>USERROUPS_ENAB yes</code>这个值设置的功能是:如果使用userdel去删除一个账号时，且该账号所属的初始用户组已经没有隶属于该用户组了，那么就删除该用户组</p>
+
+<p>使用<code>useradd</code>这个程序在创建Linux上的账号时至少会参考:</p>
+
+<ul>
+  <li><code>/etc/default/useradd</code></li>
+  <li><code>/etc/login.defs</code></li>
+  <li><code>/etc/skel/*</code></li>
+</ul>
+
+<p><strong>passwd</strong></p>
+
+<p>使用<code>useradd</code>创建账号之后，在默认情况下，该账号是暂时被封锁的，也就是说，该账号是无法登陆的,需要root使用<code>passwd 账号</code>的方式来修改密码。需要注意的是，<code>passwd</code>不加任何参数时，是修改自己的密码</p>
+
+<p>新的distribution是使用较严格的PAM模块来管理密码，这个管理的机制写在<code>/etc/pam.d/passwd</code>当中。该文件与密码有关的测试模块就是使用pam_cracklib.so,这个模块会检验密码相关的信息，并且替代<code>\etc\login.defs</code>内的PASS_MIN_LEN的设置，理论上，你的密码最好哟啊符合如下要求:</p>
+
+<ul>
+  <li>密码不能与账号相同</li>
+  <li>密码尽量不要选用字典里面会出现的字符串</li>
+  <li>密码需要超过8个字符</li>
+  <li>密码不要用个人信息、如身份证、手机号码、其他电话号码等</li>
+  <li>密码不要使用简单的关系式，如1+1=2,lamvbird等</li>
+  <li>密码尽量使用大小写字符、数字、特殊符号的组合</li>
+</ul>
+
+<p><strong>chage</strong>
+这个命令可以更加详细的显示密码参数.这个命令可以可以让用户在第一次登录时强制他们一定要更改密码后才能够使用系统资源</p>
+
+<p><strong>usermod</strong>
+可以对用户账号的相关数据进行微调</p>
+
+<p><strong>userdel</strong>
+删除用户的数据，用户的数据有:</p>
+
+<ul>
+  <li>用户账号/密码相关参数:<code>/etc/passwd</code>,<code>/etc/shadow</code>		</li>
+  <li>用户组相关参数:<code>/etc/group</code>,<code>/etc/gshadow</code></li>
+  <li>用户个人文件数据:<code>/home/username</code>,<code>/var/spool/mail/username</code></li>
+</ul>
+
+<p>语法十分简单:</p>
+
+<div class="highlight"><pre><code class="bash">userdel <span class="o">[</span>-r<span class="o">]</span> username
+</code></pre></div>
+
+<p>参数:
+-r:连同用户的主文件也一起删除</p>
+
+<h3 id="section-58">用户功能</h3>
+
+<p><strong>chfn</strong>
+可以用来修改用户的个人信息</p>
+
+<p><strong>chsh</strong>
+change shell的简写,可以列出系统上所有可用的shell，也可以修改自己的shell</p>
+
+<p><strong>id</strong>
+可以查询某人或自己相关的UID/GID等的信息</p>
+
+<h3 id="section-59">新增与删除用户组</h3>
+
+<p>基本上用户组的内容都与这两个文件有关:<code>/etc/group</code>,<code>/etc/gshadow</code></p>
+
+<p><strong>groupadd</strong>
+新建用户组</p>
+
+<p><strong>groupmod</strong>
+和<code>usermod</code>相似，这个命令仅是在进行group相关参数的修改而已</p>
+
+<p><strong>groupdel</strong>
+删除用户组。这里需要注意的是，只有当这个用户组不是某个账户的初始用户组时，才能被删除</p>
+
+<h2 id="acl">主机的具体权限规划:ACL的使用</h2>
+
+<p>ACL:Access Control List,主要的目的是提供传统的owner、group、others的read、write、execute权限之外的具体权限设置。ACL可以针对单一用户、单一文件或目录来进行r、w、x的权限设置，对于需要特殊权限的使用状况非常有帮助</p>
+
+<p>ACL主要可以针对以下几个项目:
+- 用户(user):可以针对用户来设置权限
+- 用户组(group):可以对用户组来设置权限
+- 默认属性(mask):还可以在该目录下载新建新文件/目录时设置新数据的默认权限</p>
+
+<h3 id="aclgetfaclsetfacl">ACL的设置技巧:getfacl,setfacl</h3>
+
+<p>设置与查看ACL有以下两个命令:</p>
+
+<p><code>getfacl</code>:取得某个文件/目录的ACL设置项目
+<code>setfacl</code>:设置某个目录/文件的ACL规定</p>
+
+<h2 id="section-60">用户身份切换</h2>
+
+<h3 id="su">su</h3>
+
+<div class="highlight"><pre><code class="bash">su						<span class="c">#使用non-login的方式变成root，不能拥有root的环境变量、信箱等</span>
+su -					<span class="c">#使用login shell的方式切换为root的身份并查看变量</span>
+</code></pre></div>
+
+<p><strong>总结</strong>
+- 若要完整地切换到新用户的环境，必须要使用<code>su -username</code>或<code>su -l username</code>,才会连同<code>PATH/USER/MAIL</code>等变量都转成新用户的环境；
+- 如果仅想要执行一次root的命令时，可以利用<code>su -- c"命令串"</code>的方式来处理
+- 使用root切换成任何用户时，并不需要输入新用户的密码</p>
+
+<h3 id="sudo">sudo</h3>
+
+<p>相对于su需要了解新切换的用户密码，sudo的执行则仅需要自己的密码即可！并非所有人都能够执行sudo，<strong>而是仅有<code>/etc/sudoers</code>内的用户才能够执行sudo这个命令。</strong></p>
+
+<p><strong>sudo</strong>的执行流程
+1. 当用户执行sudo时，系统于<code>/etc/sudoers</code>文件中查找该用户是否有执行sudo的权限
+2. 若用户具有可执行sudo的权限后，便让用户输入自己的密码来确认
+3. 若密码输入成功，便开始进行sudo后续接的命令
+4. 若欲切换的身份与执行者相同，那也不需要输入密码</p>
+
+<p>能否用<code>sudo</code>必须要看<code>/etc/sudoer</code>的设置值，而可使用<code>sudo</code>的是通过输入用户自己的密码来执行后续的命令串</p>
+
+<p><strong><code>visudo</code>与<code>/etc/sudoers</code></strong></p>
+
+<p>root可以通过<code>visudo</code>命令修改<code>/etc/sudoers</code>中的内容，要注意的是<code>/etc/sudoers</code>中是有格式的，如果设置错误会引起不良后果的。</p>
+
+<h2 id="shellpam">用户的特殊Shell与PAM模块</h2>
+
+<h3 id="shellsbinnologin">特殊的shell,/sbin/nologin</h3>
+
+<p>系统中有很多系统账号，所谓系统账号就是指那些不能通过shell登录的账号，他们使用的shell是<code>/sbin/nologin</code>.系统中的各个服务是由不同的系统账号进行管理的，但是这些账号却是不能通过shell登录的。如果要让具有<code>/sbin/nologin</code>的用户知道，他们不能登录主机时，我们可以新建<code>/etc/nologin.txt</code>这个文件，并且在这个文件内说明不能登录的原因，那么下次当这个用户想要登录系统时，屏幕上就会出现<code>/etc/nologin.txt</code>这个文件的内容，而不是默认的内容了</p>
+
+<h3 id="pam">PAM模块简介</h3>
+
+<p>PAM:Pluggable Authentication Modules</p>
+
+<p>PAM可以说是一套应用程序编程接口，它提供了一连串的验证机制，只要用户将验证阶段的需求告诉PAM后，PAM就能够回报用户验证的结果(成功或失败)
+因为不论你使用什么程序，都可以使用PAM来进行验证，如此一来，就能够让账户密码或者其他方式的验证具有一致的结果，也让程序员方便处理验证的问题了。</p>
+
+<h3 id="pam-1">PAM模块的设置语法</h3>
+
+<p>PAM通过一个与程序相同文件名的配置文件来进行一连串的认证分析，到执行<code>passwd</code>后，这个程序调用PAM的流程是:
+1. 用户开始执行<code>/usr/bin/passwd</code>这支程序，并输入密码
+2. passwd调用PAM模块进行验证
+3. PAM模块会到<code>/etc/pam.d</code>中寻找与程序(passwd)同名的配置文件
+4. 依据<code>/etc/pam.d/passwd</code>内的设置，引用相关的PAM模块逐步进行验证分析
+5. 将验证结果(成功、失败以及其他信息)回传给passwd这个程序
+6. passwd这支程序会根据PAM回传的结果决定下一个操作(重新输入密码或通过验证)</p>
+
+<p><code>/etc/pam.d/passwd</code>中的内容如下所示:</p>
+
+<div class="highlight"><pre><code class="bash">auth			include			system-auth
+account		include			system-auth
+passwd		include			system-auth
+验证类型 控制标准    PAM模块与该模块的参数
+</code></pre></div>
+
+<p>在这个配置文件中，除了第一行声明PAM版本之外，其他任何&rdquo;#&rdquo;开头的都是批注，而每一行都是一个独立的验证流程，每一行可以区分三个字段，分别是类别(tpye)，控制标准(flag),PAM的模块与该模块的参数。</p>
+
+<p><strong>第一个字段:验证类型(type)</strong>
+验证类型一共分为四种，分别说明如下:
+- auth 
+	是authentication的缩写，所以这种类型主要用来检验用户的身份验证，这种类型通常是需要密码来检验的，所有后续接的模块是用来检验用户的身份
+- account
+	account则大部分是在进行authentication，这种类型则主要在检验用户是否具有正确的权限，举例来说，当你使用一个过期的密码来登录时，当然就无法正确登录了
+- session
+	session管理的就是用户在这侧登录期间PAM所给予的环境设置，这个类型通常用于记录用户登录与注销时的信息
+- passwd
+	passwd就是密码。所以这种类别主要用于提供验证的修订工作，就是修改密码</p>
+
+<p><strong>第二个字段:验证的控制标志(control flag)</strong>
+它是&rdquo;验证通过的标准&rdquo;,这个字段在管控验证的放行方式，主要也分为四种控制方式:
+- required
+	此验证若成功则带有success的标志，若失败则带有failure的标志，但不论成功或失败都会继续后续的验证流程。由于后续的验证流程可以继续进行，因此相当有利于数据的登录日志(log)，这也是PAM最常用required的原因
+- requisite
+	若验证失败则立刻回报原程序failure的标志。并终止后续的验证流程。若验证成功则带有success的标志并继续后续的验证流程。
+- sufficient
+	若验证成功则立刻回传success给原程序，并终止后续的验证流程；若验证失败则带有failure标志并继续后续的验证流程，这与requisite刚好相反！
+- optional
+	这个模块控件的目的大多是在显示信息而已，并不是用在验证方面</p>
+
+<h3 id="section-61">常用模块简介</h3>
+
+<p>这部分内容比较琐碎且只是介绍一些模块的功能，所以决定跳过这部分内容。具体的详细内容见P437</p>
+
+<h2 id="linux-14">Linux主机上的用户信息传递</h2>
+
+<h3 id="wwholastlastlog">查询用户:w,who,last,lastlog</h3>
+
+<p>如果想要知道目前已登录在系统上面的用户，可以通过<code>w</code>或<code>who</code>来查询
+想知道每个账号的最近登录时间，则可以使用<code>lastlog</code>这个命令</p>
+
+<h3 id="writemesgwall">用户对谈:write,mesg,wall</h3>
+
+<p><code>write</code>这个命令可以直接将信息传给接收者，可以这样做：</p>
+
+<div class="highlight"><pre><code class="bash">write 用户账号 <span class="o">[</span>用户所在终端接口<span class="o">]</span>
+</code></pre></div>
+
+<p>如果不想接收信息，则可以使用如下命令:</p>
+
+<div class="highlight"><pre><code class="bash">mesg n  <span class="c">#禁止别人发来的信息，但是root发的必须接收 </span>
+mesg y  <span class="c">#开禁</span>
+</code></pre></div>
+
+<p>如果想向所有的用户广播，则可以使用如下命令:</p>
+
+<div class="highlight"><pre><code class="bash">wall <span class="s2">&quot;I will shutdown my linux server...&quot;</span>
+</code></pre></div>
+
+<h3 id="mail">用户邮件邮箱:mail</h3>
+
+<p>一般来说，mailbox都会放置在<code>/var/spool/mail</code>里面，一个账号一个mailbox(文件)。</p>
+
+<p>寄信的命令十分简单，直接执行<code>mail username@localhost -s</code>即可
+收信的命令也十分简单，直接运行<code>mail</code>命令就行了</p>
+
+<p>由于读过的信件若使用&rdquo;q&rdquo;离开时，会将该信件移动到<code>~/mbox</code>中，所以你也可以想象<code>/var/spool/mail/vbird1</code>为vbird1的&rdquo;信箱&rdquo;,而<code>/home/vbird1/mbox</code>则为&rdquo;收信箱&rdquo;的意思。那如何读取<code>/home/vbird1/mbox</code>呢？就使用<code>mail -f /home/vbird/mbox</code>即可</p>
+
+<h2 id="section-62">手动新增用户</h2>
+
+<p>一般来说，不建议使用手动的方式来新增用户。因为用户的新建涉及GID/UID等权限的关系，而且，与文件/目录的权限也有关系，使用<code>useradd</code>可以帮我们自动设置好UID/GID主文件夹以及主文件夹相关的权限设置，但是，手动增加时，有可能忘东忘西，结果导致一些困扰。</p>
+
+<p>由于暂时不需要具体的手动新增用户，所以这部分内容暂且跳过，具体的内容在P443</p>
+
+<h1 id="quota">磁盘配额(Quota)与高级文件系统管理</h1>
+
+<h2 id="quota-1">磁盘配额(Quota)的应用与实践</h2>
+
+<h3 id="quota-2">什么是Quota</h3>
+
+<p>Quota的一般用途:
+- 针对WWW server,每个人的网页空间的容量限制
+- 针对mail server,每个人的邮件空间限制
+- 针对file server,每个人最大的可用网络硬盘空间
+- 限制某一用户组所能使用的最大磁盘配额
+- 以link的方式使邮件可以作为限制的配额(更改<code>/var/spool/mail</code>这个路径)</p>
+
+<p>Quota的限制:
+- 仅能针对整文件系统
+- 内核必须支持quota
+- 只对一般身份用户有效</p>
+
+<p>Quota的规范设置选项
+Quota针对整个文件系统的限制项目主要分为以下几个部分:</p>
+
+<p><strong>容量限制或文件数量限制(block或inode)</strong>
+- 限制inode用量:管理用户可以新建的&rdquo;文件数量&rdquo;
+- 限制block用量:管理用户磁盘容量的限制，较常见的为这种方式</p>
+
+<p><strong>soft/hard</strong>
+- hard:表示用户决不超过这个限制值，若超过这个限制值系统会锁住该用户的磁盘使用权
+- soft:表示用户低于soft值时，可以正常使用磁盘，但若超过soft且低于hard限制值时，每次用户登录系统时，系统会主动发出磁盘即将爆满的警告信息，且会给予一个宽限时间(gracetime)。不过，若用户在宽限时间倒数期间就将容量再次将低于soft限值之下，则宽限时间会停止</p>
+
+<p><strong>会倒计时的宽限时间(gracetime)</strong>
+默认的宽限时间时7天，如果7天内都不进行任何磁盘管理，那么soft限制值会即刻取代hard限制值来作为quota的限制，此时你的磁盘使用权就会锁住而无法新增文件</p>
+
+<h3 id="quota1">实践Quota流程1:文件系统支持</h3>
+
+<p>要想使用Quota，就必须要在需要使用Quota的文件系统中启用Quota功能,启用命令:</p>
+
+<div class="highlight"><pre><code class="bash">mount -o remount,usrquota,grpquota /home
+mount | grep home					<span class="c">#查看结果</span>
+</code></pre></div>
+
+<p>使用如上的命令，当该文件系统重新挂载时，就会失去Quota功能，所以，如果想要长期使用Quota来限制一个文件系统，就必须要确定<code>/etc/mtab</code>已经加入usrquota、grpquota的支持到你所想要设置的文件系统中</p>
+
+<div class="highlight"><pre><code class="bash">vim /etc/fstab
+<span class="nv">LABEL</span><span class="o">=</span>/home			/home 		ext4		defaults,usrquota,grpquota 1 2
+</code></pre></div>
+
+<h3 id="quota2quta">实践Quota流程2:新建Quta配置文件</h3>
+
+<p>其实Quota是通过分析整个文件系统中每个用户(组)拥有的文件总数与总容量，再将这些数据记录在该文件系统的最顶层目录，然后在该配置文件中再使用每个账号(或用户组)的限制值去规定磁盘使用量的</p>
+
+<p><strong><code>quotacheck</code>:扫描文件系统并新建Quota的配置文件</strong>
+常用的命令参数只要记得<code>-avug</code>就行了，执行该命令后，会在文件系统的顶层目录新建两个文件:aquota.group,aquota.user。这两个文件是Quota自己的数据文件，并不是纯文本文件，且该文件一直变动，因此要新建这个两个文件，记得要使用<code>quotacheck</code>命令，不要手动编辑</p>
+
+<h3 id="quota3quota">实践Quota流程3:Quota启动、关闭与限制值设置</h3>
+
+<p>制作好Quota配置文件之后，接下来就是要启动quota了。启动的方式很简单，使用<code>quotaon</code>,至于关闭就用<code>quotaoff</code>即可。</p>
+
+<p><code>quotaon</code>:启动quota的服务
+<code>quotaoff</code>:关闭quota的服务
+<code>edquota</code>:编辑账号/用户组的限制与宽限时间</p>
+
+<p>编辑Quota时，一共有七个字段，意义分别如下:
+1. 文件系统(filesystem):说明该限制值时针对哪个文件系统
+2. 磁盘容量(blocks):这个数值是quota自己算出来的，单位为KB，请不要修改它
+3. soft:磁盘容量(block)的soft限制值，单位为KB
+4. hard:block的hard限制值，单位KB
+5. 文件数量(inodes):这是quota自己算出来的，单位为个数，请不要修改它
+6. soft:inode的soft限制值
+7. hard:inode的hard限制值</p>
+
+<p>当soft/hard为0时，表示没有限制的意思</p>
+
+<h3 id="quota4quota">实践Quota流程4:Quota限制值的报表</h3>
+
+<p>quota的报表主要有两种模式，一种是针对每个个人或用户组的<code>quota</code>命令，一个是针对整个文件系统的<code>repquota</code>命令。</p>
+
+<p><code>quota</code>:单一用户的quota报表
+<code>repquota</code>:针对文件系统的限额做报表</p>
+
+<h3 id="quota5">实践Quota流程5:测试与管理</h3>
+
+<p><code>warnquota</code>:对超过限额者发出警告信。它可以根据<code>/etc/warnquota.conf</code>的设置，然后找出目前系统上面quota用量超过soft的账号，通过Email的功能将警告信件发送到用户的电子邮件信箱</p>
+
+<p><code>setquota</code>:直接于命令中设置quota限额</p>
+
+<h2 id="software-raid">软件磁盘阵列(Software RAID)</h2>
+
+<h3 id="raid">什么是RAID</h3>
+
+<p>RAID(RedundantArrays of Inexpensive Disks),即容错廉价磁盘阵列。RAID可以通过一些技术(软件或硬件)将多个较小的磁盘整合成为一个较大的磁盘设备，而这个较大的磁盘功能可不止是存储而已，它还具有数据保护功能。
+不同的等级有不同的功能:</p>
+
+<p><strong>RAID-0(等量模式,stripe):性能最佳</strong>
+这种模式如果使用相同型号与容量的磁盘来组成时，效果最佳。这种模式的RAID将会将磁盘先切出等量的区块，然后当一个文件要写入RAID时，该文件会依据块的大小切割好，之后再依序放到各个磁盘里面去。由于每个磁盘会交错存放数据，因此当你的数据要写入RAID时，<strong>数据会被等量放置在各个磁盘上面。</strong>
+越多块磁盘组成的RAID-0性能越好，因为每块负责的数据量就更低了。
+但是性能好了，安全性就降低了。RAID-0只要有任何一块磁盘损坏，在RAID上面的所有数据都会丢失而无法读取。</p>
+
+<p><strong>RADI-1(映像模式):完整备份</strong>
+这种模式也是需要相同的磁盘容量的，最好一模一样的磁盘。如果是不同容量的磁盘组成RAID-1时，那么总容量将以最小的那一块磁盘为主！这种模式主要是<strong>让同一份数据完整保存在两块磁盘上</strong>。
+RAID-1最好的优点大概在于数据的备份，不过由于磁盘容量有一半用在备份，因此总容量会是全部磁盘容量的一半而已</p>
+
+<p><strong>RAID0+1,RAID1+0</strong></p>
+
+<p>RAID0+1就是先将两块磁盘组成RAID0，并且这样的设置共有两组；然后将这两组RAID0再组成一组RAID1。RAID1+0就是反过来，先组成RAID1，再组成RAID0</p>
+
+<p><strong>RAID5:性能与数据备份的均衡考虑</strong></p>
+
+<p>RAID-5至少需要三块以上的磁盘才能够组成这种类型的磁盘整列。这种磁盘阵列的数据写入有点类似RAID-0，不过每个循环的写入过程中，在每块磁盘还加入一个同位检查数据(Parity),这个数据会记录其他磁盘的备份数据，用于当磁盘损坏时的救援。
+由于有同位检查码，因此RAID5的总容量会是整体磁盘数量减一块。而且当损坏的磁盘数量大于等于两块时，这整组RAID5的数据就损毁了。因为RAID5默认仅能够支持一块磁盘的损毁情况。</p>
+
+<p><strong>Spare Disk:预备磁盘功能</strong>
+当磁盘阵列的磁盘损毁时，就得要将毁掉的磁盘拔出，然后换一块新的磁盘。换成新的磁盘并且顺利启动磁盘阵列后，磁盘阵列就会开始主动重建(rebuild)原本坏掉的那块磁盘数据到新的磁盘上，然后你的磁盘阵列上面的数据就能恢复了。
+为了让系统可以实时地在坏掉硬盘时主动重建，因为就需要预备磁盘(spare disk)的辅助。所谓的sapre disk就是一块或多块没有包含在原本磁盘阵列等级中的磁盘，这块磁盘平时并不会被磁盘阵列所使用，当磁盘阵列有任何磁盘损毁时，则这块Spare disk会被主动拉进磁盘阵列中，并将坏掉的那块硬盘移除磁盘阵列，然后立即重建数据系统。</p>
+
+<h3 id="softwarehardware-raid">software,hardware RAID</h3>
+<p>所谓的硬件磁盘阵列(hardware RAID)是通过磁盘阵列卡来完成数组的目的。磁盘阵列卡上面有一个专门的芯片在处理RAID的任务，因此在性能方面会比较好，在很多任务时(例如RAID5的同为检查码)磁盘阵列并不会重复消耗原本系统的I/O总线，理论上性能会较佳。
+由于磁盘阵列有很多优秀的功能，然而硬件磁盘阵列卡却很贵，因此就发展出利用软件来仿真磁盘阵列的功能，这就是所谓的软件磁盘阵列(software RAID).软件磁盘阵列主要是通过软件来仿真数组的任务，因此会损耗较多的系统资源，比如说CPU的运算与I/O总线资源等。</p>
+
+<h2 id="logical-volume-manager">逻辑卷管理器(Logical Volume Manager)</h2>
+
+<p>LVM的重点在于可以弹性调整文件系统的容量！LVM可以整合多个物理分区在一起，让这些分区看起来就像是一个磁盘一样，而且，还可以在将来增加其他的物理分区或将其从这个LVM管理的磁盘当中删除。</p>
+
+<h3 id="lvmpvpevglv">上面是LVM:PV,PE,VG,LV的意义</h3>
+
+<p>LVM:Logical Volume Manager
+LVM的做法是将几个物理的分区(或磁盘)通过软件组合成为一块看起来是独立的大磁盘(VG),然后将这块大磁盘再经过切分成为可使用分区(LV)，最终能够挂载使用了。</p>
+
+<p><strong>PhysicalVolume,PV,物理卷</strong>
+我们实际的分区需要调整物理系统标示符(system ID)成为8e(LVM的标示符)，然后再经过pvcreate的命令将它转成LVM最底层的物理卷(PV)，之后才能够将这些PV加以利用，调整system ID的方法就是通过fdisk</p>
+
+<p><strong>VolumeGroup,VG,卷用户组</strong>
+所谓的LVM大磁盘就是将许多PV整合成这个VG，所以VG就是LVM组合起来的大磁盘。那么这个大磁盘最大可以达到多少容量呢？这与下面要说明的PE有关，因为每个VG最多仅能包含65534个PE而已。如果使用LVM默认的参数，则一个VG最大可达256G的容量</p>
+
+<p><strong>PhysicalExtend,PE,物理扩展块</strong>
+LVM默认使用4MB的PE块，而LVM的VG最多仅能包含65534个PE，因此默认的LVMVG会有4M*65534/(1024M/G)=256G。这个PE是整个LVM最小的存储块，也就是说，其实我们的文件数据都是由写入PE来处理的。简单的说，这个PE就有点像文件系统里面的block的大小。</p>
+
+<p><strong>LogicalVolmue,LV,逻辑卷</strong>
+最终的VG还会被切分成LV，这个LV就是最后可以被格式化使用的类似分区。LV是不可以随意指定大小的，因为PE是整个LVM的最小存储单位，那么LV的大小就与在此LV内的PE总数有关。
+LVM可以弹性更改文件系统的容量，其实它就是通过交换PE来进行数据交换，将原本LV内的PE移转到其他设备中以降低LV容量，或将其它设备的PE加到此LV中以加大容量。</p>
+
+<p>在使用LVM时，依据写入机制的不同，而有两种方式:
+- 线性模式(liner):一个分区接一个分区的写入
+- 交错模式(triped):将一条数据拆成两部分，分别写入到两个分区中</p>
+
+<p>基本上，LVM最主要的用处是在实现一个可以弹性调整容量的文件系统上，而不是在新建一个性能为主的磁盘上。</p>
+
+<h1 id="crontab">例行性工作(crontab)</h1>
+
+<h2 id="section-63">什么是例行性工作</h2>
+
+<h3 id="linuxatcron">Linux工作调度的种类:at,cron</h3>
+
+<p>Linux中有两种工作调度的方式:
+- 一种是例行的，就是每隔一定的周期要来办的事项
+- 一种是突发性的，就是每次做完以后就没有的那一种</p>
+
+<p>Linux中有以下两种命令:
+- <code>at</code>: <code>at</code>是可以处理仅执行一次就结束调度的命令，需要atd服务
+- <code>crontab</code>:<code>crontab</code>这个命令所设置的工作将会循环一直进行下去，可循环的时间为分钟、小时、每周、每月或每年等。<code>crontab</code>除了可以使用命令执行外，也可编辑<code>/etc/crontab</code>来支持。这个命令需要crond这个服务</p>
+
+<h3 id="linux-15">Linux上常见的例行性工作</h3>
+
+<ul>
+  <li>进行日志文件的轮替(log rotate)
+  日志文件会不断增大，我们需要适时地整理日志文件</li>
+  <li>日志文件分析logwatch的任务</li>
+  <li>新建locate的数据库</li>
+  <li>whatis数据库的建立</li>
+  <li>RPM软件日志文件的新建</li>
+  <li>删除临时文件</li>
+  <li>与网络服务有关的分析行为</li>
+</ul>
+
+<h2 id="section-64">仅执行一次的工作调度</h2>
+
+<h3 id="atdat">atd的启动与at运行的方式</h3>
+
+<p>首先要启动atd这个服务:</p>
+
+<div class="highlight"><pre><code class="bash">/etc/init.d/atd restart
+ <span class="c">#设置开机启动这个服务</span>
+chkconfig atd on
+</code></pre></div>
+
+<p><strong><code>at</code>的运行方式</strong>
+我们使用<code>at</code>这个命令来生成所要运行的工作，并将这个工作以文本文件的方式写入<code>/var/spool/at/</code>目录内，该工作便能等待atd这个服务的取用与执行了。</p>
+
+<p><strong><code>at</code>的管理</strong>
+我们可以利用<code>/etc/at.allow</code>和<code>/etc/at.deny</code>这两个文件来进行<code>at</code>的使用限制！加上这个两个文件后，<code>at</code>的工作情况其实是这样的：
+1. 先寻找<code>/etc/at.allow</code>这个文件，写在这个文件中的用户才能使用<code>at</code>，没有在这个文件中的用户则不能使用<code>at</code>(即使没有写在<code>at.deny</code>中)
+2. 如果<code>/etc/at.allow</code>不存在，就寻找<code>/etc/a.deny</code>这个文件，若写在这个<code>at.deny</code>的用户则不能使用<code>at</code>，而没有在这个<code>at.deny</code>文件中的用户就可以使用<code>at</code>了。
+3. 如果两个文件都不存在，那么只有root可以使用<code>at</code>这个命令</p>
+
+<p>建议在使用<code>at</code>命令时，建议最好使用绝对路径来执行命令，比较不会有问题。需要注意的是,<strong><code>at</code>在运行时，会跑到当时执行<code>at</code>命令的那个工作目录中去</strong></p>
+
+<p><code>at</code>命令的执行与终端机环境无关，而所有standard output/standard error output都会传送到执行者的mailbox中去</p>
+
+<p>由于在<code>at</code>工作调度的使用上，系统会将该项<code>at</code>工作独立出你的bash环境中，直接交给系统的<code>atd</code>程序来接管，因此，当你执行了<code>at</code>的工作之后就可以立刻脱机了，剩下的工作就完全交给Linux管理即可！所以有长时间的网络工作时，使用<code>at</code>可以免除网络断线后的困扰</p>
+
+<p><strong><code>at</code>工作的管理</strong></p>
+
+<p><code>atq</code>:查询目前主机上有多少的<code>at</code>工作调度
+<code>atrm</code>:删除<code>at</code>工作调度</p>
+
+<p><strong><code>batch</code>:系统有空时才进行后台任务</strong></p>
+
+<p><code>batch</code>是利用<code>at</code>来进行命令的执行，只是加入了一些控制参数而已，它的特殊地方在于:<strong>它会在CPU工作负载低于0.8的时候，才进行你所执行的工作任务</strong>
+工作负载:CPU在单一时间点所负责的工作数量
+还需要说明的是，<code>batch</code>也是可以使用<code>atq</code>和<code>atrm</code>来管理</p>
+
+<h2 id="section-65">循环执行的例行性工作调度</h2>
+
+<h3 id="section-66">用户的设置</h3>
+
+<p>用户想要新建循环型工作调度时，使用的是<code>crontab</code>这个命令，与<code>at</code>相似，我们也可以限制使用<code>crontab</code>的用户账号。使用的限制数据有:
+- <code>/etc/cron.allow</code>
+	将可以使<code>crontab</code>的账号写入其中，若不在这个文件内的用户则不可使用<code>crontab</code>
+- <code>/etc/cron.deny</code>
+	将不可以使用<code>crontab</code>的账号写入其中，若未记录到这个文件当中的用户，就可以使用<code>crontab</code></p>
+
+<p>优先级和<code>at</code>的相似，一般来说，系统的默认保留一个空的<code>/etc/cron.deny</code></p>
+
+<p>当用户使用<code>crontab</code>这个命令来新建工作调度之后，该项工作就会被记录到<code>/var/spool/cron/</code>里面去了，而且是以账号来作为判别的。另外，<code>cron</code>执行的每一项工作都会被记录到<code>/var/log/cron</code>这个日志文件中，所以，如果你的Linux不知道有否被植入木马时，也可以查询一下<code>/var/log/cron</code>这个日志文件</p>
+
+<p>当执行<code>crontab -e</code>命令后，会进入vi编辑界面，然后以一个工作一行来编辑，每项工作(每行)的格式都是具有六个字段，这六个字段的意义分别如下:</p>
+
+<p>|&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;+&mdash;&mdash;&ndash;|
+|  代表意义  |  分钟  |  小时  |  日期  |  月份  |  周  |  命令  |
+|:&mdash;&mdash;&mdash;-:|:&mdash;&mdash;:|:&mdash;&mdash;:|:&mdash;&mdash;:|:&mdash;&mdash;:|:&mdash;-:|:&mdash;&mdash;:|
+|  数字范围  |  0~59  |  0~23  |  1~31  |  1~12  |  0~7 |  命令  |
+|&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;+&mdash;&mdash;&ndash;|
+周:周的数字为0或7时，都代表&rdquo;星期天&rdquo;的意思</p>
+
+<p>辅助字符:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">特殊字符</th>
+      <th style="text-align: center">代表意义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">*(星号)</td>
+      <td style="text-align: center">代表任何时刻都接受的意思。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">,(逗号)</td>
+      <td style="text-align: center">代表分隔时段的的意思。举例来说，如果要执行的工作是3:00与6:00时，就会是:<code>0 3,6 * * * command</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-(减号)</td>
+      <td style="text-align: center">代表一段时间范围内，举例来说，8点到12点之间的每小时的20分钟都进行一项工作:<code>20 8-12 * * * command</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/n(斜线)</td>
+      <td style="text-align: center">那个n代表数字，即是每隔n单位间隔的意思，例如每五分钟进行一次，则:<code>*/5 * * * * command</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>需要注意的是,如果只是要删除某个<code>crontab</code>的工作项目，那么请使用<code>crontab -e</code>来重新编辑即可，如果使用<code>-r</code>的参数，是会将所有的<code>crontab</code>数据内容都删掉的，千万注意了！</p>
+
+<h3 id="etccrontab">系统的配置文件:<code>/etc/crontab</code></h3>
+
+<p>这个<code>crontab -e</code>是针对用户的<code>cron</code>来设计的，如果是系统的例行性任务时，只需要编辑<code>/etc/crontab</code>这个文件就可以了。需要注意的是，<code>crontab -e</code>这个crontab其实是<code>/usr/bin/crontab</code>这个可执行文件，但是<code>/etc/crontab</code>可是一个&rdquo;纯文本文件&rdquo;，你可以以root的身份编辑这个文件</p>
+
+<p>基本上，cron这个服务最低检测限制是&rdquo;分钟&rdquo;,所以cron会每分钟去读取一次<code>/etc/cronable</code>与<code>/var/spool/cron/</code>里面的数据内容，因此，只要编辑完<code>/etc/crontab</code>这个文件，并且将它保存之后，那么cron的设置就自动会来执行了。</p>
+
+<p><code>/etc/crontab</code>文件中的内容如下所示:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">分</th>
+      <th style="text-align: center">时</th>
+      <th style="text-align: center">日</th>
+      <th style="text-align: center">月</th>
+      <th style="text-align: center">周</th>
+      <th style="text-align: center">执行者</th>
+      <th style="text-align: center">命令串</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">01</td>
+      <td style="text-align: center">*</td>
+      <td style="text-align: center">*</td>
+      <td style="text-align: center">*</td>
+      <td style="text-align: center">*</td>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">run-parts  /etc/cron.hourly</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code>run-parts</code>:将后面接的&rdquo;目录&rdquo;内的所有文件找出来执行</p>
+
+<p>由于CentOS提供的<code>run-parts</code>这个script的辅助，因此<code>/etc/crontab</code>这个文件里面支持两种执行命令的方式，一种是直接执行命令，一种则是以目录来规划:</p>
+
+<ul>
+  <li>命令类型:<code>01 * * * * flyaway mail -s "testing" kiki &lt; /home/flyaway/test.txt</code></li>
+  <li>目录规划:<code>*/5 * * * * root run-parts /root/runcron</code></li>
+</ul>
+
+<h2 id="section-67">可唤醒停机期间的工作任务</h2>
+
+<h3 id="anacron">什么是anacron</h3>
+
+<p>anacron并不是用来替代crontab的，anacron并不能指定何时执行某项任务，而是以天为单位或者是在开机后立刻进行anacron的操作，它会去检测停机期间应该进行但并没有进行的crontab任务，并将该任务执行一遍，然后anacron就会自动停止了。</p>
+
+<h1 id="selinux">程序管理与SELinux初探</h1>
+
+<h2 id="process">什么是进程(process)</h2>
+
+<p>在Linux中，触发任何一个事件时，系统都会将它定义成为一个进程，并且给予这个进程一个ID，成为PID,同时依据触发这个进程的用户与相关属性关系，给予这个PID一组有效的权限设置</p>
+
+<h3 id="process--program">进程与程序(process &amp; program)</h3>
+
+<p>由当前进程衍生出来的其他进程在一般状态下，也会沿用这个进程的相关权限
+<strong>总结</strong>
+程序(program):通常二进制程序放置在存储媒介中，以物理文件的形式存在
+进程(process):程序被触发之后，执行者的权限与属性、程序的程序代码与所需要数据等会被加载到内存中，操作系统并给予这个内存内的单元的一个标示符(PID),可以说，进程就是一个正在运行中的程序。</p>
+
+<p><strong>fork and exec:过程调用的流程</strong>
+进程之间的相互调用，在Linux中通常称为fork-and-exec的流程。进程会通过父进程以复制(fork)的方式产产生一个一模一样的子进程，然后被复制出来的子进程再以exec的方式来执行实际要进行的进程，最终就成为一个子进程的存在。
+系统先以fork的方式复制一个与父进程相同的暂存进程，这个进程与父进程唯一的区别就是PID不同，但是这个暂存进程还会多一个PPID的参数，PPID就是父进程的进程标示符。</p>
+
+<p><strong>系统或网络服务:常驻在内存的进程</strong>
+常驻进程被我们成为服务(daemon),系统的服务非常多，大致分为系统本身需要的服务，还有一些负责网络联机的服务。</p>
+
+<h2 id="job-control">工作管理(job control)</h2>
+
+<h3 id="section-68">什么是工作管理</h3>
+
+<p>在进行工作管理的行为中，其实每个工作都是目前bash的子进程，即彼此之间是有相关性的。我们无法以job control的方式由tty1的环境去管理tty2的bash</p>
+
+<p>出现提示符让你的操作的环境成为前台(foreground)，至于其他工作就可以让你放入后台(background)去暂停或运行。要注意的是，放入后台的工作想要运行时，它必须不能够与用户互动。举例来说，vim绝对不可能在后台里面执行(running)，而且放入后台的工作不可以使用[ctrl]+c来终止的</p>
+
+<p>要进行bash的job control必须要注意到的限制是:
+- 这些工作所触发的进程必须来自于你shell的子进程
+- 前台:你可以控制欲执行命令的这个环境称为前台(foreground)的工作
+- 后台:可以运行的工作，无法使用[ctrl]+c终止它，可以使用bg/fg调用该工作
+- 后台中的程序分为&rdquo;暂停&rdquo;(stop)与&rdquo;运行中&rdquo;(running)
+- 后台中&rdquo;执行&rdquo;的进程不能等待terminal/shell的输入(input)</p>
+
+<h3 id="job-control-1">job control管理</h3>
+
+<p><strong>直接将命令丢到后台中&rdquo;执行&rdquo;的&amp;</strong>
+在需要执行的命令后面加上一个&rdquo;&amp;&rdquo;就代表说这个命令丢到后台中去执行，此时bash会给予这个命令一个&rdquo;工作号码&rdquo;(job number),同时每个工作都会搭配一个PID，因为每一个工作都是一个进程。将工作放到后台去最大的好处就是不怕被[ctrl]+c中断，此外，将工作丢到后台当中要特别注意数据流的重定向，如果没有重定向的话，错误信息都会直接输出到屏幕上，影响前台的工作。</p>
+
+<p><strong>将目前工作丢到后台中&rdquo;暂停&rdquo;:[ctrl]-z</strong>
+默认情况下，使用[ctrl]-z丢到后台当中的工作都是&rdquo;暂停&rdquo;的状态</p>
+
+<p><strong>查看目前的后台工作状态:jobs</strong>
+利用<code>jobs</code>命令可以查看目前有多少工作是在后台中的，输出结果中的&rdquo;+&rdquo;号表示默认取用的工作
+其实+代表最近被放到后台的工作号码，-代表最近最后第二个被放置到后台中的工作号码，而超过最后第三个以后的工作，就不会有+/-符号存在了</p>
+
+<p><strong>将后台工作拿到前台来处理:fg</strong></p>
+
+<div class="highlight"><pre><code class="bash"><span class="nb">fg</span> %jobnumber
+</code></pre></div>
+
+<p>jobnumber表示工作号码</p>
+
+<p><strong>让工作在后台下的状态变成运行中:bg</strong></p>
+
+<p>用法与<code>fg</code>相同，只是是放在后台中运行</p>
+
+<p><strong>管理后台当中的工作:kill</strong></p>
+
+<div class="highlight"><pre><code class="bash"><span class="nb">kill</span> -signal %jobnumber
+</code></pre></div>
+
+<p>通过<code>kill</code>命令可以给后台中执行的工作发送一个信号(signal),信号有很多种类，需要特别注意的是,-9通常是在强制删除一个不正常的工作时所使用的，-15则是以正常步骤结束一项工作(15也是默认值)，-1则是重新读一次配置文件(类似于reload)</p>
+
+<p>另外需要注意的是，<code>kill</code>后面接的数字默认是PID，如果想要管理bash的工作控制，就得要加上%数字了</p>
+
+<h3 id="section-69">脱机管理问题</h3>
+
+<p>需要注意的是，我们在工作管理当中提到的&rdquo;后台&rdquo;指的是在终端机模式下可以避免[ctrl]-c中断的一个情境，并不是放到系统的后台去。所以，工作管理的后台依旧与终端机有关。在这样的情况下，如果是以远程连接的方式连接到你的Linux主机，并且将工作以&amp;的方式放到后台去，在工作尚未结束时就脱机了，这个工作也会被中断掉，并不会继续执行
+为了避免上述的情况，可以使用<code>nohup</code>命令:</p>
+
+<div class="highlight"><pre><code class="bash">nohup <span class="o">[</span>命令与参数<span class="o">]</span>			<span class="c">#在终端机前台中工作</span>
+nohup <span class="o">[</span>命令与参数<span class="o">]</span> &amp;		<span class="c">#在终端机后台中工作</span>
+</code></pre></div>
+
+<p>需要注意的是，<code>nohup</code>并不支持bash内置的命令，因此你的命令必须要是外部命令才行，即把命令写入一个脚本文件中，然后用<code>nohup</code>去调用这个脚本</p>
+
+<h2 id="section-70">进程管理</h2>
+
+<h3 id="section-71">进程的查看</h3>
+
+<p><strong>ps:将某个时间点的进程运行情况选取下来</strong></p>
+
+<div class="highlight"><pre><code class="bash">ps aux					<span class="c">#查看系统所有进程数据</span>
+ps -lA					<span class="c">#也是能够查看所有系统的数据</span>
+ps axjf					<span class="c">#连同部分进程数状态</span>
+</code></pre></div>
+
+<p><strong>仅查看自己的bash相关的进程:ps -l</strong></p>
+
+<p>|&mdash;&ndash;+&mdash;&ndash;+&mdash;&ndash;+&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;+&mdash;&ndash;+&mdash;&mdash;+&mdash;&ndash;+&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;|
+|  F  |  S  |  UID|  PID    |  PPID   |  C  |  PRI | NI  | ADDR|  SZ    |  WCHAN |  TTY     |  TIME      |  CMD   | 
+|:&mdash;:|:&mdash;:|:&mdash;:|:&mdash;&mdash;-:|:&mdash;&mdash;-:|:&mdash;:|:&mdash;-:|:&mdash;:|:&mdash;:|:&mdash;&mdash;:|:&mdash;&mdash;:|:&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;-:|:&mdash;&mdash;:|
+|  4  |  S  |  0  |  13639  |  13637  |  0  |  75  |  0  |  -  |  1287  |  wait  |  pts/1   |  00:00:00  |  bash  |
+|  4  |  R  |  0  |  13700  |  13639  |  0  |  77  |  0  |  -  |  1101  |  -     |  pts/1   |  00:00:00  |  ps    |
+|&mdash;&ndash;+&mdash;&ndash;+&mdash;&ndash;+&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;+&mdash;&ndash;+&mdash;&mdash;+&mdash;&ndash;+&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;|
+说明如下:
+- F:代表这个进程标志(precess flags)，说明这个进程的权限，常见的号码有:
+		- 若为4，则表示权限为root
+		- 若为1，则表示此子进程仅可进行复制(fork)而无法实际执行(exec)
+- S:代表这个进程的状态(STAT),主要的状态有:
+		- R(Running):该进程正在运行中
+		- S(Sleep):该进程目前正在睡眠状态(idle),但可以被唤醒(signal)
+		- D:不可被唤醒的状态，通常这个进程可能在等待I/O的情况(ex&gt;打印)
+		- T:停滞状态(stop),可能是工作控制(后台暂停)或除错(traced)状态
+		- Z(Zombie):&rdquo;僵尸&rdquo;状态,进程已经终止但却无法被删除至内存外
+- UID/PID/PPID:代表此进程被该UID所拥有/进程的PID号码/此进程的父进程PID号码。
+- C:代表CPU使用率，单位为百分比
+- PRI/NI:Priority/Nice的缩写，代表此进程被CPU所执行的优先级，数值越小代表该进程越快被CPU执行。
+- ADDR/SZ/WCHAN:都与内存有关，ADDR是kernel function,指出该进程在内存的哪个部分，如果是running的进程，一般就会显示&rdquo;-&ldquo;。SZ代表此进程用掉多少内存。WCHAN表示目前进程是否运行中，同样，若为-表示正在进行中
+- TTY:登陆者的终端机位置，若为远程登录则使用动态终端接口(pts/n)
+- TIME:使用掉的CPU时间，注意，是此进程实际花费CPU运行的时间，而不是系统时间。
+- CMD:就是command的缩写，造成此程序的触发进程的命令为何</p>
+
+<p><strong>查看系统所有进程:ps aux</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">USER</th>
+      <th style="text-align: center">PID</th>
+      <th style="text-align: center">%CPU</th>
+      <th style="text-align: center">%MEM</th>
+      <th style="text-align: center">VSZ</th>
+      <th style="text-align: center">RSS</th>
+      <th style="text-align: center">TTY</th>
+      <th style="text-align: center">STAT</th>
+      <th style="text-align: center">START</th>
+      <th style="text-align: center">TIME</th>
+      <th style="text-align: center">COMMAND</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0.0</td>
+      <td style="text-align: center">0.0</td>
+      <td style="text-align: center">2046</td>
+      <td style="text-align: center">616</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Ss</td>
+      <td style="text-align: center">09:48</td>
+      <td style="text-align: center">0:01</td>
+      <td style="text-align: center">init</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code>ps -l</code>和<code>ps aux</code>显示的项目并不相同，各字段意义如下:
+- USER:该进程属于哪个用户账号的。
+- PID:该进程的进程标示符
+- %CPU:该进程使用掉的CPU资源百分比
+- %MEN:该进程所占用的物理内存百分比
+- VSZ:该进程使用掉的虚拟内存量(KB)
+- RSS:该进程占用的固定的内存量(KB)
+- TTY:该进程是在哪个终端机上面运行，若与终端机无关，则显示?另外,tty1~tty6是本机上面的登陆者程序，若为pts/0等的，则表示为由网络连接进主机的进程
+- STAT:该进程目前的状态，状态显示与ps -l的S标识相同(R/S/T/Z)
+- START:该进程被触发启动的时间
+- TIME:该进程实际使用CPU运行的时间
+- COMMAND:该进程的实际命令</p>
+
+<p><strong>僵尸进程</strong>
+通常，造成僵尸进程的成因是因为该进程应该已经执行完毕，或者是因故应该要终止了，但是该进程的父进程却无法完整将该进程结束掉，而造成一直存在内存当中。如果你发现在某个进程的CMD后面还接上了<defunct>时，就代表该进程是僵尸进程。</defunct></p>
+
+<p><strong>top:动态查看进程的变化</strong>
+相对于ps是选取一个时间点的进程状态，top则可以持续检测进程运行的状态,top默认是每隔5s更新一次进程资源，可以使用-d来进行修改。top主要分为两个界面，上面的界面为整个系统的资源使用状态，基本上总共有六行，显示的内容依序是:
+- 第一行(top&hellip;): 
+		- 目前的开机时间
+		- 开机到目前为止所经过的时间
+		- 已经登录的用户人数
+		- 系统在1,5,15分钟的平均工作负载，越小代表系统越闲置，若高于1得要注意你的系统压力是否太过繁复了。
+- 第二行(Tasks&hellip;):显示的目前进程总数与个别进程在什么状态(running,sleeping,stopped,zombie)。比较需要注意的是最后的zombie那个数值，如果不是0的，那就需要查看哪个进程变成了僵尸
+- 第三行(Cpus&hellip;):显示的是CPU的整体负载，每个选项可用?查询。需要特别注意的是%wa,那个选项代表的是I/Owait，通常你的系统会变慢都是I/O产生的问题比较大！
+- 第四行与第五行:表示目前物理内存与虚拟内存(Mem/Swap)的使用情况。
+- 第六行:这个是当在top进程当中输入命令时显示状态的地方</p>
+
+<p>至于top下半部分的界面，则是每个进程使用的资源情况，比较需要注意的是：
+- PID:每个进程的ID
+- USER:该进程所属的用户
+- PR:Priority的简写，进程的优先执行顺序，越小越早被执行
+- NI:Nice的简写，与Priority有关，也是越小越早被执行
+- %CPU:CPU的使用率 - %MEM:内存的使用率
+- TIME+:CPU使用时间的累加</p>
+
+<p>top默认使用CPU使用率作为排序的重点，如果你想要使用内存使用率排序，则可以按下&rdquo;M&rdquo;,若要恢复则按下&rdquo;P&rdquo;即可</p>
+
+<p><strong>pstree</strong>
+通过<code>pstree</code>可以查看进程之间的相关性，所有进程都是依附在init这个进程下面的，它的进程号是1，因为它是由Linux内核主动调用的第一个进程</p>
+
+<h3 id="section-72">进程的管理</h3>
+
+<p>通过给予进程一个信号(signal)，就可以方便的管理进程。可以使用<code>kill -l</code>查看所有的信号(signal)
+主要的信号与名称及内容如下表所示:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">代号</th>
+      <th style="text-align: center">名称</th>
+      <th style="text-align: left">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">SIGHUP</td>
+      <td style="text-align: left">启动被终止的进程，可让该PID重新读取自己的配置文件，类似于重新启动</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">SIGINT</td>
+      <td style="text-align: left">相当于用键盘[ctrl]-c来中断一个进程的进行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">SIGKILL</td>
+      <td style="text-align: left">代表强制中断一个进程的进行，如果该进程进行到一半，那么尚未完成的部分可能会有&rdquo;半成品&rdquo;产生，类似vim会有filename.swap保留下来</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">15</td>
+      <td style="text-align: center">SIGTERM</td>
+      <td style="text-align: left">以正常的结束进程来终止该进程。由于是正常的终止，所以后续的操作会将它完成。不过，如果该进程已经发生问题，就是无法用正常的方法终止时，输入这个signal也是没用的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">17</td>
+      <td style="text-align: center">SIGSTOP</td>
+      <td style="text-align: left">相当于用键盘[ctrl]-z来暂停一个进程的执行</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>kill -siganl PID</strong>
+kill可以帮我们将信号传送给某个工作(%jobnumber)或者是某个PID(直接输入数字)，这个需要强调的是:<strong>kill后面直接加数字与加上%number的情况是不同的</strong> 
+使用kill命令也可以将某个莫名其妙的登陆者的连接删除，先通过<code>pstree -p</code>找到相关进程，然后再以<code>kill -9</code>将该进程删除，该连接就会被踢掉了！</p>
+
+<p><strong>killall -signal</strong>
+<code>killall</code>可以通过&rdquo;执行命令的名称&rdquo;来给予信号</p>
+
+<div class="highlight"><pre><code class="bash">killall -9 httpd			<span class="c">#强制删除所有以httpd启动的进程</span>
+</code></pre></div>
+
+<h3 id="section-73">关于进程的执行顺序</h3>
+
+<p><strong>Priority与Nice值</strong>
+Linux给予进程一个所谓的&rdquo;优先执行序&rdquo;(priority,PRI),这个PRI值越低代表越优先的意思。不过这个PRI值是由内核动态调整的，用户无法直接调整PRI的值
+由于PRI是内核动态调整的，用户无法干涉。如果想要调整进程的优先执行顺序时，就得要通过Nice值了，PRI与NI的相关性如下:
+<code>PRI(new) = PRI(old) + nice</code>
+虽然nice值是可以影响PRI，不过，最终的PRI仍是要经过系统分析后才会决定的。当nice值为负值时，那么该程序就会降低PRI值，即会变得较优先被处理。
+另外需要注意的是:
+- nice值可调整的范围是-20~19
+- root可随意调整自己或他人进程的Nice值，且范围为-20~19
+- 一般用户仅可调整自己进程的nice值，且范围仅为0~19(避免一般用户抢占系统资源：)
+- 一般用户仅可将nice值越调越高
+- nice值是可以在父进程与子进程之间传递</p>
+
+<p><strong>nice:新执行的命令即给予新的nice值</strong></p>
+
+<div class="highlight"><pre><code class="bash">nice <span class="o">[</span>-n 数字<span class="o">]</span>  <span class="nb">command</span>
+ <span class="c">#用root给一个nice值为-5,用于执行vi</span>
+nice -n -5 vi &amp;
+</code></pre></div>
+
+<p><strong>nice:已存在进程的nice重新调整</strong>
+如果要调整的是已经存在的某个进程的话，那么就要使用renice了。</p>
+
+<div class="highlight"><pre><code class="bash">renice <span class="o">[</span>number<span class="o">]</span> PID
+</code></pre></div>
+
+<h3 id="section-74">系统资源的查看</h3>
+
+<p><strong>free:查看内存使用情况</strong>
+通常来说，系统会很有效率的把所有内存都用光，内存被用光是正常的，相反需要注意的是swap容量，一般来说，swap最好不要被使用，尤其swap最好不要被使用超过20%以上，如果发现超过20%，那最好更换物理内存了。</p>
+
+<p><strong>uname:查看系统与内核相关信息</strong>
+这个命令可以列出目前系统的内很版本、主要硬件平台以及CPU类型等信息</p>
+
+<p><strong>uptime:查看系统启动时间与工作负载</strong>
+显示目前系统已经开机多久的时间，以及1,5,15分钟的平均负载。</p>
+
+<p><strong>netstat:跟踪网络</strong>
+基本上，<code>ntstat</code>的输出分为两大部分，分别是网络与系统自己的进程相关性部分
+先看网络部分:
+- Proto:网络的数据包协议，主要分为TCP与UDP数据包
+- Recv-Q:非由用户进程连接到此socket的复制的总字节数
+- Send-Q:非由远程主机传送过来的acknowledged的总字节数
+- LocalAddress:本地的IP端口情况
+- ForeignAddress:远程主机的IP端口情况
+- State:连接状态，主要有建立(ESTABLISED)及监听(LISTEN)</p>
+
+<p>socket进程部分:
+- Protr:一般就是Unix
+- RefCnt:连接到此socket的进程数量
+- Flags:连接的标识
+- Type:socket访问类型。主要确认连接的STREAM与不需要确认的DGRAM两种
+- State:若为CONNECTED表示多个进程之间已经建立连接
+- Path:连接到此socket的相关程序的路径，或者是相关数据输出的路径</p>
+
+<p><strong>dmesg:分析内核产生的信息</strong>
+系统在开机的时候，内核会去检测系统的硬件，某些硬件到底有没有被识别出来，那就与这个时候的检测有关。通过<code>dmesg</code>就能显示出这些系统检测信息</p>
+
+<p><strong>vmstat:检测系统资源变化</strong>
+如果想要动态了解系统资源的运行，那么就可以使用<code>vmstat</code>这个命令
+输出信息的各个字段的说明如下:
+进程字段(procs)的选项分别为:
+- r:等待运行中的进程数量
+- b:不可被唤醒的进程数量，这两个选项越多，代表系统越忙碌
+内存字段(memory)的选项分别为:
+- swpd:虚拟内存被使用的容量
+- free:未被使用的内存容量
+- buff:用于缓冲存储器
+- cache:用于高速缓存
+内存交换空间(swap)的选项分别为:
+- si:由磁盘中将程序取出的量
+- so:由于内存不足而将没用到的程序写入到磁盘的swap容量。如果si/so的数值太大，表示内存的数据经常得在磁盘与内存之间传来传去，系统性能会很差
+- 磁盘读写(io)的选项分别为:
+- bi:由磁盘写入的块数量
+- bo:写入到磁盘去的块数量。如果这部分的值越高，代表系统的I/O非常忙碌
+系统(system)的项目分别为:
+- in:每秒钟被中断的进程次数
+- cs:每秒钟进行的事件切换次数。这两个数值越大，代表系统与接口设备的通信非常频繁。这些接口设备包括磁盘、网卡、时钟等
+CPU的选项分别为:
+- us:非内核层的CPU使用状态
+- sy:内核层所使用的CPU状态
+- id:闲置的状态
+- wa:等待I/O所耗费的CPU状态
+- st:被虚拟机(virtual machine)所盗用的CPU使用状态</p>
+
+<h2 id="section-75">特殊文件与程序</h2>
+
+<h3 id="suidsgid">具有SUID/SGID权限的命令执行状态</h3>
+
+<p>SUID的程序被一般用户执行的过程:
+- SUID权限仅对二进制程序(binary program)有效
+- 执行者对于该程序需要具有x的可执行权限
+- 本权限仅在执行该程序的过程中有效(run-time)
+- 执行者具有该程序所有(owner)的权限</p>
+
+<p>当一般用户触发一个具有SUID权限的程序时，会取得一个新的进程与PID，该PID产生时通过SUID来给予该PID特殊的权限设置。</p>
+
+<h3 id="proc">/proc/*代表的意义</h3>
+
+<p>我们之前提到的所谓的进程都是在内存当中的，而内存当中的数据又都是写入到/proc/*这个目录下的，所以，我们可以直接查看/proc这个目录当中的文件
+基本上，目前主机上面的各个进程的PID都是以目录的类型存在于/proc当中,每个进程的目录中，包含了各自的各种数据</p>
+
+<h3 id="section-76">查询已打开文件或已执行程序打开的文件</h3>
+
+<p><strong>fuser:通过文件(或文件系统)找出正在使用该文件的程序</strong>
+输出结果中的Access的选项代表的意义为:
+- c:此进程在当前目录下(非子目录)
+- e:可被触发为执行状态
+- f:是一个被打开的文件
+- F:该文件被打开了，不过在等待回应中
+- m:可能为分享的动态函数库</p>
+
+<p><strong>lsof:列出被进程所打开的文件名</strong>
+相对于<code>fuser</code>反过来的操作就是<code>lsof</code>，<code>lsof</code>能够查出某个进程打开或者使用的文件与设备</p>
+
+<p><strong>pidof:找出某个正在执行的进程的PID</strong>
+这个<code>pidof</code>命令配合上<code>ps aux</code>与正则表达式，就可以很轻易地找到你所想要的程序内容了</p>
+
+<h2 id="selinux-1">SELinux初探</h2>
+
+<h3 id="selinux-2">什么是SELinux</h3>
+
+<p>SELinux:Security Enhanced Linux,字面上意义就是<strong>安全强化的Linux</strong></p>
+
+<blockquote>
+  <p>这部分内容比较多，而且暂时没有什么实际用途，所以放在以后再学习这部分内容</p>
+</blockquote>
+
+<h1 id="daemons">认识系统服务(daemons)</h1>
+
+<h2 id="daemonservice">什么是daemon与服务(service)</h2>
+
+<p>service:常驻在内存中的进程，且可以提供一些系统或网络的功能
+deemon:实现某个service的程序</p>
+
+<h3 id="daemon">daemon的主要分类</h3>
+
+<p>如果依据deamon的启动与管理方式来区分，基本上，可以将daemon分为可独立启动的stand alone，与通过一个super daemon来统一管理的服务这两大类
+- <strong>stand alone:此daemon可以自行单独启动服务</strong>
+	这种类型的daemon可以自动启动而不必通过其他机制的管理，daemon启动并加载到内存后就一直占用内存与系统资源。最大的优点就是:因为是一直存在在内存内持续提供服务，因此对于发生客户端请求时，stand alone的daemon响应速度较快。常见的stand alone daemon有www的daemon(httpd)、FTP的daemon(vsftpd)等
+- <strong>super daemon:一个特殊的daemon来统一管理</strong>
+	这种服务的启动方式则是通过一个统一的daemon来负责唤起服务。这个特殊的daemon就被称为super daemon。早期的super daemon是inetd这一个，后来则被xinetd所代替。这种机制有趣的地方在于:<strong>当没有客户端请求时，各项服务都是未启动的状态，等到来自客户端的请求时，super daemon才会唤醒对应的服务，当客户端的请求结束后，被唤醒的这个服务也会关闭并释放系统资源</strong>
+	这种机制的好处是:1.由于super daemon负责唤醒各项服务，因此super daemon可以具有安全控管机制，就是类似网络防火墙的功能 2.由于服务在客户端连接结束后就关闭，因此不会一直占用系统资源。缺点是服务的反应时间会比较慢，因为该服务要先从磁盘加载到内存中去，常见的super daemon所管理的服务例如有telnet</p>
+
+<p>另外需要注意的是，针对super daemon的处理模式有两种:
+- multi-threaded(多线程)
+- single-threaded(单线程)</p>
+
+<p>在Linux中stand daemon与super daemon是可以共存的</p>
+
+<p>如果以daemon提供服务的工作状态来区分，又可以将daemon分为两类，分别是:
+- signal-control:这种daemon是通过信号来管理的，只要有任何客户端请求进来，它就会立即启动区处理，例如打印机的服务(supsd)
+- interval-control:这种daemon则主要是每隔一段时间去主动执行某项工作，所以需要做的就是在配置文件中指定服务要进行的时间与工作，该服务在制定的时间才回去完成工作</p>
+
+<p><strong>daemon的命名规则</strong></p>
+
+<p>当开发一个服务时，通常程序的文件名是服务名后面加上一个&rsquo;d&rsquo;,例如at和cron这两个服务，它们的程序文件名会被取为atd与crond</p>
+
+<h3 id="section-77">服务与端口的对应</h3>
+
+<p>网络服务需要和端口绑定，服务与端口的对应文件:<code>/etc/services</code></p>
+
+<h3 id="daemon-1">daemon的自动脚本与启动方式</h3>
+
+<p>虽然提供某个服务的daemon只是一个进程，但是这个daemon的启动还需要执行文件、配置文件、执行环境等，要启动一个daemon，需要考虑的事情有很多，并非单纯执行一个进程就够了
+通常distribution会给我们一个简单的shell script来进行启动的功能。该script可以进行环境的检查、配置文件的分析、PID文件的放置，以及相关重要交换文件的锁住(lock)操作，只要执行该script，上述的操作就一口气连续进行，最终就能够顺利且简单地启动这个daemon。
+daemon相关文件的放置位置:</p>
+
+<p><strong>/etc/init.d/*:启动脚本放置处</strong>
+系统上几乎所有的服务启动脚本都放置在这里，事实上这是公认的目录。</p>
+
+<p><strong>/etc/sysconfig/*:各服务的初始化环境配置文件</strong>
+几乎所有的服务都会将初始化的一些参数设置写入到这个目录下</p>
+
+<p><strong>/etc/xinetd.conf,/etc/xinetd.d/*:super daemon配置文件</strong>
+super daemon的主要配置文件(其实是默认值)为<code>/etc/xinetd.d.conf</code>,但是super daemon只是一个统一管理的机制，它所管理的其他daemon的设置则写在<code>/etc/xinetd.d/*</code>里面</p>
+
+<p><strong>/etc/*:各服务各自的配置文件</strong></p>
+
+<p><strong>/var/lib/*:各服务产生的数据库</strong>
+一些会产生数据的服务都会将它的数据写入到<code>/var/lib/</code>目录下。举例来说，数据库管理系统MySQL的数据默认就是写入到<code>/var/lib/mysql/</code>这个目录下。</p>
+
+<p><strong>/var/run/*:各服务的程序的PID记录处</strong>
+虽然之前说过，所有内存中的进程都是写入到<code>/proc/*</code>中的，但是，为了在管理服务时不影响其他的进程，所以daemon通常会将自己的PID记录一份到<code>/var/run/*</code>当中</p>
+
+<p><strong>Stand alone的/etc/init.d/*启动</strong>
+之前说过，几乎系统上面所有服务的启动脚本都在<code>/etc/ini.d</code>下面，这里面的脚本会去检测环境、查找配置文件、加载distribution提供的函数功能、判断环境是否可以运行此daemon等，等一切都检测完成完毕且确定可以运行后，再以shell script的case&hellip;esac语法来启动、关闭、查看此daemon。</p>
+
+<p>CentOS还提供了另外的可以启动stand alone服务的脚本，那就是service这个进程。其实service仅是一个script，它可以分析你执行的service后面的参数，然后根据你的参数再到<code>/etc/init.d</code>去去的正确的服务来start或stop</p>
+
+<p>事实上，在Linux系统中，要开或关某个端口，就是需要启动或关闭某个服务。因此，你可以找出某个端口对应的服务及程序对应的服务，进而启动或关闭它，那么那个由该服务而启动的端口自然就会关掉</p>
+
+<p><strong>super daemon的启动方式</strong>
+其实super daemon本身也是一个stand daemon的服务，因为super daemon要管理后续的其他服务，它当然自己要常驻在内存中，所以super daemon自己自动的方式与stand alone是相同的。但是它所管理的其他daemon就不是这样做了，必须要在配置文件中设置为启动该daemon才行。配置文件就是<code>/etc/xinetd.d/*</code>的所有文件</p>
+
+<h2 id="super-daemon">解析super daemon的配置文件</h2>
+<p>super daemon是一个总管进程，这个super daemon是xinetd这个进程实现的，这个xinetd可以进行安全性或者其他管理机制的控制，xinetd也能控制连接的行为，这些控制手段都可以让我们的某些服务更为安全、资源管理更为合理
+super daemon的默认配置文件是<code>/etc/xinetd.conf</code></p>
+
+<h3 id="xinetdconf">默认配置文件:xinetd.conf</h3>
+
+<p>如果你启动某个supe daemon管理的服务，但是该服务设置值并没有<code>/etc/xinetd.conf</code>中指定的那些项目，那么该服务的设置值就以上述的默认值为主
+既然这只是一个默认参数文件，那么自然有更多的服务参数文件。而所有的服务参数文件都在<code>/etc/xinetd.d</code>里面,其中的参数文件的格式如下所示:</p>
+
+<div class="highlight"><pre><code class="bash">service &lt;service_name&gt;
+<span class="o">{</span>
+			&lt;attribute&gt;			&lt;assign_op&gt;			&lt;value&gt;				&lt;value&gt;			...
+			....
+<span class="o">}</span>
+</code></pre></div>
+
+<p>第一行一定都有一个service，至于那个<service_name>里面的内容则与`/etc/services`有关，因为它可以对照着`/etc/services`内的服务名称与端口号来决定所要启动的port是哪个。相关的参数就在两个大括号中间。atribute是一些xinetd的管理参数，assign_op则是参数的设置方法，assign_op的主要设置形式有:
+- =:表示后面的设置参数就是这样
+- +=:表示后面的设置为在原来的设置里面加入新的参数
+- -=:表示后面的设置为在原来的参数中舍弃这里输入的参数</service_name></p>
+
+<h2 id="section-78">系统开启的服务</h2>
+
+<h3 id="section-79">查看系统启动的服务</h3>
+
+<p>服务名称与port对应的数据在<code>/etc/services</code>中
+基本上，以<code>ps</code>来查看整个系统上面的服务是比较妥当的，因为它可以将全部的process都找出来。但是，如果只关心网络监听服务的话，利用<code>netstat</code>可以取得很多跟网络有关的服务信息，通过这个命令，我们可以轻易了解到网络的状态，并且可以通过PID与kill相关功能，将有问题的数据给它杀掉。当然，要更详细地取得PPID的话，才能够完全阻挡有问题的进程！</p>
+
+<h3 id="section-80">设置开机后立即启动服务的方法</h3>
+
+<p>Linux开机过程:
+1. 打开计算机电源，开始读取BIOS并进行主机的自我测试
+2. 通过BIOS取得第一个可开机设备，读取主要开机区(MBR)取得启动装载程序
+3. 通过启动装载程序的设置，取得kernel并加载内存且检测系统硬件
+4. 内核主动调用init进程
+5. init进程开始执行系统初始化(<code>/etc/rc.d/rc.sysinit</code>)
+5. 依据init的设置进行daemonstart(<code>/etc/rc.d/rc[0-6].d/*</code>)
+6. 加载本机设置(<code>/etc/rc.d/rc.local</code>)</p>
+
+<p>我们在启动Linux系统时，可以进入不同的模式，这模式我们称为执行等级(run level)。不同的执行等级有不同的功能与服务，目前所知道的正常的执行等级有两个，一个是具有X窗口界面的run level 5，另一个则是纯文本界面的run level 3.</p>
+
+<p><strong>chkconfig:管理系统服务默认开机启动与否</strong>
+我们可以通过<code>chkconfig</code>命令很轻松地管理super daemon的服务</p>
+
+<div class="highlight"><pre><code class="bash"> <span class="c">#列出目前系统上面所有被chkconfig管理的服务</span>
+chkconfig --list | more
+</code></pre></div>
+
+<p>另外需要注意的是，<code>chkconfig</code>命令仅是设置开机默认启动的服务而已，所以该服务目前的状态如何是不知道的</p>
+
+<h1 id="section-81">认识与分析日志文件</h1>
+
+<h2 id="section-82">什么是日志文件</h2>
+
+<p>日志文件简单地说，就是<strong>记录系统活动的几个文件，例如:何时、何地(来源IP)、何人(什么服务名称)、做了什么操作(信息日志)</strong>换句话说，记录系统在什么时候由哪个进程做了什么样的行为时，发生了何种的事件等</p>
+
+<p><strong>日志文件的重要性</strong>
+- 解决系统方面的错误
+- 解决网络服务的问题
+- 过往事件记录簿</p>
+
+<p><strong>Linux常见的日志文件名</strong>
+日志文件的权限通常是设置为仅有root能够读取而已
+- /var/log/cron
+	例行性工作的日志文件
+- /var/log/dmesg
+	记录系统在开机的时候内核检测过程所产生的各项信息
+- /var/log/lastlog
+	记录系统上面所有的账号最近一次登录系统时的相关信息
+- /var/log/mailog或/var/log/mail/*
+	记录邮件往来的信息，其实主要是记录sendmail(SMTP协议提供者)与dovecot(POP3协议提供者)所产生的信息
+- /var/log/messages
+	这个文件相当重要，几乎系统发生的错误信息都会记录在这个文件中，如果系统发生莫名的错误时，这个文件一定要查阅的日志文件之一
+- /var/log/secure
+	基本上，只要牵涉到需要输入账号密码的软件，那么当登录时(不管登录正确或错误)都会被记录在此文件中
+- /var/log/wtmp,/var/log/faillog
+	这两个文件可以记录正确登录系统者的账户信息(wtmp)与错误登录时所使用的账户信息(faillog)
+- /var/log/httpd/<em>,/var/log/news/</em>,/var/log/samba/*
+	不同的网络服务会使它们自己的日志文件案来记载它们自己产生的各项信息</p>
+
+<p>常见的日志文件就是这几个，但是不同的Linux distribution中，通常日志文件的文件名不会相同。对于不同的系统还需要查阅相关的日志文件设置数据才行</p>
+
+<p><strong>日志文件所需相关服务(daemon)与进程</strong>
+日志文件的产生方式一般有两种:一种是有软件开发商自行定义写入的日志文件与相关格式，例如apache；另一种则是由Linux distribution提供的日志文件管理服务来统一管理，只要将信息丢给这个服务之后，它就会自己分门别类地将各种信息放置到相关日志文件去
+CentOS提供syslog这个服务来统一管理日志文件，除了syslog以外，内核也需要额外的登录服务来记录内核产生的各项信息，这个专门记录内核信息的日志文件服务就是klogd。总的来说，日志文件所需的服务主要就是syslog和klogd这两者
+为了防止日志文件无限量增大，我们可以通过logrotate(日志文件轮替)来自动化处理日志文件容量与更新的问题</p>
+
+<p>所谓logrotate，基本上就是将旧的日志文件更改名称，然后新建一个空的日志文件，如果以来，新的日志文件将重新开始记录，然后只要将旧的日志文件留下一阵子，那就可以达到将日志文件&rdquo;轮转&rdquo;。
+总结如下:
+syslogd:主要登录系统与网络等服务的信息要
+klogd:主要登录内核产生的各项信息
+logrotate:主要进行日志文件的轮替功能</p>
+
+<h2 id="syslogd">syslogd:记录日志文件的服务</h2>
+
+<h3 id="section-83">日志文件内容的一般格式</h3>
+
+<p>一般来说，系统产生的信息经过syslog而记录下来的数据中，每条信息均会记录下面几个重要的数据:
+- 事件发生的日期与时间
+- 发生此事件的主机名
+- 启动该时间的服务名称或函数名称
+- 该信息的实际数据内容</p>
+
+<h3 id="syslogetcsyslogconf">syslog的配置文件:/etc/syslog.conf</h3>
+
+<p>基本上，syslog针对各种服务与信息记录在某些文件的配置文件就是/etc/syslog.conf,这个文件规定了什么服务的什么等级信息以及需要被记录在哪里(设备或文件)这三个东西，设置的语法如下所示:</p>
+
+<div class="highlight"><pre><code class="bash">服务名称<span class="o">[</span>.<span class="o">=</span>!<span class="o">]</span>信息等级				信息记录的文件名或设备或主机
+ <span class="c">#以mail举例:</span>
+mail.info			/var/log/maillog_info
+ <span class="c">#这一行说明:mail服务产生的大于等于info等级的信息，都记录到/var/log/maillog_info文件中</span>
+</code></pre></div>
+
+<p><strong>服务名称</strong>
+syslog本身有设置一些服务，你可以通过这些服务来存储系统的信息.syslog设置的服务主要有下面这些:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">服务类型</th>
+      <th style="text-align: left">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">auth(authpriv)</td>
+      <td style="text-align: left">主要与认证有关的机制，例如login,ssh,su等需要账号/密码</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">cron</td>
+      <td style="text-align: left">就是例行性工作调度cron/at等生成信息日志的地方</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">daemon</td>
+      <td style="text-align: left">与各个daemon有关的信息</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">kern</td>
+      <td style="text-align: left">就是内核(kernel)产生信息的地方</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">lpr</td>
+      <td style="text-align: left">即是打印相关的信息</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">mail</td>
+      <td style="text-align: left">只要与邮件收发有关的信息记录都属于这个</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">news</td>
+      <td style="text-align: left">与新闻组服务器有关的东西</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">syslog</td>
+      <td style="text-align: left">就是syslogd这个程序本身生成的信息</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">user,uucp,local0~7</td>
+      <td style="text-align: left">与Unix like机器本身有关的一些信息</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>上述表格中的都是syslog自行制定的服务名称，软件开发商可以通过调用上述的服务名称来记录他们的软件。举例来说，sendmail与postfix及dovecot都是与邮件有关的软件，这些软件在设计日志文件记录时，都会主动调用syslogd内的mail服务名称(LOG_MAIL)，所以上述的三个软件(sendmail,postfix,dovecot)产生的信息在syslog看起来，就会是mail类型的服务了。</p>
+
+<p><strong>信息等级</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">等级</th>
+      <th style="text-align: center">等级名称</th>
+      <th style="text-align: left">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">info</td>
+      <td style="text-align: left">仅是一些基本的信息说明而已</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">notice</td>
+      <td style="text-align: left">除了info外还需要注意的一些信息内容</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">warning(warn)</td>
+      <td style="text-align: left">警示的信息，可能有问题，但是还不至于影响到某个daemon运行的信息；基本上，info,notice,warn这三个信息都是在告知一些基本信息而已，应该还不至于造成一些系统运行困扰</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">err(error)</td>
+      <td style="text-align: left">一些重大错误信息，例如配置文件的某些设置造成该服务器无法启动的信息说明，通常通过err的错误告知，应该可以了解到无法启动的问题</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center">crit</td>
+      <td style="text-align: left">比error还要严重的错误信息，这个crit是临界点(critical)的缩写，这个错误已经很严重了</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td style="text-align: center">alert</td>
+      <td style="text-align: left">警告，已经很有问题的等级，比crit还要严重</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td style="text-align: center">emerg(panic)</td>
+      <td style="text-align: left">&ldquo;疼痛&rdquo;等级，意指系统已经几乎要死机的状态！很严重的错误信息了。通常大概只有硬件出问题导致整个内核无法顺利运行，就会出现这样的等级的信息</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>除了这些等级之外，还有两个特殊的等级，那就是debug(错误检测等级)与none(不需要登录等级)两个，当我们想要做一些错误检测或者是忽略掉某些服务的信息时，就用这两个</p>
+
+<p>另外，还需要注意一下信息等级之前的[.=!]连接符号，它的意思是这样的:
+- &ldquo;.&rdquo;代表后面还要高的等级(含该等级)都被记录下来的意思，例如:mail.info代表只要是mail的信息，而该信息等级高于info(含info)时，就会被记录下来的意思
+- &ldquo;.=&rdquo;代表所需要的等级就是后面接的等级而已，其他的不要
+- &ldquo;.!&rdquo;代表不等于，即是除了该等级外的其他等级都记录</p>
+
+<p><strong>信息记录的文件名或设备或主机</strong>
+下面是一些常见的放置处:
+- 文件的绝对路径:通常就是放在/var/log里面的文件
+- 打印机或其他:例如/dec/lp0这个打印设备
+- 用户名称:显示给用户
+- 远程主机:例如@www.vbird.tsai,当然，要对方主机也能支持才行
+- *:代表目前在线的所有人</p>
+
+<h2 id="section-84">日志文件的轮替</h2>
+
+<p>syslog利用的是daemon的方式来启动的，当有需求的时候立刻会被执行的，但是logrotate却是在规定时间到了之后才来进行日志文件的轮替，所以这个logrotate程序当然是挂在cron下面进行的。/etc/cron.daily/logrotate就是记录了每天要进行的日志文件轮替行为</p>
+
+<h3 id="logrotate">logrotate的配置文件</h3>
+
+<p>logrotate的参数配置文件:
+- /etc/logrotate.conf
+- /etc/logrotate.d/</p>
+
+<p>其中，logrotate.conf才是主要的参数文件，至于logrotate.d是一个目录，该目录里面的所有文件都会被主动读入/etc/logrotate.conf当中进行.另外，在/etc/logrotate.d/里面的文件中，如果没有指定一些详细的设置，在以/etc/logrotate.conf这个文件的规定来指定为默认值</p>
+
+<p>logrotate.conf和logrotate.d目录里面的文件都是具有一定格式的，可以进行修改，做成自定义的logrotate操作,具体的格式请参阅P589的例子</p>
+
+<h2 id="section-85">重点回顾</h2>
+
+<ul>
+  <li>日志文件可以记录一个事件的何时、何地、何人、何事四大信息，故系统有问题时务必查询日志文件 </li>
+  <li>系统的日志文件默认都集中放置到/var/log/目录内，其中又以messages记录的信息最多</li>
+  <li>日志文件记录的主要服务与程序为syslogd,klogd,log</li>
+  <li>syslogd的配置文件在/etc/syslog.conf中，内容语法为:服务.等级记载设备或文件</li>
+  <li>syslogd本身有提供日志文件服务器的功能，通过修改/etc/sysconfig/syslog内容即可实现</li>
+  <li>logrotate程序利用crontab来进行日志文件的轮替功能</li>
+  <li>logrotate的配置文件为/etc/logrotate.conf，而额外的设置则可写入/etc/logrotate.d/*内</li>
+  <li>logwatch为CentOS5默认提供的一个日志文件分析软件</li>
+</ul>
+
+<h1 id="loader">启动流程、模块管理与Loader</h1>
+
+<h2 id="linux-16">Linux的启动流程分析</h2>
+
+<h3 id="section-86">启动流程一览</h3>
+
+<p>系统启动的过程如下:
+1. 加载BIOS的硬件信息与进行自我测试，并依据设置取得一个可启动的设备
+2. 读取并执行第一个启动设备内MBR的boot Loader(即是grub,spfdisk等程序)
+3. 依据boot loader的设置加载Kernel,Kernel会开始检测硬件与加载驱动程序
+4. 在硬件驱动成功之后，Kernel会主动调用init进程，而init会取得run-level信息
+5. init执行/etc/rc.d/rc.sysinit文件来准备软件执行的操作环境(如网络、时区等)
+6. init执行run-level的各个服务的启动(script)
+7. init执行/etc/rc.d/rc.local文件
+8. init执行终端机模拟程序mingetty来启动login进程，最后就等待用户登录</p>
+
+<h3 id="biosboot-loaderkernel">BIOS,boot loader与kernel加载</h3>
+
+<p><strong>Boot Loader的功能</strong>
+每个文件系统都会保留一块引导扇区(boot sector)提供操作系统安装boot loader，而通常操作系统默认都会安装一份loader到它根目录所在的文件系统的boot sector上。
+每个操作系统默认是会安装一套boot loader到它自己的文件系统中，而在Linux系统安装时，你可以将boot loader安装到MBR去，也可以选择不安装。如果选择安装到MBR的话，那理论上你在MBR于boot sector都会保留一份boot loader程序。至于windows安装时，它默认会主动将MBR与boot sector都装上一份boot loader。所以，你会发现安装多重操作系统时，你的MBR经常会被不同的操作系统的boot loader覆盖</p>
+
+<p>boot loader的主要功能如下:
+- 提供菜单:用户可以选择不同的启动选项，这也是多重引导的重要功能
+- 加载内核文件:直接指向可启动的程序区段来开始操作系统
+- 转交其他loader:将引导装载功能转交给其他loader负责</p>
+
+<p>但是，windows的boot loader是没有转交功能的！</p>
+
+<p><strong>加载内核检测硬件与initrd的功能</strong>
+当我们通过boot loader的管理而开始读取内核文件后，接下来，Linux就会将内核解压缩到内存当中,并且利用内核的功能，开始测试与驱动各个周边设备，包括存储设备、CPU、网卡、声卡等。此时Linux内核会以自己的功能重新检测一次硬件，而不一定会使用BIOS检测到的硬件信息。也就是说，内核此时才开始接管BIOS后的工作。
+一般来说，内核文件会被放置到/boot里面，并且取名为/boot/vmlinuz</p>
+
+<p>为了硬件开发商与其他内核功能开发者的便利，因此Linux内核是可以通过动态加载内核模块的，这些内核模块就放置在/lib/modules目录内。由于模块放置到磁盘根目录内(要记得/lib不可以与/分别放在不同的分区)，因此在启动的过程中内核必须要挂载根目录，这样才能够读取内核模块提供加载驱动程序的功能,而且为了担心影响到磁盘内的文件系统，因此启动过程中根目录是以只读的方式来挂载的</p>
+
+<p>一般来说，非必要的功能且可以编译成为模块的内核功能，目前的Linux distribution都会将它编译成为模块。因此，USB,SATA,SCSI等磁盘设备的驱动程序通常都是以模块的方式来存在的</p>
+
+<p>虚拟文件系统(InitialRAM Disk)一般使用的文件名为/boot/initrd，这个文件的特色，它也能够通过boot loader来加载到内存中，然后这个文件会被解压缩并且在内存当中仿真成一个目录，且此仿真在内存当中的文件系统能够提供一个可执行的程序，通过该程序来加载启动过程中所需要的内核模块，通常这些模块就是USB,RAID,LVM,SCSI等文件系统与磁盘接口的驱动程序</p>
+
+<p>事实上，initrd不是必须的，需要initrd最重要的原因是，当启动时无法挂载根目录的情况下，此时就一定需要initrd，例如的你根目录在特殊在磁盘接口(USB,SATA,SCSI)中，或者是你的文件系统较为特殊(LVM,RAID)，才会需要initrd
+如果你的Linux是安装在IDE接口的磁盘上，并且使用默认的ext2/ext3文件系统，那么不需要initrd也能够顺利启动进入Linux的</p>
+
+<h3 id="initetcinittabrunlevel">第一个进程init及配置文件/etc/inittab与runlevel</h3>
+
+<p>在内核加载完毕进行完硬件检测与驱动程序加载后，此时你的主机硬件应该已经准备就绪了，此时内核会主动调用第一个进程，那就是/sbin/init.
+/sbin/init最主要的功能就是准备软件执行的环境，包括系统的主机名、网络设置、语系处理、文件系统格式以及其他服务的启动.而所有的操作都会通过init的配置文件，即/etc/inittab来规划，而inittab内还有一个很重要的设置选项，那就是默认的run level(启动执行等级)</p>
+
+<p><strong>run level:执行等级</strong>
+Linux通过设置run level来规定系统使用不同的服务来启动，让Linux的使用环境不同。基本上run level分为7个等级:
+- 0-halt(系统直接关机)
+- 1-single user mode(单用户维护模式，用在系统出问题时维护)
+- 2-Multi-user,without NFS(类似下面的runlevel3,但无NFS服务)
+- 3-Full multi-user mode(完整含有网络功能的纯文本模式)
+- 4-unused(系统保留功能)
+- 5-X11(与runlevel3类似，但加载使用X Window)
+- 6-reboot(重新启动)</p>
+
+<p><strong>/etc/inittab的内容与语法</strong></p>
+
+<div class="highlight"><pre><code class="bash"><span class="o">[</span>设置选项<span class="o">]</span>:<span class="o">[</span>run level<span class="o">]</span>:<span class="o">[</span>init的操作行为<span class="o">]</span>:<span class="o">[</span>命令选项<span class="o">]</span>
+</code></pre></div>
+
+<ol>
+  <li>设置选项:最多四个字符，代表init的主要工作选项，只是一个简单的代表说明</li>
+  <li>run level:该选项在哪些run level下面进行的意思。如果是35则代表run level 3/5都会执行</li>
+  <li>init的操作行为:主要可以进行的操作选项意义如下表:
+ |&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|
+     |  inittab的设置值  |    意义说明                                                         |
+ |:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+ |  initdefault      |  代表默认的runlevel设置值                                           |
+ |  sysinit          |  代表系统初始化的操作选项                                           |
+ |  ctrlaltdel       |  代表[ctrl]+[alt]+[del]三个按键是否可以重新启动的设置               |
+ |  wait             |  代表后面字段设置的命令项目必须要执行完毕才能继续下面的其他操作     |
+ |  respawn          |  代表后面字段的命令可以无限制再生(重新启动)。举例来说，tty1的mingetty产生的可登陆界面，在你注销而结束后，系统再开一个新的可登陆界面等待下一个登录                                                    |
+ |&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|</li>
+  <li>命令选项:即应该可以进行的命令，通常是一些script</li>
+</ol>
+
+<h3 id="initetcrcdrcsysinit">init处理系统初始化流程(/etc/rc.d/rc.sysinit)</h3>
+
+<p>开始加载各项系统服务之前，得先设置好整个系统环境，主要利用/etc/rc.d/rc.sysinit这个shell script来设置好系统环境
+如果使用vim去查阅/etc/rc.d/rc.sysinit的话，那么可以发现主要的工作大体有这么几项:
+1. 取得网络环境与主机类型:
+   读取网络配置文件/etc/sysconfig/network,取得主机名与默认网关(gateway)等网络环境
+2. 测试与挂载内存设备/proc及USB设备/sys
+3. 决定是否启动SELinux
+4. 启动系统的随机数生成器
+5. 设置终端机(console)字体
+6. 设置显示于启动过程中的欢迎界面(textbanner)
+7. 设置系统时间(clock)与时区设置:需读入/etc/sysconfig/clock设置值
+8. 设置设备的检测与Plug and Play(PnP)参数的测试
+9. 用户自定义模块加载
+   用户可以在/etc/sysconfig/modules/*.modules中加入自定义的模块，则此时会被加载到系统当中
+10. 加载内核的相关设置
+    系统会主动去读取/etc/sysctl.conf这个文件的设置值，使内核功能成为我们想要的样子
+11. 设置主机与初始化电源管理模块(ACPI)
+12. 初始化软件磁盘阵列:主要是通过/etc/mdadm.conf来设置好
+13. 初始化LVM的文件系统功能
+14. 以fsck检验磁盘文件系统:会进行filesystem check
+15. 进行磁盘配额quota的转换(非必要)
+16. 重新以可读写模式挂载系统磁盘
+17. 启动quota功能:所以我们不需要自定义quotaon的操作
+18. 启动系统伪随机数生成器(pseudo-random)
+19. 清除启动过程中的临时文件
+20. 将启动相关信息加载/var/log/dmesg文件中</p>
+
+<h3 id="etcrcdrc-n--etcsysconfig">启动系统服务与相关启动配置文件(/etc/rc.d/rc N &amp; /etc/sysconfig)</h3>
+
+<p>加载内核让整个系统准备接受命令来工作，再经过/etc/rc.d/rc.sysinit的系统模块与相关硬件信息的初始化后，我们需要启动系统所需要的各项服务。这个时候，依据我们在/etc/inittab里面提到的run level设置值，就可以来决定启动的服务选项了。各个不同的runlevel的shell script放置在/etc/rc.d/中，/etc/rc.d/rc5的意义是这样的:
+- 通过外部第一号参数($1)来取得想要执行的脚本目录，即由/etc/rc.d/rc 5可以取得/etc/rc5.d/这个目录来准备处理相关的脚本程序
+- 找到/etc/rc5.d/K??<em>开头的文件，并进行&rdquo;/etc/rc5.d/K??</em>stop&rdquo;的操作
+- 找到/etc/rc5.d/S??<em>开头的文件，并进行&rdquo;/etc/rc5.d/K??</em>start&rdquo;的操作</p>
+
+<p>/etc/rcN.d/目录下的文件很有趣，主要具有几个特点:
+- 文件名全部以Sxx或Kxx开头，其中xx为数字，且这些数字在文件之间是有相关性的，即这些数字就是文件的执行顺序
+- 全部是连接文件，连接到stand alone服务启动的目录/etc/init.d/去</p>
+
+<h3 id="etcrcdrclocal">用户自定义开机启动程序(/etc/rc.d/rc.local)</h3>
+
+<p>在完成默认runlevel指定的各项服务启动后，如果还有其他操作想要完成时，直接将它写入/etc/rc.d/rc.local,那么该工作就会在启动的时候自动加载</p>
+
+<h3 id="etcinttabx-window">根据/etc/inttab的设置加载终端机或X Window界面</h3>
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

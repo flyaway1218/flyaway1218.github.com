@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Learning Python》学习笔记——9.赋值、表达式和打印</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="#">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《Learning Python》学习笔记——9.赋值、表达式和打印
+
+</div>
+
+
+      <div class="content">
+        
+
+<h1 id="section">赋值语句</h1>
+
+<p>赋值语句的特性:</p>
+
+<ul>
+  <li>赋值语句建立对象的引用</li>
+  <li>变量名在首次赋值时会被创建</li>
+  <li>变量名在引用前必须先赋值</li>
+</ul>
+
+<p>Python赋值语句形式:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">运算</th>
+      <th style="text-align: left">解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">spam = &lsquo;Spam&rsquo;</td>
+      <td style="text-align: left">基本形式</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">spam,ham=&rsquo;yum&rsquo;,&rsquo;YUM&rsquo;</td>
+      <td style="text-align: left">元组赋值运算(位置性)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">[spam,ham]=[&lsquo;yum&rsquo;,&rsquo;YUM&rsquo;]</td>
+      <td style="text-align: left">列表赋值运算(位置性)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">a,b,c,d=&rsquo;spam&rsquo;</td>
+      <td style="text-align: left">序列赋值运算，通用性</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">a,*b =&rsquo;spam&rsquo;</td>
+      <td style="text-align: left">扩展的序列解包(Python3.0)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">spam=ham=&rsquo;lunch&rsquo;</td>
+      <td style="text-align: left">多目标赋值运算</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">spams += 42</td>
+      <td style="text-align: left">增强赋值运算(相当于spams=spams+42)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>其中有几点需要说明:</p>
+
+<ul>
+  <li>第三行和第二行的赋值结果是一样的，spam绑定到&rsquo;yum&rsquo;,ham绑定到&rsquo;YUM&rsquo;,在Python中，这叫做分解赋值</li>
+  <li>第四行的赋值结果是:a赋值为&rsquo;s&rsquo;,b赋值为&rsquo;p&rsquo;,c赋值为&rsquo;a&rsquo;,d赋值为&rsquo;m&rsquo;</li>
+  <li>第五行，用右边的字符串的第一个字母来匹配a，用剩下的部分来匹配b:a赋值为&rsquo;s&rsquo;,b赋值为&rsquo;pam&rsquo;.这在Python称作扩展的解包。需要注意的是，带星号的变量总是返回的是一个列表，哪怕只有一个元素或没有元素</li>
+  <li>最后一行的用法和C/C++等其他语言中的语法和意义都是一样的，需要说明的是，在Python中，每个二元表达式运算符都有增强赋值语句</li>
+  <li><strong>赋值语句执行时，Python会建立临时的元组，来存储右侧变量原始的值</strong></li>
+</ul>
+
+<p>根据上面最后一点的说明，在Python中可以实现不用第三个变量就能交换两个变量的值:</p>
+
+<div class="highlight"><pre><code class="python"><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="n">b</span>
+</code></pre></div>
+
+<h2 id="section-1">多目标赋值语句</h2>
+
+<p><strong>多目标赋值以及共享引用</strong></p>
+
+<p>当使用多目标赋值时，需要注意的是，这些变量都是指向同一个对象的。这对于不可变的类型来说，没什么问题，但是对于原处可变的类型来说，需要特别注意了。</p>
+
+<div class="highlight"><pre><code class="python3"><span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span><span class="n">b</span>
+</code></pre></div>
+
+<p>上面的代码执行后，a和b都是[42]</p>
+
+<h2 id="section-2">增强赋值语句</h2>
+
+<p>Python支持一下的增强语句:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>X+=Y</td>
+      <td>X&amp;=Y</td>
+      <td>X-=Y</td>
+      <td>X|=Y</td>
+    </tr>
+    <tr>
+      <td>X*=Y</td>
+      <td>X^=Y</td>
+      <td>X/=Y</td>
+      <td>X&raquo;=Y</td>
+    </tr>
+    <tr>
+      <td>X%=Y</td>
+      <td>X&laquo;=Y</td>
+      <td>X**=Y</td>
+      <td>X//=Y</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>在Python中使用了优化技术，增强赋值语句会在底层实现时比较高效</p>
+
+<p><strong>另外需要注意的是，在使用增强赋值语句时，对于可变变量来说是原处修改的，需要特别注意！</strong></p>
+
+<h2 id="section-3">变量命名规则</h2>
+
+<ul>
+  <li>语法:(下划线或字母)+(任意数目的字母、数字或下划线)</li>
+  <li>区分大小写</li>
+  <li>禁止使用保留字</li>
+</ul>
+
+<p>Python3.0中的保留字:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>False</td>
+      <td>class</td>
+      <td>finally</td>
+      <td>is</td>
+      <td>return</td>
+    </tr>
+    <tr>
+      <td>None</td>
+      <td>continue</td>
+      <td>for</td>
+      <td>lamdba</td>
+      <td>try</td>
+    </tr>
+    <tr>
+      <td>True</td>
+      <td>def</td>
+      <td>from</td>
+      <td>nonlocal</td>
+      <td>while</td>
+    </tr>
+    <tr>
+      <td>and</td>
+      <td>del</td>
+      <td>global</td>
+      <td>not</td>
+      <td>with</td>
+    </tr>
+    <tr>
+      <td>as</td>
+      <td>elif</td>
+      <td>if</td>
+      <td>or</td>
+      <td>yield</td>
+    </tr>
+    <tr>
+      <td>assert</td>
+      <td>else</td>
+      <td>import</td>
+      <td>pass</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>break</td>
+      <td>except</td>
+      <td>in</td>
+      <td>raise</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>命名惯例</strong></p>
+
+<ul>
+  <li>以单一下划线开头的变量名(_X)不会被from module import *语句导入</li>
+  <li>前后有下划线的变量名(<em>X</em>)是系统定义的变量名，对解释器有特殊意义</li>
+  <li>以两下划线开头、但结尾没有两个下划线的变量名(__X)是类的本地(&ldquo;压缩&rdquo;)变量</li>
+</ul>
+
+<h1 id="section-4">打印操作</h1>
+
+<p>在Python中，print语句可以实现打印:只是对程序员友好的标准输出流的接口而已
+标准输出流、标准输入流、错误流是脚本启动时所创建的3中数据连接中的一种。</p>
+
+<ul>
+  <li>在Python3.X中，打印是一个内置函数，用关键字参数来表示特定模式</li>
+  <li>在Python2.X中，打印是语句，拥有自己的特定语法</li>
+</ul>
+
+<h2 id="python30print">Python3.0中的print函数</h2>
+
+<p>print函数不会返回任何值，从技术上讲，它将返回None。</p>
+
+<p><strong>调用格式</strong></p>
+
+<p>从语法上讲，Python3.0中的print函数有如下的形式。</p>
+
+<div class="highlight"><pre><code class="python"><span class="k">print</span><span class="p">([</span><span class="nb">object</span><span class="p">,</span><span class="o">..</span><span class="p">][,</span><span class="n">sep</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">][,</span><span class="n">end</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">][,</span><span class="nb">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">])</span>
+</code></pre></div>
+
+<p>在上述表达式中，方括号中的项是可选的，并且可能会在一个给定的调用中省略，并且=后面的值都给出了参数的默认值。这个内置的函数吧字符串sep所分割开的一个或多个对象的文本表示，后面跟着字符串and，都打印到流file中。</p>
+
+<p>这些参数是这样控制print操作的:</p>
+
+<ul>
+  <li>sep是在每个对象的文本之间插入的一个字符串，如果没有传递的话，它默认地是一个单个空格；传递一个空字符串将会抑制分隔符</li>
+  <li>end是添加在打印文本末尾的一个字符串，如果没有传递的话，它默认的是一个\n换行字符。传递一个空字符将会避免在打印的文本的末尾移动到下一个输入行——下一个print将会保持添加到当前输出行的末尾。</li>
+  <li>file指定了文本将要发送到的文件、标准流或者其他类似文件的对象；如果没有传递的话，默认的是sys.stdout。带有一个类似文件的write(string)的方法的任何对象都可以传递，但真正的文件应该已经为了输出而打开。</li>
+</ul>
+
+<h2 id="section-5">打印流重定向</h2>
+
+<div class="highlight"><pre><code class="python3"><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;log.txt&#39;</span><span class="p">,</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+</code></pre></div>
+
+<p>上面的代码就简单的标准输出流重定向到了文本文件中，而且是以追加的模式。其实，甚至可以将sys.stdout重设为非文件对象，只要该对象有预期的协议(write方法)。</p>
+
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+
