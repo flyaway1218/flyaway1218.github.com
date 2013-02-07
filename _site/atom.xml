@@ -4,13 +4,134 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-02-07T13:19:09+08:00</updated>
+ <updated>2013-02-07T21:09:47+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——15.作用域</title>
+   <link href="http://username.github.com/Python/2013/02/07/Learning-Python15"/>
+   <updated>2013-02-07T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/02/07/Learning-Python15</id>
+   <content type="html">&lt;h1 id=&quot;python&quot;&gt;Python作用域&lt;/h1&gt;
+&lt;p&gt;在一个Python程序只用变量名时，Python创建、改变或查找变量名都是在所谓的命名空间(一个保存变量名的地方)中进行的。也就是说，在代码中变量名被赋值的位置决定了这个变量名能被访问到的范围,也即决定了它存在于哪个命名空间中。&lt;/p&gt;
+
+&lt;p&gt;除了打包程序之外，函数还为程序增加了一个额外的命名空间层:默认情况下，一个函数所有变量名都是与函数的命名空间相关联的。这意味着:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;一个在def内的定义的变量能够在def内的代码使用,不能在函数的外部应用这样的变量名。&lt;/li&gt;
+  &lt;li&gt;def之中的变量名与def之外的变量名并不冲突，一个在def之外被赋值的变量X与在这个def之中赋值的变量X是完全不同的变量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;作用域法则&lt;/h2&gt;
+&lt;p&gt;在开始编写函数之前，我们编写的所有代码都是位于一个模块的顶层(也就是说，并不是嵌套在def之中)，所以我们使用的变量名要么是存在于模块文件本身，要么就是Python内置预先定义好的。函数定义本地作用域，而模块定义的全局作用域。这两个作用域有如下关系:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;内嵌的模块是全局作用域&lt;/strong&gt;
+每个模块都是一个全局作用域(也就是说，一个创建于模块文件顶层的变量的命名空间)。对于模块外部来说，该模块的全局变量就成为了这个模块对象的属性，但是在这个模块中能够像简单的变量一样使用。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;全局作用域的作用范围仅限于单个文件&lt;/strong&gt;
+这里的全局指的是在一个文件的顶层的变量名仅对于这个文件内部的代码而言是全局的。在Python中是没有基于一个单个的、无所不包的情景文件的全局作用域的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;每次对函数的调用都创建了一个新的本地作用域&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;赋值的变量名除非声明为全局变量或非局部变量，否则均为局部变量&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;所有的变量名都可以归纳为本地、全局或者内置的&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;legb&quot;&gt;变量名解析:LEGB原则&lt;/h2&gt;
+&lt;p&gt;Python的变量名解析机制有时称为LEGB法则，当在&lt;strong&gt;函数&lt;/strong&gt;中使用未认证的变量名时，Python搜索4个作用域:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;本地作用域(L)&lt;/li&gt;
+  &lt;li&gt;上一层结构中def或lambda的本地作用域(E)(其实就是函数嵌套的情况)&lt;/li&gt;
+  &lt;li&gt;全局作用域(G)&lt;/li&gt;
+  &lt;li&gt;最后是内置作用域(B)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Python按顺序在上面4个作用域中查找变量，并且在第一个能够找到这个变量名的地方停下来，如果在这4个作用域中都没找到，Python会报错。&lt;/p&gt;
+
+&lt;p&gt;这里需要强调的是，上面四个作用域是函数中代码的搜索过程，也就是说，&lt;strong&gt;在函数中能直接使用上一层中的变量！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#return 40 not 12&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——14.函数基础</title>
+   <link href="http://username.github.com/Python/2013/02/07/Learning-Python14"/>
+   <updated>2013-02-07T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/02/07/Learning-Python14</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;为何使用函数&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;最大化代码的重用和最小化代码冗余&lt;/li&gt;
+  &lt;li&gt;流程的分解&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;编写函数&lt;/h1&gt;
+
+&lt;h2 id=&quot;def&quot;&gt;def语句&lt;/h2&gt;
+&lt;p&gt;在Python中创建一个函数是通过&lt;code&gt;def&lt;/code&gt;关键字进行的，&lt;code&gt;def&lt;/code&gt;语句将创建一个函数对象并将其赋值给一个变量名。&lt;code&gt;def&lt;/code&gt;语句一般的格式如下所示:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;statements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;通常情况下，函数体中会有一个&lt;code&gt;return&lt;/code&gt;语句，可以出现在函数体的任何位置，它表示函数调用的结束，并将结果返回至函数调用处。但是&lt;code&gt;return&lt;/code&gt;语句是可选的，并不是必须的。从技术角度上说，一个没有返回值的函数自动返回了none对象，但是这个值可以被忽略掉。&lt;/p&gt;
+
+&lt;h2 id=&quot;def-1&quot;&gt;def语句是实时执行的&lt;/h2&gt;
+&lt;p&gt;Python的&lt;code&gt;def&lt;/code&gt;语句实际上是一个可执行的语句:当它运行的时候，它创建一个新的函数对象并将其赋值给一个变量名。(请记住，Python中所有的语句都是实时运行的，没有对像独立编译时间这样的流程)因为它是一个语句，它可以出现在任一语句可以出现的地方——甚至是嵌套在其他语句中。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;它在运行时简单地给一个变量名进行赋值。与C语言这样的编译语言不同，Python函数在程序运行之前并不需要全部定义，更确切地说，&lt;code&gt;def&lt;/code&gt;在运行时才评估，而在&lt;code&gt;def&lt;/code&gt;之中的代码在函数调用时才会评估。&lt;/p&gt;
+
+&lt;p&gt;就像Python中其他语句一样，函数仅仅是对象，在程序执行时它清除地记录在了内存之中。实际上，除了调用之外，函数允许任意的属性附加到记录信息以供随后使用:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;othername&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#Assign function object&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;othername&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#Call func again&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;#call object&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#attach attribute&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;一个例子:定义和调用&lt;/h1&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#return 8&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#return 12.56&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Ni&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#return &amp;#39;NiNiNi&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上面代码中对函数的三次调用都能正确运行，因为&amp;rdquo;*&amp;ldquo;对数字和序列都有效，在Python我们从未对变量、参数或者返回值有过类似的声明，我们可以把times用作数字的乘法或是序列的重复。&lt;/p&gt;
+
+&lt;p&gt;换句话说，&lt;strong&gt;函数times的作用决定于传递给它的参数，&lt;/strong&gt;这是Python的核心概念之一。&lt;/p&gt;
+
+&lt;p&gt;需要强调的是，如果我们传入了一个不支持函数操作的参数，Python会自动检测出不匹配，并抛出一个异常，这样就能减少我们编写不必要的类型检测代码。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;局部变量&lt;/h2&gt;
+&lt;p&gt;所有在函数内部定义的变量默认都是局部变量，所有的局部变量都会在函数调用时出现，并在函数退出时消失。&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——13.文档</title>

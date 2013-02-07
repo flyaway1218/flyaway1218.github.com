@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Learning Python》学习笔记——15.作用域</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="http://zhouyichu.com">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《Learning Python》学习笔记——15.作用域
+
+</div>
+
+
+      <div class="content">
+        
+
+<h1 id="python">Python作用域</h1>
+<p>在一个Python程序只用变量名时，Python创建、改变或查找变量名都是在所谓的命名空间(一个保存变量名的地方)中进行的。也就是说，在代码中变量名被赋值的位置决定了这个变量名能被访问到的范围,也即决定了它存在于哪个命名空间中。</p>
+
+<p>除了打包程序之外，函数还为程序增加了一个额外的命名空间层:默认情况下，一个函数所有变量名都是与函数的命名空间相关联的。这意味着:</p>
+
+<ul>
+  <li>一个在def内的定义的变量能够在def内的代码使用,不能在函数的外部应用这样的变量名。</li>
+  <li>def之中的变量名与def之外的变量名并不冲突，一个在def之外被赋值的变量X与在这个def之中赋值的变量X是完全不同的变量。</li>
+</ul>
+
+<h2 id="section">作用域法则</h2>
+<p>在开始编写函数之前，我们编写的所有代码都是位于一个模块的顶层(也就是说，并不是嵌套在def之中)，所以我们使用的变量名要么是存在于模块文件本身，要么就是Python内置预先定义好的。函数定义本地作用域，而模块定义的全局作用域。这两个作用域有如下关系:</p>
+
+<ul>
+  <li><strong>内嵌的模块是全局作用域</strong>
+每个模块都是一个全局作用域(也就是说，一个创建于模块文件顶层的变量的命名空间)。对于模块外部来说，该模块的全局变量就成为了这个模块对象的属性，但是在这个模块中能够像简单的变量一样使用。</li>
+  <li><strong>全局作用域的作用范围仅限于单个文件</strong>
+这里的全局指的是在一个文件的顶层的变量名仅对于这个文件内部的代码而言是全局的。在Python中是没有基于一个单个的、无所不包的情景文件的全局作用域的。</li>
+  <li><strong>每次对函数的调用都创建了一个新的本地作用域</strong></li>
+  <li><strong>赋值的变量名除非声明为全局变量或非局部变量，否则均为局部变量</strong></li>
+  <li><strong>所有的变量名都可以归纳为本地、全局或者内置的</strong></li>
+</ul>
+
+<h2 id="legb">变量名解析:LEGB原则</h2>
+<p>Python的变量名解析机制有时称为LEGB法则，当在<strong>函数</strong>中使用未认证的变量名时，Python搜索4个作用域:</p>
+
+<ol>
+  <li>本地作用域(L)</li>
+  <li>上一层结构中def或lambda的本地作用域(E)(其实就是函数嵌套的情况)</li>
+  <li>全局作用域(G)</li>
+  <li>最后是内置作用域(B)</li>
+</ol>
+
+<p>Python按顺序在上面4个作用域中查找变量，并且在第一个能够找到这个变量名的地方停下来，如果在这4个作用域中都没找到，Python会报错。</p>
+
+<p>这里需要强调的是，上面四个作用域是函数中代码的搜索过程，也就是说，<strong>在函数中能直接使用上一层中的变量！</strong></p>
+
+<div class="highlight"><pre><code class="python3"><span class="n">s</span><span class="o">=</span><span class="mi">10</span>
+<span class="k">def</span> <span class="nf">times</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">s</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
+
+<span class="n">times</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>	<span class="c">#return 40 not 12</span>
+</code></pre></div>
+
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+
