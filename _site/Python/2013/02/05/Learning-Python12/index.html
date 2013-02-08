@@ -63,7 +63,7 @@
 
 <p>替代的写法是:</p>
 
-<div class="highlight"><pre><code class="python3"><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">script</span><span class="o">.</span><span class="n">py</span><span class="s">&#39;).readlines():</span>
+<div class="highlight"><pre><code class="python3"><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;script.py&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
 	<span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="n">end</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 </code></pre></div>
 
@@ -118,8 +118,10 @@
 返回一个可迭代对象而不是返回一个结果列表的好处在于节省了内存的空间。</p>
 
 <h2 id="vs">多个迭代器VS单个迭代器</h2>
-<p>多个迭代器:在它们的结果中能保持不同位置的多个迭代器
-单个迭代器:只能保持一个迭代器，在遍历其结果之后，它们就用尽了。</p>
+<ul>
+  <li>多个迭代器:在它们的结果中能保持不同位置的多个迭代器</li>
+  <li>单个迭代器:只能保持一个迭代器，在遍历其结果之后，它们就用尽了。</li>
+</ul>
 
 <p>通常通过针对iter调用返回一个新的对象，来支持多个迭代器；单个迭代器一般意味着一个对象返回其自身。</p>
 

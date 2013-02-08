@@ -4,7 +4,7 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-02-07T21:09:47+08:00</updated>
+ <updated>2013-02-08T13:01:18+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
@@ -264,7 +264,7 @@
 
 &lt;p&gt;替代的写法是:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;).readlines():&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;script.py&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;readlines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
 	&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;upper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -319,8 +319,10 @@
 返回一个可迭代对象而不是返回一个结果列表的好处在于节省了内存的空间。&lt;/p&gt;
 
 &lt;h2 id=&quot;vs&quot;&gt;多个迭代器VS单个迭代器&lt;/h2&gt;
-&lt;p&gt;多个迭代器:在它们的结果中能保持不同位置的多个迭代器
-单个迭代器:只能保持一个迭代器，在遍历其结果之后，它们就用尽了。&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;多个迭代器:在它们的结果中能保持不同位置的多个迭代器&lt;/li&gt;
+  &lt;li&gt;单个迭代器:只能保持一个迭代器，在遍历其结果之后，它们就用尽了。&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;通常通过针对iter调用返回一个新的对象，来支持多个迭代器；单个迭代器一般意味着一个对象返回其自身。&lt;/p&gt;
 
