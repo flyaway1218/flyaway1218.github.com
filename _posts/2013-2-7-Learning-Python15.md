@@ -43,3 +43,5 @@ def times(x,y):
 
 times(3,4)	#return 40 not 12
 {% endhighlight %}
+
+##内置作用域##

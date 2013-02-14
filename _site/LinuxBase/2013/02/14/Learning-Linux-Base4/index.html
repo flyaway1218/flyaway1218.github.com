@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——4.Linux的文件权限与目录配置</title>
+    
+    <meta name="author" content="Flyaway">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/wiki/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/themes/wiki/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/wiki/css/syntax.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="/assets/themes/wiki/js/jquery-1.9.0.min.js"></script>
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+    <div class="header row">
+	<ul >
+	  <li><a href="/">Home</a></li>
+	  <li><a href="#">About</a></li>
+	  <li><a href="http://zhouyichu.com">Blog</a></li>
+	</ul>
+    </div>
+
+<div class="title row ">
+ 
+《鸟哥的Linux私房菜:基础篇》学习笔记——4.Linux的文件权限与目录配置
+
+</div>
+
+
+      <div class="content">
+        
+
+<h1 id="section">用户与用户组</h1>
+
+<p><strong>Linux用户身份与用户组记录的文件</strong></p>
+
+<ul>
+  <li>用户账号信息:/etc/passwd</li>
+  <li>个人密码:/etc/shadow</li>
+  <li>所有组名记录:/etc/group</li>
+</ul>
+
+<h1 id="linux">Linux文件权限概念</h1>
+
+<h2 id="linux-1">Linux文件属性</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">1</th>
+      <th style="text-align: center">2</th>
+      <th style="text-align: center">3</th>
+      <th style="text-align: center">4</th>
+      <th style="text-align: center">5</th>
+      <th style="text-align: center">6</th>
+      <th style="text-align: center">7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">drwx&mdash;&mdash;</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">root</td>
+      <td style="text-align: center">4096</td>
+      <td style="text-align: center">Sep 5 0:37</td>
+      <td style="text-align: center">.gconf</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>对这七列信息的详细说明:</p>
+
+<ul>
+  <li>
+    <p>第一列代表这个文件的类型与权限(一共有10个字符)</p>
+
+    <ul>
+      <li>
+        <p>第一个字符代表这个文件是&rdquo;目录、文件或链接文件&rdquo;</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: center">字符</th>
+              <th style="text-align: left">说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center">[d]</td>
+              <td style="text-align: left">目录</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[-]</td>
+              <td style="text-align: left">文件</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[|]</td>
+              <td style="text-align: left">连接文件</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[b]</td>
+              <td style="text-align: left">设备文件里面的可供存储的接口设备</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">[c]</td>
+              <td style="text-align: left">设备文件里面的串行端口设备</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>接下来的字符，以3个为一组，均是&rdquo;rwx&rdquo;的3个参数的组合。</p>
+
+        <p><strong>注意:这3个权限的位置不会改变，如果没有权限，就会出现减号[-]而已</strong></p>
+
+        <ul>
+          <li>第一组为&rdquo;文件所有者的权限&rdquo;</li>
+          <li>第二组为&rdquo;同用户组的权限&rdquo;</li>
+          <li>第三组为&rdquo;其他非本用户组的权限&rdquo;</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>第二列表示有多少文件名连接到此节点</p>
+
+    <p>每个文件都会将它的权限与属性记录到文件系统的i-node中，不过我们使用的目录树却是使用文件名来记录，因此每个文件名就会连接到一个i-node。这个属性记录的就是有多少不同的文件名连接到同一个i-node号码。</p>
+  </li>
+  <li>
+    <p>第三列表示这个文件(或目录)的&rdquo;所有者账号&rdquo;</p>
+  </li>
+  <li>
+    <p>第四列表示这个文件的所属用户组</p>
+  </li>
+  <li>
+    <p>第五列为这个文件的大小，默认单位是B</p>
+  </li>
+  <li>
+    <p>第六列为这个文件的创建日期或是最近的修改日期</p>
+  </li>
+  <li>
+    <p>第七列为该文件名</p>
+
+    <p>特殊情况:如果文件名之前多了个&rdquo;.&rdquo;,那么这个文件为&rdquo;隐藏文件&rdquo;。</p>
+  </li>
+</ul>
+
+<h2 id="section-1">如何改变文件属性与权限</h2>
+
+<ul>
+  <li>chgrp:改变文件所属用户组</li>
+  <li>chown:改变文件所有者</li>
+  <li>chmod:改变文件的权限</li>
+</ul>
+
+<p>可以使用数字来表示各个权限:</p>
+
+<ul>
+  <li>r:4</li>
+  <li>w:2</li>
+  <li>x:1</li>
+</ul>
+
+<p>rwx = 4+2+1=7</p>
+
+<p>r-x = 4+0+1=5</p>
+
+<h2 id="section-2">目录与文件的权限意义</h2>
+
+<p>文件权限对于一般文件和目录是不同的:</p>
+
+<p><strong>文件的权限</strong></p>
+
+<p>文件是实际含有数据的地方，包括一般文本文件、数据库内容文件、二进制可执行文件等。</p>
+
+<ul>
+  <li>r:可读取此文件的实际内容，如读取文本文件的文字内容等。</li>
+  <li>w:可以编辑、新增或者是修改该文件的内容(<strong>但不含删除该文件</strong>)</li>
+  <li>x:该文件具有可以被系统执行的权限。</li>
+</ul>
+
+<p>我们的文件是否能被执行则是由是否具有&rdquo;x&rdquo;这个权限来决定，而跟文件名是没有绝对的关系。</p>
+
+<p><strong>目录的权限</strong></p>
+
+<p>文件是存放实际数据的所在，目录主要的内容是记录文件名列表，文件名与目录有强烈的关联。</p>
+
+<ul>
+  <li>r:表示具有读取目录结构列表的权限</li>
+  <li>
+    <p>w:可写入的权限，对目录来说这是很强大的。因为它表示你具有更改目录结构列表的权限，也就是下面这些权限:</p>
+
+    <ul>
+      <li>新建的文件与目录 </li>
+      <li>删除已经存在的文件与目录(不论该文件的权限如何)</li>
+      <li>将已存在的文件或目录进行重命名</li>
+      <li>转义该目录内的文件、目录位置</li>
+    </ul>
+  </li>
+  <li>x:表示用户能否进入该目录成为工作目录的用途</li>
+</ul>
+
+<h2 id="linux-2">Linux文件种类与扩展名</h2>
+
+<p><strong>一个Linux文件能不能被执行，与它的第一列的10个属性有关，与文件名根本一点关系都没有。</strong></p>
+
+<h1 id="linux-3">Linux目录配置</h1>
+
+<h2 id="linuxfhs">Linux目录配置标准:FHS</h2>
+
+<p>FHS:Filesystem Hierarchy Standard</p>
+
+<p>FHS依据文件系统使用的频繁与否与是否允许用户随意改动，而将目录定义成为四种交互作用的形态：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">&nbsp;</th>
+      <th style="text-align: left">可分享的(shareable)</th>
+      <th style="text-align: left">不可分享的(unshareable)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">不变的(static)</td>
+      <td style="text-align: left">/usr(软件放置处)  /opt(第三方软件)</td>
+      <td style="text-align: left">/etc(配置文件)  /boot(开机与内核文件)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">可变动的(variable)</td>
+      <td style="text-align: left">/var/mail(用户邮件信箱)  /var/spool/news(新闻组)</td>
+      <td style="text-align: left">/var/rub(程序相关)  /var/lock(程序相关)</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>可分享的</strong>:可以分享给其他系统挂在使用的目录</li>
+  <li><strong>不可分享的</strong>:自己机器上运行的设备文件或者是与程序有关的socket文件等</li>
+  <li><strong>不变的</strong>:一些不会经常变动的数据，例如函数库、文件说明文件、系统管理员所管理的主机服务配置文件等。</li>
+  <li><strong>可变动的</strong>:经常改变的数据，例如登陆文件、新闻组等。</li>
+</ul>
+
+<p>FHS所定义的三个目录:</p>
+
+<ul>
+  <li>/(root,根目录):与开机系统有关</li>
+  <li>/usr(UNIX software resource):与软件安装/执行有关</li>
+  <li>/var(variable):与系统运作过程有关</li>
+</ul>
+
+<p><strong>根目录(/)的意义与内容</strong>
+FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装的软件最好不要与根目录放在同一个分区内，保持根目录越小越好。如此不但性能较好，根目录所在的文件系统也较不容易发生问题。</p>
+
+<p><strong>注意</strong>:开机过程中仅有根目录会被挂载，其他分区则是在完成之后才会进行挂载行为。所以有些目录不可与根目录分开，下面五个目录是不可与根目录分开的:</p>
+
+<ul>
+  <li>/etc: 配置文件</li>
+  <li>/bin: 重要执行文件</li>
+  <li>/dev: 所需要的设备文件</li>
+  <li>/lib: 执行文件所需的函数库与内核所需的模块</li>
+  <li>/sbin: 重要的系统执行文件</li>
+</ul>
+
+<p><strong>这个五个目录千万不可与根目录分开放在不同的分区</strong></p>
+
+<p><strong>/usr的意义与内容</strong></p>
+
+<p>FHS建议所有软件开发者应该将他们的数据合理地分别放置到这个目录下的子目录，而不要自行新建该软件自己独立的目录。</p>
+
+<p><strong>/var的意义与内容</strong></p>
+
+<p>/var目录主要针对常态性变动的文件，包括缓存(cache)、登录文件(log file)以及某些软件所产生的文件。</p>
+
+
+
+
+      </div>
+
+      <footer >
+        <p>&copy; Flyaway 2012 
+		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
+  </body>
+<script type="text/javascript">
+	$("a[href^='http://']").each(function(){
+		this.target="_blank";
+	});
+	$('h2').prepend('>>')
+	$('h3').prepend('>>>')
+	$(function(){
+		$(".span12 h1").bind("click",function(){
+			var $content=$(this).next();
+			$content.slideToggle("slow");	
+		})
+	})
+</script>
+</html>
+

@@ -4,13 +4,757 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-02-08T13:01:18+08:00</updated>
+ <updated>2013-02-14T21:27:26+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——5.Linux文件与目录管理</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;目录与路径&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;相对路径与绝对路径&lt;/h2&gt;
+
+&lt;p&gt;绝对路径:路径的写法一定由根目录/写起。&lt;/p&gt;
+
+&lt;p&gt;相对路径:路径的写法不是由/写起。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;目录的相关操作&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;特殊的目录&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;符号&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;意义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;.&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;代表此层目录&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;..&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;代表上一层目录&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;-&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;代表前一个工作目录&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;~&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;代表“目前用户身份”所在的主文件夹&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;~account&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;代表account这个用户的主文件夹&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;常用的处理目录的命令:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;cd:切换目录&lt;/li&gt;
+  &lt;li&gt;pwd:显示当前目录&lt;/li&gt;
+  &lt;li&gt;mkdir:新建一个新的目录&lt;/li&gt;
+  &lt;li&gt;rmdir:删除一个空的目录&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;详细的命令解释与说明，可以参看《鸟哥基础篇》P163~165&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;path&quot;&gt;关于执行文件路径的变量:$PATH&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;不同身份用户默认的PATH不同，默认能够随意执行的命令也不同&lt;/li&gt;
+  &lt;li&gt;PATH是可以被修改的&lt;/li&gt;
+  &lt;li&gt;本目录(.)最好不要被放置到PATH中&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;文件与目录管理&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;cp&lt;/strong&gt;:复制文件或目录&lt;/p&gt;
+
+&lt;p&gt;参数说明:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-p:连同文件的属性一起复制过去，而非使用默认属性(备份常用)&lt;/li&gt;
+  &lt;li&gt;-u:若destination比source旧才更新destination&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-4&quot;&gt;文件内容查阅&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;cat:由第一行开始显示文件内容&lt;/li&gt;
+  &lt;li&gt;tac:从最后一行开始显示，可以看出tac是cat的倒写形式&lt;/li&gt;
+  &lt;li&gt;nl:显示的时候，顺便输出行号&lt;/li&gt;
+  &lt;li&gt;more:一页一页地显示文件内容&lt;/li&gt;
+  &lt;li&gt;less:与more类似，但是比more更好的是，它可以往前翻页&lt;/li&gt;
+  &lt;li&gt;head:只看头几行&lt;/li&gt;
+  &lt;li&gt;tail:只看结尾几行&lt;/li&gt;
+  &lt;li&gt;od:以二进制的方式读取文件内容&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;touch&quot;&gt;修改文件时间或创建新文件:touch&lt;/h2&gt;
+
+&lt;p&gt;文件的三个时间属性:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;modification time(mtime):当该文件的&amp;rdquo;内容数据&amp;rdquo;更改时，就会更新这个时间。内容数据指的是文件的内容，而不是文件的属性或权限。&lt;/li&gt;
+  &lt;li&gt;status time(ctime):当该文件的&amp;rdquo;状态&amp;rdquo;改变时，就会更新这个时间，举例来说，像是权限与属性被更改了，都会更新这个时间。&lt;/li&gt;
+  &lt;li&gt;access time(atime):当&amp;rdquo;该文件的内容被取用&amp;rdquo;时，就会更新这个读取时间。举例来说，我们使用cat读取文件，就会更新这个文件的atime。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;在默认情况下，ls显示出来的是该文件的mtime，也就是这个文件的内容上次被更改的时间&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;touch最经常被使用的情况:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;创建一个空的文件&lt;/li&gt;
+  &lt;li&gt;将某个文件日期修改为目前日期(mtime和atime)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-5&quot;&gt;文件与目录的默认权限与隐藏权限&lt;/h1&gt;
+
+&lt;h2 id=&quot;umask&quot;&gt;文件默认权限:umask&lt;/h2&gt;
+
+&lt;p&gt;unmask指定:&amp;rdquo;目前用户在新建文件或目录时候的权限默认值&amp;rdquo;，unmask的分数指的是&amp;rdquo;该默认值需要减掉的权限&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;默认情况下:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;文件的默认权限:-rw-rw-rw-&lt;/li&gt;
+  &lt;li&gt;目录的默认权限:drwdrwdrw&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;注意:umask的分数是指该默认值需要减掉的权限&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;举例:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;新建文件时:(-rw-rw-rw-)-(&amp;mdash;&amp;ndash;w&amp;ndash;w&amp;ndash;)==&amp;gt;-rw-r&amp;ndash;r&amp;ndash;&lt;/li&gt;
+  &lt;li&gt;新建目录时:(drwdrwdrw)-(d&amp;mdash;-w&amp;ndash;w&amp;ndash;)==&amp;gt;drwxr-xr-x&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;chattrlsattr&quot;&gt;文件隐藏属性chattr,lsattr&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;chattr:设置文件的隐藏属性&lt;/li&gt;
+  &lt;li&gt;lsattr:显示文件的隐藏属性&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;具体的属性说明请参见《鸟哥的基础篇》P183&lt;/p&gt;
+
+&lt;p&gt;比较重要的是:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a:当设置a之后，这个文件就只能增加数据，而不能删除也不能修改数据，只有root才能设置这个属性&lt;/li&gt;
+  &lt;li&gt;i:i可以让一个文件&amp;rdquo;不能删除&amp;rdquo;、改名、设置连接也无法写入或添加数据。只有root才能设置这个属性&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;suidsgidsbit&quot;&gt;文件特殊权限:SUID,SGID,SBIT&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;SetUID(SUID)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SUID权限仅对二进制程序有效&lt;/li&gt;
+  &lt;li&gt;执行者对于该程序具有x的可执行权限&lt;/li&gt;
+  &lt;li&gt;本权限仅在执行该程序过程中有效&lt;/li&gt;
+  &lt;li&gt;执行者将具有该程序所有者的权限&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Set GID(SGID)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SGID对二进制程序有用&lt;/li&gt;
+  &lt;li&gt;程序执行者对于该程序来说，需具备x的权限&lt;/li&gt;
+  &lt;li&gt;执行者在执行的过程中将会获得该程序用户组的支持&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Sicky Bit(SBIT)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;当用户对于此目录具有w,x权限，即具有写入的权限时 &lt;/li&gt;
+  &lt;li&gt;当用户在该目录下创建文件或目录时，仅有自己与root才有权力删除该文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;file&quot;&gt;查看文件类型:file&lt;/h2&gt;
+
+&lt;p&gt;可以通过file命令来查某个文件的基本数据&lt;/p&gt;
+
+&lt;h1 id=&quot;section-6&quot;&gt;命令与文件的查询&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-7&quot;&gt;脚本文件名的查询&lt;/h2&gt;
+
+&lt;p&gt;which:寻找&amp;rdquo;执行文件&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;which是根据PATH所规范的路径去查询&amp;rdquo;执行文件&amp;rdquo;的文件名&lt;/p&gt;
+
+&lt;h2 id=&quot;section-8&quot;&gt;文件名的查找&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;whereis:寻找特定文件(利用数据库查找,速度快)&lt;/li&gt;
+  &lt;li&gt;locate:依据/var/lib/mlocate内的数据库记载,找出用户输入的关键字文件名&lt;/li&gt;
+  &lt;li&gt;updatedb:根据/etc/updatedb.conf的设置去查找系统硬盘内的文件名，并更新/var/lib/mlocate内的数据库文件&lt;/li&gt;
+  &lt;li&gt;find:直接查找硬盘上的文件(速度慢)&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——4.Linux的文件权限与目录配置</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base4"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base4</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;用户与用户组&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;Linux用户身份与用户组记录的文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;用户账号信息:/etc/passwd&lt;/li&gt;
+  &lt;li&gt;个人密码:/etc/shadow&lt;/li&gt;
+  &lt;li&gt;所有组名记录:/etc/group&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;linux&quot;&gt;Linux文件权限概念&lt;/h1&gt;
+
+&lt;h2 id=&quot;linux-1&quot;&gt;Linux文件属性&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;1&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;2&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;3&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;4&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;5&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;6&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;7&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;drwx&amp;mdash;&amp;mdash;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;root&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;root&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4096&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Sep 5 0:37&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;.gconf&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;对这七列信息的详细说明:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;第一列代表这个文件的类型与权限(一共有10个字符)&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;第一个字符代表这个文件是&amp;rdquo;目录、文件或链接文件&amp;rdquo;&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style=&quot;text-align: center&quot;&gt;字符&lt;/th&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;说明&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: center&quot;&gt;[d]&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;目录&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: center&quot;&gt;[-]&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;文件&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: center&quot;&gt;[|]&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;连接文件&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: center&quot;&gt;[b]&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;设备文件里面的可供存储的接口设备&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: center&quot;&gt;[c]&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;设备文件里面的串行端口设备&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;接下来的字符，以3个为一组，均是&amp;rdquo;rwx&amp;rdquo;的3个参数的组合。&lt;/p&gt;
+
+        &lt;p&gt;&lt;strong&gt;注意:这3个权限的位置不会改变，如果没有权限，就会出现减号[-]而已&lt;/strong&gt;&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;第一组为&amp;rdquo;文件所有者的权限&amp;rdquo;&lt;/li&gt;
+          &lt;li&gt;第二组为&amp;rdquo;同用户组的权限&amp;rdquo;&lt;/li&gt;
+          &lt;li&gt;第三组为&amp;rdquo;其他非本用户组的权限&amp;rdquo;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第二列表示有多少文件名连接到此节点&lt;/p&gt;
+
+    &lt;p&gt;每个文件都会将它的权限与属性记录到文件系统的i-node中，不过我们使用的目录树却是使用文件名来记录，因此每个文件名就会连接到一个i-node。这个属性记录的就是有多少不同的文件名连接到同一个i-node号码。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第三列表示这个文件(或目录)的&amp;rdquo;所有者账号&amp;rdquo;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第四列表示这个文件的所属用户组&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第五列为这个文件的大小，默认单位是B&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第六列为这个文件的创建日期或是最近的修改日期&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第七列为该文件名&lt;/p&gt;
+
+    &lt;p&gt;特殊情况:如果文件名之前多了个&amp;rdquo;.&amp;rdquo;,那么这个文件为&amp;rdquo;隐藏文件&amp;rdquo;。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;如何改变文件属性与权限&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;chgrp:改变文件所属用户组&lt;/li&gt;
+  &lt;li&gt;chown:改变文件所有者&lt;/li&gt;
+  &lt;li&gt;chmod:改变文件的权限&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以使用数字来表示各个权限:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;r:4&lt;/li&gt;
+  &lt;li&gt;w:2&lt;/li&gt;
+  &lt;li&gt;x:1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;rwx = 4+2+1=7&lt;/p&gt;
+
+&lt;p&gt;r-x = 4+0+1=5&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;目录与文件的权限意义&lt;/h2&gt;
+
+&lt;p&gt;文件权限对于一般文件和目录是不同的:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;文件的权限&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;文件是实际含有数据的地方，包括一般文本文件、数据库内容文件、二进制可执行文件等。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;r:可读取此文件的实际内容，如读取文本文件的文字内容等。&lt;/li&gt;
+  &lt;li&gt;w:可以编辑、新增或者是修改该文件的内容(&lt;strong&gt;但不含删除该文件&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;x:该文件具有可以被系统执行的权限。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;我们的文件是否能被执行则是由是否具有&amp;rdquo;x&amp;rdquo;这个权限来决定，而跟文件名是没有绝对的关系。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;目录的权限&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;文件是存放实际数据的所在，目录主要的内容是记录文件名列表，文件名与目录有强烈的关联。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;r:表示具有读取目录结构列表的权限&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;w:可写入的权限，对目录来说这是很强大的。因为它表示你具有更改目录结构列表的权限，也就是下面这些权限:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;新建的文件与目录 &lt;/li&gt;
+      &lt;li&gt;删除已经存在的文件与目录(不论该文件的权限如何)&lt;/li&gt;
+      &lt;li&gt;将已存在的文件或目录进行重命名&lt;/li&gt;
+      &lt;li&gt;转义该目录内的文件、目录位置&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;x:表示用户能否进入该目录成为工作目录的用途&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;linux-2&quot;&gt;Linux文件种类与扩展名&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;一个Linux文件能不能被执行，与它的第一列的10个属性有关，与文件名根本一点关系都没有。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;linux-3&quot;&gt;Linux目录配置&lt;/h1&gt;
+
+&lt;h2 id=&quot;linuxfhs&quot;&gt;Linux目录配置标准:FHS&lt;/h2&gt;
+
+&lt;p&gt;FHS:Filesystem Hierarchy Standard&lt;/p&gt;
+
+&lt;p&gt;FHS依据文件系统使用的频繁与否与是否允许用户随意改动，而将目录定义成为四种交互作用的形态：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;&amp;nbsp;&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;可分享的(shareable)&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;不可分享的(unshareable)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;不变的(static)&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/usr(软件放置处)  /opt(第三方软件)&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/etc(配置文件)  /boot(开机与内核文件)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;可变动的(variable)&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/var/mail(用户邮件信箱)  /var/spool/news(新闻组)&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/var/rub(程序相关)  /var/lock(程序相关)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;可分享的&lt;/strong&gt;:可以分享给其他系统挂在使用的目录&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;不可分享的&lt;/strong&gt;:自己机器上运行的设备文件或者是与程序有关的socket文件等&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;不变的&lt;/strong&gt;:一些不会经常变动的数据，例如函数库、文件说明文件、系统管理员所管理的主机服务配置文件等。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;可变动的&lt;/strong&gt;:经常改变的数据，例如登陆文件、新闻组等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;FHS所定义的三个目录:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;/(root,根目录):与开机系统有关&lt;/li&gt;
+  &lt;li&gt;/usr(UNIX software resource):与软件安装/执行有关&lt;/li&gt;
+  &lt;li&gt;/var(variable):与系统运作过程有关&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;根目录(/)的意义与内容&lt;/strong&gt;
+FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装的软件最好不要与根目录放在同一个分区内，保持根目录越小越好。如此不但性能较好，根目录所在的文件系统也较不容易发生问题。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:开机过程中仅有根目录会被挂载，其他分区则是在完成之后才会进行挂载行为。所以有些目录不可与根目录分开，下面五个目录是不可与根目录分开的:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;/etc: 配置文件&lt;/li&gt;
+  &lt;li&gt;/bin: 重要执行文件&lt;/li&gt;
+  &lt;li&gt;/dev: 所需要的设备文件&lt;/li&gt;
+  &lt;li&gt;/lib: 执行文件所需的函数库与内核所需的模块&lt;/li&gt;
+  &lt;li&gt;/sbin: 重要的系统执行文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;这个五个目录千万不可与根目录分开放在不同的分区&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;/usr的意义与内容&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;FHS建议所有软件开发者应该将他们的数据合理地分别放置到这个目录下的子目录，而不要自行新建该软件自己独立的目录。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;/var的意义与内容&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;/var目录主要针对常态性变动的文件，包括缓存(cache)、登录文件(log file)以及某些软件所产生的文件。&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——3.首次登陆与在线求助man page</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base3"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base3</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;在命令行模式下执行命令&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;开始执行命令&lt;/h2&gt;
+
+&lt;p&gt;命令行模式登陆后取得的程序被称为shell，这个程序负责最外层跟用户的通信工作。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第一个被输入的数据绝对是命令或者是可执行文件&lt;/strong&gt;，无论命令中有几个空格，shell都视为一格。&lt;/p&gt;
+
+&lt;p&gt;另外需要注意的是，在Linux中，大小写是敏感的。&lt;/p&gt;
+
+&lt;h1 id=&quot;linuxman-page&quot;&gt;Linux系统的在线求助系统man page&lt;/h1&gt;
+
+&lt;p&gt;man是manual的简写。&lt;/p&gt;
+
+&lt;p&gt;man中的数字说明表&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;代号&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;&amp;nbsp;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;用户在shell环境中可以操作的命令或可执行文件。&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;系统内核可调用的函数与工具等。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;一些常用的函数与函数库，大部分为C的函数库。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;4&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;设备文件的说明，通常在/dev下的文件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;5&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;配置文件或者是某些文件的格式&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;6&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;游戏&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;7&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;惯例与协议等，例如Linux文件系统、网络协议、ASCII code等说明&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;8&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;系统管理员可用的管理命令。&lt;/strong&gt;　　　　　　　　　　　　　　&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;9&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;跟kernel有关的文件&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;正确的关机方法&lt;/h1&gt;
+
+&lt;p&gt;要关机时需要注意下面几件事情&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看系统的使用状态。
+    &lt;ul&gt;
+      &lt;li&gt;who:查看还有谁登陆在系统上&lt;/li&gt;
+      &lt;li&gt;netstat -a:查看网络的联机状态&lt;/li&gt;
+      &lt;li&gt;ps -aux:查看后台执行的程序&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;通知在线用户关机的时刻&lt;/li&gt;
+  &lt;li&gt;正确的关机命令使用
+    &lt;ul&gt;
+      &lt;li&gt;sync:将数据同步写入到硬盘中&lt;/li&gt;
+      &lt;li&gt;shutdown:惯用的关机命令&lt;/li&gt;
+      &lt;li&gt;reboot,halt,poweroff:重启、关机&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;shutdown -h now&lt;/code&gt;立刻关机&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——2.主机规划与磁盘分区</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base2"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base2</id>
+   <content type="html">&lt;h1 id=&quot;linux&quot;&gt;Linux与硬件的搭配&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;强调：各个组件或设备在Linux下面都是一个文件。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;linux-1&quot;&gt;各硬件设备在Linux中的文件名&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;几乎所有的硬件设备文件都在/dev目录内&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;设备&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;设备在Linux内的文件名&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;IDE硬盘&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/dev/hd[a-d]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;SCSI/SATA/USB硬盘&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/dev/sd[a-p]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;U盘&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/dev/sd[a-p]与SATA相同&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;软驱&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/dev/fd[0-1]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;打印机&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;25针:/dev/lp[0-2]   USB:/dev/usb/lp[0-15]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;鼠标&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;USB:/dev/usb/mouse[0-15]  PS2:/dev/psaux&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;当前CD ROM/DVD ROM&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/dev/cdrom&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;当前鼠标&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;/dev/mouse&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;磁带机&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;IDE:/dev/ht0\SCSI:/dev/st0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;磁盘分区&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;磁盘连接的方式与设备文件名的关系&lt;/h2&gt;
+
+&lt;p&gt;对于老式计算机来说，一般有两个IDE接口，而一个IDE扁平电缆可以连接两个设备，所以一共可以连接4个IDE设备。这两个IDE接口通常称为IDE1(primary)和IDE2(secondary)，而同一根电缆上的两个接口被区分为Master(主设备)与Slave(从设备)。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IDE1(Priary)&lt;/td&gt;
+      &lt;td&gt;/dev/hda&lt;/td&gt;
+      &lt;td&gt;/dev/hdb&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IDE2(Secondary)&lt;/td&gt;
+      &lt;td&gt;/dev/hdc&lt;/td&gt;
+      &lt;td&gt;/dev/hdd&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;与IDE不同，SATA/USB/SCSI等磁盘接口都是用SCSI模块来驱动的，但是并没有特定的设备顺序，它们的命名方式是根据&lt;strong&gt;Linux内核检测到磁盘的顺序&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;另外，USB只有开机完成后才被系统识别。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;磁盘的组成复习&lt;/h2&gt;
+
+&lt;p&gt;每个扇区为512bytes&lt;/p&gt;
+
+&lt;p&gt;磁盘的第一个扇区十分重要，其中记录了两个关于磁盘的重要的信息:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;主引导分区(Master Boot Record,MBR)&lt;/strong&gt;:可以安装引导加载程序的地方，有446bytes.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;分区表&lt;/strong&gt;:记录整块硬盘分区的状态,有64bytes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;磁盘分区表&lt;/h2&gt;
+
+&lt;p&gt;柱面是文件系统的最小单位，也是分区的最小单位。&lt;/p&gt;
+
+&lt;p&gt;在分区表的64bytes中，总共可以分为4组记录区，每组记录区中记录了该区段的起始与结束的柱面号。这个4组记录区被称为主(Primary)或扩展(Extended)分区，其中，扩展(Extened)分区不能超过1个，也就是说，主分区可以有多个(不超过4个),而不止1个。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;分区命名&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;分区的命名方式是在设备文件名后加上数字，其中1-4是保留给Primary或Extended使用的。&lt;/p&gt;
+
+&lt;p&gt;例子:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;/dev/hda1&lt;/li&gt;
+  &lt;li&gt;/dev/hda2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;扩展分区&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;磁盘的第一个扇区中的64Bytes只能记录4个分区信息，因此我们可以利用额外的扇区来记录更多的分区信息。扩展分区就是用来做这项工作的。扩展分区的目的是使用额外的扇区来记录信息，&lt;strong&gt;扩展分区本身并不能拿来格式化。&lt;/strong&gt;由扩展分区继续分出来的分区称为逻辑分区(logical parition),同时需要注意的是，由于逻辑分区是由扩展分区继续分出来的，所以&lt;strong&gt;逻辑分区可以使用的柱面范围就是扩展分区所设定的范围。&lt;/strong&gt;由1-4这四个号码是保留给Primary和Extended所使用的，所以&lt;strong&gt;逻辑分区的设备名称是从5开始的，这很重要！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;总结&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;其实所谓的&amp;rdquo;分区&amp;rdquo;只是针对第一个扇区中的64bytes的分区表进行设置而已。&lt;/li&gt;
+  &lt;li&gt;硬盘默认的分区表仅能写入四组分区信息&lt;/li&gt;
+  &lt;li&gt;这四组分区信息我们称为主或扩展分区&lt;/li&gt;
+  &lt;li&gt;分区的最小单位是柱面&lt;/li&gt;
+  &lt;li&gt;主分区和扩展分区最多可以由四个(硬盘的限制)&lt;/li&gt;
+  &lt;li&gt;扩展分区最多只能由一个(OS的限制)&lt;/li&gt;
+  &lt;li&gt;逻辑分区是由扩展分区持续切割出来分区&lt;/li&gt;
+  &lt;li&gt;能够被格式化后作为数据访问的分区为主分区与逻辑分区。扩展分区无法格式化&lt;/li&gt;
+  &lt;li&gt;逻辑分区的数量依OS而不同，在Linux中，IDE硬盘最多有59个逻辑分区(5-63号)，SATA硬盘则有11个逻辑分区(5-15号)&lt;/li&gt;
+  &lt;li&gt;分区其实就是以柱面为单位的“连续”磁盘空间。&lt;/li&gt;
+  &lt;li&gt;考虑到磁盘的连续性，一般建议将扩展分区的柱面号码分配在最后面的柱面内。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;开机流程与主引导分区&lt;/h2&gt;
+
+&lt;p&gt;整个开机流程应该是这样的&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;BIOS:开机主动执行的韧体，会认识第一个可开机的设备。(韧体就是写入到硬件上的一个软件程序)&lt;/li&gt;
+  &lt;li&gt;MBR: 第一个可开机设备的第一个扇区内的主引导分区块，内包含了引导加载程序。&lt;/li&gt;
+  &lt;li&gt;引导加载程序(Boot loader):一支可读取内核文件来执行的软件。&lt;/li&gt;
+  &lt;li&gt;内核文件: 开始操作系统的功能。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Boot loader是安装在MBR上的一套软件，由于MBD只有446Bytes，所以这个引导加载程序是非常小而完美的。引导加载程序的主要任务如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;提供菜单:用户可以选择不同的开机选项，这也是多重引导的重要功能&lt;/li&gt;
+  &lt;li&gt;载入内核文件: 直接指向可开机的程序区段来开始OS&lt;/li&gt;
+  &lt;li&gt;转交其他Loader: 将引导加载功能转交给其他loader负责。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;注意:引导加载程序除了可以安装在MBR之外，还可以安装在每个分区的引导扇区&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;总结&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;每个分区都拥有自己的启动扇区&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;实际可开机的内核文件是放置到各分区内的&lt;/li&gt;
+  &lt;li&gt;Loader只会认识自己的系统分区内的可开机内核文件，以及其他loader。&lt;/li&gt;
+  &lt;li&gt;Loader可直接指向或间接地将管理权转交给另一个管理程序。&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——1.Linux是什么</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base1"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base1</id>
+   <content type="html">&lt;h1 id=&quot;linux&quot;&gt;Linux内核版本&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:通常来说我们所说的应该Linux应该是指OS中的内核，而不是指整个OS。Linux就是一个OS最底层的内核及其提供的内核工具。&lt;/p&gt;
+
+&lt;p&gt;版本号的格式:主版本.次版本.释出版本-修改版本。&lt;/p&gt;
+
+&lt;p&gt;举例:2.6.18-92.e15&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;主、次版本号为奇数:开发中的版本号。如2.5.xx，这种内核通常是内核开发工程师所使用的，主要用来添加和测试新功能。&lt;/li&gt;
+  &lt;li&gt;主、次版本号为偶数:稳定的版本号。如2.6.xx，这种内核是开发成熟的，一般用于PC或企业版本中，重点是为用户提供稳定的版本。&lt;/li&gt;
+  &lt;li&gt;释出版本: 释出版本是指，在主、次版本架构不变的情况下，新增功能累积到一定的程度后所新释出的内核版本。&lt;/li&gt;
+  &lt;li&gt;修改版本: 由于Linux是使用GPL授权的，所以每个人都能修改器内核版本，你可以对某个版本的内核进行修改，而修改后的版本就是修改版本了。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;linux-distributoins&quot;&gt;Linux Distributoins&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;Linux Distributions = Kernel + Softwares + Tools + Documents&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Linux Distribution的中文翻译:可完全安装套件&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——15.作用域</title>
@@ -62,6 +806,7 @@
 &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;#return 40 not 12&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2 id=&quot;section-1&quot;&gt;内置作用域&lt;/h2&gt;
 </content>
  </entry>
  
