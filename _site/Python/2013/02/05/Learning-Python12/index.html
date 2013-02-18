@@ -137,6 +137,8 @@
 
 
 
+<script type="text/javascript" src="/assets/themes/wiki/js/wikiscript.js"></script>
+
 
       </div>
 
@@ -145,17 +147,22 @@
 		 Powered By <a href="http://www.vim.org">Vim</a> and <a href="http://jekyllrb.com">Jekyll</a> </p> </footer> 
   </body>
 <script type="text/javascript">
+$(document).ready(function(){
 	$("a[href^='http://']").each(function(){
 		this.target="_blank";
 	});
 	$('h2').prepend('>>')
-	$('h3').prepend('>>>')
 	$(function(){
 		$(".span12 h1").bind("click",function(){
 			var $content=$(this).next();
 			$content.slideToggle("slow");	
 		})
 	})
+
+
+
+
+})
 </script>
 </html>
 
