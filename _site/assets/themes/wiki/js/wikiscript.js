@@ -1,6 +1,6 @@
 $(document).ready(function(){
     //建立目录框架
-    var menu = $('<div class="ad_menu"><div class="ad_menu_title" title="点击展开/收起">目录</div><ul class="ad_menu_ul"></ul></div>');
+    var menu = $('<div class="ad_menu"><div class="ad_menu_title" title="点击展开/收起,Shift+z隐藏或打开">目录</div><ul class="ad_menu_ul"></ul></div>');
     var start = '<ul>';
     var end = '</ul>';
     //插入到DOM树中
@@ -35,6 +35,13 @@ $(document).ready(function(){
     $(".ad_menu_title").click(function(){
 		$('.ad_menu_ul').slideToggle("300");
 	})
-    x = $(".ad_menu").html();
+
+    $("html").keypress(function(e){
+	if (e.shiftKey && (e.charCode || e.keyCode)=='90'){
+		e.preventDefault();
+		$(".ad_menu").toggle(200);
+		}
+	})
+
 });
 
