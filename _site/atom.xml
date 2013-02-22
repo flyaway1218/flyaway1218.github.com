@@ -4,7 +4,7 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-02-22T16:52:56+08:00</updated>
+ <updated>2013-02-22T22:23:43+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
@@ -3963,6 +3963,235 @@ Python也支持原始(raw)字符串常量，即去掉反斜线转义机制。&lt
     &lt;p&gt;Python的第三种实现方式是IronPython(比CPython和JPython都要新)，其设计目的是让Python程序可以与Windows平台上的.NET框架以及与之对应的Linux上开源的Mono编写的应用相集成&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Vim自定义语法高亮</title>
+   <link href="http://username.github.com/Vim/2012/12/03/Vim-Develop-Syntax"/>
+   <updated>2012-12-03T00:00:00+08:00</updated>
+   <id>http://username.github.com/Vim/2012/12/03/Vim-Develop-Syntax</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;基本的语法命令&lt;/h1&gt;
+&lt;p&gt;在定义一种新的语法规则之前，首先要做的就是清楚已经定义的旧规则:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; clear
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这对于最终的语法文件来说并不是必须的，但在实验这些功能时还是十分有用的。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;列出已定义的语法项&lt;/h2&gt;
+&lt;p&gt;查看当前已经定义的语法项：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;大小些敏感&lt;/h2&gt;
+&lt;p&gt;下面的命令决定了语法规则的匹配是否是大小写敏感的:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; case mathch 
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; case ignore
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;match&lt;/code&gt;表示大小写敏感,&lt;code&gt;ignore&lt;/code&gt;表示不敏感&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;:syntax case&lt;/code&gt;命令可以出现在一个语法文件的任意位置并影响该位置以后的语法定义。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;关键字&lt;/h1&gt;
+&lt;p&gt;下面的命令定义一个关键字:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; keyword {group} {keyword} ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;{group}&lt;/code&gt;是语法组的名字。使用&lt;code&gt;:highlight&lt;/code&gt;命令你可以将一组颜色方案应用到该&lt;code&gt;{group}&lt;/code&gt;上。&lt;code&gt;{keyword}&lt;/code&gt;参数指定了实际的关键字，下面是一个例子:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; keyword xType int long char
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; keyword xStatement &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; then &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;根据约定，每个组名都前缀以该语言的filetype,本例中定义了x语言，所以前缀是x。为了方便其他人比较好的理解，在实际编写语法文件的时候，最好还是遵守这个约定。&lt;/p&gt;
+
+&lt;p&gt;现在可以把定义好的x组名于标准的Vim组名联系起来。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;highlight&lt;/span&gt; link xType Type
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;highlight&lt;/span&gt; link xStatement Statement
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;生僻的关键字&lt;/h2&gt;
+&lt;p&gt;定义的关键字必须是&lt;code&gt;iskeyword&lt;/code&gt;选项的定义。如果你用到了额外的字符，该关键字将不会被匹配到。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code&gt;iskeyword&lt;/code&gt;是vim中一个选项，vim会把这个选项中的字符做为单词的组成字符。也就是说，一个单词由&lt;code&gt;iskeyword&lt;/code&gt;选项中定义的字符构成，它前面、后面的字符不在&lt;code&gt;iskeyword&lt;/code&gt;选项定义的字符中。简单的说，&lt;code&gt;iskeyword&lt;/code&gt;是用来确定单词的分界的。可以通过&lt;code&gt;:help iskeyword&lt;/code&gt;来进行查看，vim的默认值是&amp;rdquo;a-z,A-Z,48-57,_,.,-,&amp;gt;&amp;rdquo;，其中的48-57表示的是ASCII码中的数字0-9。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;若x语言要再关键字中使用&lt;code&gt;-&lt;/code&gt;字符，可以这样做：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;iskeyword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;+=-&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; keyword xStatement when&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;not
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:关键字只适用于一个完整的词,所以像nextone这样的是不会被匹配到的。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-5&quot;&gt;匹配&lt;/h1&gt;
+&lt;p&gt;如果要定义一个复杂的语法项，比如匹配一个标示符，那就需要用到match语法：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xIdenifier &lt;span class=&quot;sr&quot;&gt;/\&amp;lt;\l\+&amp;gt;/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;注意:关键字会凌驾于任何其他语法项定义，所以&lt;code&gt;if&lt;/code&gt;,&lt;code&gt;then&lt;/code&gt;将被认为是关键字，而不是标示符。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的命令中的最后一部分是一个模式，&lt;code&gt;//&lt;/code&gt;用于界定一个模式，也可以用&lt;code&gt;/&lt;/code&gt;之外的字符，如&lt;code&gt;+&lt;/code&gt;或&lt;code&gt;&quot;&lt;/code&gt;号。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-6&quot;&gt;区域&lt;/h1&gt;
+&lt;p&gt;如果在x语言中，字符串定义为由两个双引号包围起来的字符序列。要高亮一个字符串需要定义一个区域。该区域以双引号结尾。定义如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xString &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&amp;quot;/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&amp;quot;/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;start&lt;/code&gt;和&lt;code&gt;end&lt;/code&gt;分别定义了该区域的开始和结尾。&lt;/p&gt;
+
+&lt;p&gt;如果需要Vim跳过以&quot;形式表达的脱字符，这要在命令中用到&lt;code&gt;skip&lt;/code&gt;关键字:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xString &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&amp;quot;/&lt;/span&gt; skip&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/\\&amp;quot;/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&amp;quot;/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;两个&lt;code&gt;\\&lt;/code&gt;匹配到一个真正的反斜杠&lt;code&gt;\&lt;/code&gt;字符，因为反斜杠&lt;code&gt;\&lt;/code&gt;在模式中是一个特殊字符。&lt;/p&gt;
+
+&lt;h2 id=&quot;regionmatch&quot;&gt;&lt;code&gt;region&lt;/code&gt;和&lt;code&gt;match&lt;/code&gt;的区别&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;match&lt;/code&gt;:是一个完整的模式，一次匹配一整个字符序列。&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;region&lt;/code&gt;:是一个区域以&lt;code&gt;start&lt;/code&gt;指定的模式为开始，以&lt;code&gt;end&lt;/code&gt;指定的模式为结束。区域中的&lt;code&gt;end&lt;/code&gt;模式可能被匹配到也可能不被匹配。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-7&quot;&gt;嵌套&lt;/h1&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;%Get input TODO: Skip white space
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;现在假设要让&lt;code&gt;TODO&lt;/code&gt;以黄色来高亮显示，尽管它已经在一个定义为蓝色高亮的注释中。要让Vim识别这种情况，可以定义下面的语法组:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; keyword xTodo contained
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xComment &lt;span class=&quot;sr&quot;&gt;/%.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xTodo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;contained&lt;/code&gt;参数告诉Vim该关键字只能存在于另一个语法项中。&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;contains=xTodo&lt;/code&gt;则说明允许一个组名xTodo的语法元素嵌套在其中。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-8&quot;&gt;递归嵌套&lt;/h2&gt;
+&lt;p&gt;x语言定义了以花括号&lt;code&gt;{}&lt;/code&gt;括起来的部分分为一个代码块。当然一个代码可以包含另一个代码块。这样需要下面的定义：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xBlock &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/{/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/}/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xBlock
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-9&quot;&gt;保留行尾&lt;/h2&gt;
+&lt;p&gt;为了避免一个被包含语法项吃掉行尾，要在命令中加一个额外的&lt;code&gt;keepend&lt;/code&gt;参数。这个参数可以使Vim正确处理需要匹配到行尾两次的语法项。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xComment &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/%/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/$/&lt;/span&gt; contained
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xPreProc &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/#/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/$/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xComment keepend
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-10&quot;&gt;后续组&lt;/h1&gt;
+&lt;p&gt;如果有如下的语句:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;但是你希望这三个部分用不同的规则来高亮，你可以这样做:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xif &lt;span class=&quot;sr&quot;&gt;/if/&lt;/span&gt; nextgroup&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xIfCondition skipwhite
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xIfCondition &lt;span class=&quot;sr&quot;&gt;/([^)]*)/&lt;/span&gt; contained nextgroup&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xThen skipwhite
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xThen &lt;span class=&quot;sr&quot;&gt;/then/&lt;/span&gt; contained
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;nextgroup&lt;/code&gt;参数指定哪些组可以跟在该组后面，这个参数并不是必须的。如果由它指定的任何一个组都不符合匹配，Vim什么也不做。
+- &lt;code&gt;skipwhite&lt;/code&gt;参数告诉vim空白字符(空格和跳格键)可以出现在语法项之间。
+- &lt;code&gt;skipnl&lt;/code&gt;允许语法项之间出现断行。
+- &lt;code&gt;skipempty&lt;/code&gt;允许出现空行&lt;/p&gt;
+
+&lt;p&gt;需要注意的是:&lt;code&gt;skipnl&lt;/code&gt;并不会跳过任何空行，它要求断行之后必须有东西被匹配到才行。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-11&quot;&gt;其他参数&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-12&quot;&gt;匹配一个区域&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;matchgroup&lt;/code&gt;参数可以以另外一种高亮组来处理区域的首尾部分。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xInside matchgroup&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xParen &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/(/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/)/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上面代码告诉vim，上述区域的首尾都是用xParen组来高亮，而且中间其他部分用xInside来高亮。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-13&quot;&gt;偏移&lt;/h2&gt;
+&lt;p&gt;如果想要定义一个区域匹配&amp;rdquo;if&amp;rdquo;之后的&amp;rdquo;()&amp;rdquo;之间的内容。但是却不包含&amp;rdquo;if&amp;rdquo;和&amp;rdquo;(&amp;ldquo;、&amp;rdquo;)&amp;rdquo;本身，这可以通过匹配模式中的偏移来实现。例如:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xCond &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/if\s*(/&lt;/span&gt;ms&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/)/&lt;/span&gt;me&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;起始模式的偏移是&amp;rdquo;ms=e+1&amp;rdquo;,&amp;rdquo;ms&amp;rdquo;代表&amp;rdquo;Match Start&amp;rdquo;。它定义了一个自目标字符串起始位置的偏移。通常匹配的起始位置就是模式目标的起始位置。&amp;rdquo;e+1&amp;rdquo;则告诉vim匹配的起始位置始自模式目标的结束处再向前偏移一个字符。结束模式的偏移是&amp;rdquo;me=s-1&amp;rdquo;,&amp;rdquo;me&amp;rdquo;是指&amp;rdquo;Match End&amp;rdquo;,&amp;rdquo;s-1&amp;rdquo;意为模式目标的起始处的上一个字符。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-14&quot;&gt;单行&lt;/h2&gt;
+&lt;p&gt;&amp;ldquo;online&amp;rdquo;参数告诉vim要匹配的区域不能跨越多行。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-15&quot;&gt;后续行&lt;/h2&gt;
+&lt;p&gt;如果需要定义一个预处理语法。预处理行第一列的#开始，直到该行结束。同时可以以\结束的行又指示到下一行将延续未竟的预处理定义。要应付这种情况就需要在语法项中包含一个指向后续行的模式。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; region xPreProc &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^#/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/$/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xLineContinue
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xLineContinue &lt;span class=&quot;s2&quot;&gt;&amp;quot;\\$&amp;quot;&lt;/span&gt; contained
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-16&quot;&gt;聚簇&lt;/h1&gt;
+&lt;p&gt;如果一些语句中包含了一些共同的语法元素:数字和标示符，我们可以这样定义:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xFor &lt;span class=&quot;sr&quot;&gt;/^for.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xNumber&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;xIdent
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xIf &lt;span class=&quot;sr&quot;&gt;/^if.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xNumber&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;xIdent
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xWhile &lt;span class=&quot;sr&quot;&gt;/^while.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xNumber&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;xIdent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;但是每一个语法项都要重复&amp;rdquo;contains&amp;rdquo;的内容，比较麻烦，而且修改起来更加麻烦。vim提供了一个叫做语法簇的工具，来避免上述的问题:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; cluster xState contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;xNumber&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;xIndent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;簇被用在其他以syntax语法定义语句中。就像语法组一样，它们的名字以@开始。你可以这样简化上述的例子:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xFor &lt;span class=&quot;sr&quot;&gt;/^for.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;@xState
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xIf &lt;span class=&quot;sr&quot;&gt;/^if.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;@xState
+&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;match&lt;/span&gt; xWhile &lt;span class=&quot;sr&quot;&gt;/^while.*/&lt;/span&gt; contains&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;#xState
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-17&quot;&gt;包含另一个语法文件&lt;/h1&gt;
+&lt;p&gt;在很多情况，我们可能需要引用另外一个语法文件，例如C++的语法就是C语法的一个超集，在这种情况下，vim提供了在一个语法中读取另一个语法文件的功能:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;runtime&lt;span class=&quot;p&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;c&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;:runtime!&lt;/code&gt;会在由&amp;rdquo;runtimepath&amp;rdquo;指定的目录中寻找&amp;rdquo;syntax/c.vim&amp;rdquo;文件。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-18&quot;&gt;同步&lt;/h1&gt;
+&lt;p&gt;vim对文本进行语法高亮，需要能够&amp;rdquo;断章取义&amp;rdquo;，程序写到哪里，它就要跟到哪里，并且能正确的进行语法高亮。vim提供了&lt;code&gt;:syntax sync&lt;/code&gt;命令，它告诉vim如何确定当前的境况。比如，下面的命令告诉Vim回溯查找c风格的注释，并从注释的起始处开始对该语法进行着色:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sync&lt;/span&gt; ccomment
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;此外，还有可以以一些参数调整该命令的处理细节。&lt;code&gt;minlines&lt;/code&gt;参数告诉Vim最少要往回查找多少行，&lt;code&gt;maxlines&lt;/code&gt;告诉编辑器最多检查多少行。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;syntax&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sync&lt;/span&gt; ccomment minlines&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; maxlines&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-19&quot;&gt;安装一个语法文件&lt;/h1&gt;
+&lt;p&gt;当你有一个新的语法文件的时候，把它放在&lt;code&gt;runtimepath&lt;/code&gt;指定的路径下名为&amp;rdquo;syntax&amp;rdquo;的目录。语法文件的名字必需与文件类型名一致，以&amp;rdquo;.vim&amp;rdquo;为扩展名。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-20&quot;&gt;可移植语法文件的布局要求&lt;/h1&gt;
+&lt;p&gt;文件开头的样板注释:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;quot;Vim syntax file&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;quot;Language: C&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;quot;Maintainer: Bram Moolenaar&amp;lt;Bram@vim.org&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;quot;Last Change: 2001 Jun 18&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&amp;quot;Remark: Included by the C++ syntax&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 </content>
  </entry>
  
