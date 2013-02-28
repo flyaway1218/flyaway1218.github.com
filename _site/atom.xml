@@ -4,7 +4,7 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-02-28T08:29:49+08:00</updated>
+ <updated>2013-02-28T08:33:21+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
@@ -14,7 +14,7 @@
  
  <entry>
    <title>《Learning Python》学习笔记——18.迭代和解析，第二部分</title>
-   <link href="http://username.github.com/Python/2013/02/26/Learning-Python18"/>
+   <link href="http://username.github.com/Python/2013/02/26/Learning-Python18.html"/>
    <updated>2013-02-26T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/26/Learning-Python18</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;回顾列表解析:函数式编程工具&lt;/h1&gt;
@@ -218,7 +218,7 @@
  
  <entry>
    <title>《Learning Python》学习笔记——17.函数的高级话题</title>
-   <link href="http://username.github.com/Python/2013/02/22/Learning-Python17"/>
+   <link href="http://username.github.com/Python/2013/02/22/Learning-Python17.html"/>
    <updated>2013-02-22T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/22/Learning-Python17</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;函数设计概念&lt;/h1&gt;
@@ -409,7 +409,7 @@
  
  <entry>
    <title>《Learning Python》学习笔记——16.参数</title>
-   <link href="http://username.github.com/Python/2013/02/22/Learning-Python16"/>
+   <link href="http://username.github.com/Python/2013/02/22/Learning-Python16.html"/>
    <updated>2013-02-22T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/22/Learning-Python16</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;传递参数&lt;/h1&gt;
@@ -704,7 +704,7 @@
  
  <entry>
    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——5.Linux文件与目录管理</title>
-   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5"/>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5.html"/>
    <updated>2013-02-14T00:00:00+08:00</updated>
    <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;目录与路径&lt;/h1&gt;
@@ -906,7 +906,7 @@
  
  <entry>
    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——4.Linux的文件权限与目录配置</title>
-   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base4"/>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base4.html"/>
    <updated>2013-02-14T00:00:00+08:00</updated>
    <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base4</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;用户与用户组&lt;/h1&gt;
@@ -1158,7 +1158,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——3.首次登陆与在线求助man page</title>
-   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base3"/>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base3.html"/>
    <updated>2013-02-14T00:00:00+08:00</updated>
    <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base3</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;在命令行模式下执行命令&lt;/h1&gt;
@@ -1253,7 +1253,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——2.主机规划与磁盘分区</title>
-   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base2"/>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base2.html"/>
    <updated>2013-02-14T00:00:00+08:00</updated>
    <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base2</id>
    <content type="html">&lt;h1 id=&quot;linux&quot;&gt;Linux与硬件的搭配&lt;/h1&gt;
@@ -1419,7 +1419,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——1.Linux是什么</title>
-   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base1"/>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base1.html"/>
    <updated>2013-02-14T00:00:00+08:00</updated>
    <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base1</id>
    <content type="html">&lt;h1 id=&quot;linux&quot;&gt;Linux内核版本&lt;/h1&gt;
@@ -1448,7 +1448,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——15.作用域</title>
-   <link href="http://username.github.com/Python/2013/02/07/Learning-Python15"/>
+   <link href="http://username.github.com/Python/2013/02/07/Learning-Python15.html"/>
    <updated>2013-02-07T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/07/Learning-Python15</id>
    <content type="html">&lt;h1 id=&quot;python&quot;&gt;Python作用域&lt;/h1&gt;
@@ -1664,7 +1664,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——14.函数基础</title>
-   <link href="http://username.github.com/Python/2013/02/07/Learning-Python14"/>
+   <link href="http://username.github.com/Python/2013/02/07/Learning-Python14.html"/>
    <updated>2013-02-07T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/07/Learning-Python14</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;为何使用函数&lt;/h1&gt;
@@ -1732,7 +1732,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——13.文档</title>
-   <link href="http://username.github.com/Python/2013/02/05/Learning-Python13"/>
+   <link href="http://username.github.com/Python/2013/02/05/Learning-Python13.html"/>
    <updated>2013-02-05T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/05/Learning-Python13</id>
    <content type="html">&lt;h1 id=&quot;pyton&quot;&gt;Pyton文档资源&lt;/h1&gt;
@@ -1840,7 +1840,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——12.迭代器和解析,第一部分</title>
-   <link href="http://username.github.com/Python/2013/02/05/Learning-Python12"/>
+   <link href="http://username.github.com/Python/2013/02/05/Learning-Python12.html"/>
    <updated>2013-02-05T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/05/Learning-Python12</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;迭代器:初探&lt;/h1&gt;
@@ -1938,7 +1938,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——11.while和for循环</title>
-   <link href="http://username.github.com/Python/2013/02/04/Learning-Python11"/>
+   <link href="http://username.github.com/Python/2013/02/04/Learning-Python11.html"/>
    <updated>2013-02-04T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/04/Learning-Python11</id>
    <content type="html">&lt;h1 id=&quot;while&quot;&gt;while循环&lt;/h1&gt;
@@ -2100,7 +2100,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——10.if测试和语法规则</title>
-   <link href="http://username.github.com/Python/2013/02/03/Learning-Python10"/>
+   <link href="http://username.github.com/Python/2013/02/03/Learning-Python10.html"/>
    <updated>2013-02-03T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/03/Learning-Python10</id>
    <content type="html">&lt;h1 id=&quot;if&quot;&gt;if语句&lt;/h1&gt;
@@ -2164,7 +2164,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——9.赋值、表达式和打印</title>
-   <link href="http://username.github.com/Python/2013/02/02/Learning-Python9"/>
+   <link href="http://username.github.com/Python/2013/02/02/Learning-Python9.html"/>
    <updated>2013-02-02T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/02/Learning-Python9</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;赋值语句&lt;/h1&gt;
@@ -2397,7 +2397,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——8.Python语句简介</title>
-   <link href="http://username.github.com/Python/2013/02/01/Learning-Python8"/>
+   <link href="http://username.github.com/Python/2013/02/01/Learning-Python8.html"/>
    <updated>2013-02-01T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/02/01/Learning-Python8</id>
    <content type="html">&lt;h1 id=&quot;python&quot;&gt;重访Python程序结构&lt;/h1&gt;
@@ -2533,7 +2533,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——7.元组、文件及其他</title>
-   <link href="http://username.github.com/Python/2013/01/31/Learning-Python7"/>
+   <link href="http://username.github.com/Python/2013/01/31/Learning-Python7.html"/>
    <updated>2013-01-31T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/31/Learning-Python7</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;元组&lt;/h1&gt;
@@ -2796,7 +2796,7 @@ FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装�
  
  <entry>
    <title>《Learning Python》学习笔记——6.列表与字典</title>
-   <link href="http://username.github.com/Python/2013/01/30/Learning-Python6"/>
+   <link href="http://username.github.com/Python/2013/01/30/Learning-Python6.html"/>
    <updated>2013-01-30T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/30/Learning-Python6</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;列表&lt;/h1&gt;
@@ -2935,7 +2935,7 @@ Python字典的主要属性如下:&lt;/p&gt;
  
  <entry>
    <title>《Learning Python》学习笔记——5.字符串</title>
-   <link href="http://username.github.com/Python/2013/01/29/Learning-Python5"/>
+   <link href="http://username.github.com/Python/2013/01/29/Learning-Python5.html"/>
    <updated>2013-01-29T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/29/Learning-Python5</id>
    <content type="html">&lt;p&gt;Python字符串——一个有序的字符的集合。
@@ -3400,7 +3400,7 @@ chr():获取ASCII码并将其转化为对应的字符&lt;/p&gt;
  
  <entry>
    <title>《Learning Python》学习笔记——4.动态类型简介</title>
-   <link href="http://username.github.com/Python/2013/01/28/Learning-Python4"/>
+   <link href="http://username.github.com/Python/2013/01/28/Learning-Python4.html"/>
    <updated>2013-01-28T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/28/Learning-Python4</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;缺少类型声明语句的情况&lt;/h1&gt;
@@ -3519,7 +3519,7 @@ is操作符:检查对象的同一性，就是检查两个变量名是否是指�
  
  <entry>
    <title>《Learning Python》学习笔记——3.数字</title>
-   <link href="http://username.github.com/Python/2013/01/27/Learning-Python3"/>
+   <link href="http://username.github.com/Python/2013/01/27/Learning-Python3.html"/>
    <updated>2013-01-27T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/27/Learning-Python3</id>
    <content type="html">&lt;h1 id=&quot;python&quot;&gt;Python的数字类型&lt;/h1&gt;
@@ -3854,7 +3854,7 @@ False&amp;mdash;&amp;mdash;&amp;mdash;0&lt;/p&gt;
  
  <entry>
    <title>《Learning Python》学习笔记——2.介绍Python对象类型</title>
-   <link href="http://username.github.com/Python/2013/01/26/Learning-Python2"/>
+   <link href="http://username.github.com/Python/2013/01/26/Learning-Python2.html"/>
    <updated>2013-01-26T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/26/Learning-Python2</id>
    <content type="html">&lt;p&gt;Python程序可以分解成模块、语句、表达式以及对象:&lt;/p&gt;
@@ -4122,7 +4122,7 @@ Python也支持原始(raw)字符串常量，即去掉反斜线转义机制。&lt
  
  <entry>
    <title>《Learning Python》学习笔记——1.Python如何运行程序</title>
-   <link href="http://username.github.com/Python/2013/01/25/Learning-Python1"/>
+   <link href="http://username.github.com/Python/2013/01/25/Learning-Python1.html"/>
    <updated>2013-01-25T00:00:00+08:00</updated>
    <id>http://username.github.com/Python/2013/01/25/Learning-Python1</id>
    <content type="html">&lt;h1 id=&quot;python&quot;&gt;Python解释器简介&lt;/h1&gt;
@@ -4172,7 +4172,7 @@ Python也支持原始(raw)字符串常量，即去掉反斜线转义机制。&lt
  
  <entry>
    <title>Vim自定义语法高亮</title>
-   <link href="http://username.github.com/Vim/2012/12/03/Vim-Develop-Syntax"/>
+   <link href="http://username.github.com/Vim/2012/12/03/Vim-Develop-Syntax.html"/>
    <updated>2012-12-03T00:00:00+08:00</updated>
    <id>http://username.github.com/Vim/2012/12/03/Vim-Develop-Syntax</id>
    <content type="html">&lt;h1 id=&quot;section&quot;&gt;基本的语法命令&lt;/h1&gt;
