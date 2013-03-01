@@ -4,13 +4,93 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-02-28T08:33:21+08:00</updated>
+ <updated>2013-03-01T14:40:53+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——19.模块:宏伟蓝图</title>
+   <link href="http://username.github.com/Python/2013/03/01/Learning-Python19.html"/>
+   <updated>2013-03-01T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/01/Learning-Python19</id>
+   <content type="html">&lt;p&gt;模块是最高级别的程序组织单元，它将程序代码和数据封装起来以便重新使用。每一个文件都是一个模块，并且模块导入其他模块之后就可以使用导入模块定义的变量名。模块可以由两个语句和一个重要的内置函数进行处理:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;import&lt;/code&gt;:是客户端(导入者)以一个整体获取一个模块&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;from&lt;/code&gt;:允许客户端从一个模块文件中获取特定的变量名&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;imp.reload&lt;/code&gt;:在不中止Python程序的情况下，提供了一种重新载入模块文件代码的方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;为什么使用模块&lt;/h1&gt;
+&lt;p&gt;简而言之，模块是通过使用自包含的变量的包，也就是所谓的命名空间提供了将部件组织为系统的简单的方法。在模块导入的时候，模块文件的全局作用域就变成了模块对象的命名空间。最后，Python的模块允许将独立的文件连接成一个更大的程序系统。&lt;/p&gt;
+
+&lt;h1 id=&quot;python&quot;&gt;Python程序架构&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;如何组织一个程序&lt;/h2&gt;
+&lt;p&gt;一般来讲，一个Python程序包括了多个含有Python语句的文本文件。程序是作为一个主体的、顶层的文件来构造的，配合有零个或多个支持的文件，在Python中这些文件称作模块。&lt;/p&gt;
+
+&lt;p&gt;在Python中，顶层文件包含了程序的主要控制流程:这就是你需要运行来启动应用的文件。模块文件就是工具的库，顶层文件使用了在模块文件中定义的工具，而这些模块使用了其他模块所定义的工具。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;导入和属性&lt;/h2&gt;
+&lt;p&gt;在Python中，交叉文件的模块连接在导入语句执行时才会进行解析，实际效果就是，将模块名(简单地认为是变量名)赋值给载入的模块对象。事实上，在一个读入语句中的模块名有两个作用:识别加载的外部文档，但是它也会变成赋值给被载入模块的变量。模块定义的对象也会在执行时创建，&lt;code&gt;import&lt;/code&gt;会一次运行在目标文档中的语句从而建立其中的内容。&lt;/p&gt;
+
+&lt;p&gt;导入的概念在Python中贯穿始末。任何文件都能够从任何其他文件中导入其工具，导入链要多深就有多深。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;标准库模块&lt;/h2&gt;
+&lt;p&gt;Python自带了很多实用的模块，称为标准链接库。这个集合大约有200个模块，包含与平台不相关的常见程序设计任务。这些工具不是Python语言的组成部分，但是，你可以在任何安装了标准Python的情况下，导入适当的模块来使用。&lt;/p&gt;
+
+&lt;h1 id=&quot;import&quot;&gt;import如何工作&lt;/h1&gt;
+&lt;p&gt;在Python中，导入并非只是把一个文件文本插入到另一个文件而已。导入其实是运行时的匀速，程序第一次导入指定文件时，会执行三个步骤:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;找到模块文件。&lt;/li&gt;
+  &lt;li&gt;编译成位码(需要时)&lt;/li&gt;
+  &lt;li&gt;执行模块的代码来创建其所定义的对象&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;注意:这三个步骤只在程序执行时，模块第一次导入时才会进行。在这之后，导入相同模块时，会跳过这个三步骤，而只提取内存中已经加载的模块对象。&lt;/strong&gt;从技术上讲，Python把载入的模块存储到一个名为&lt;code&gt;sys.modules&lt;/code&gt;的表中，并在一次导入操作的开始时检查该表，如果模块不存在，将会启动上述三个步骤的过程。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;搜索&lt;/h2&gt;
+&lt;p&gt;在使用&lt;code&gt;import&lt;/code&gt;时，只能列出简单名称。路径和后缀是可以省略掉的，因为Python使用了标准模块搜索路径来找出&lt;code&gt;import&lt;/code&gt;语句所对应的模块文件。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;编译(可选)&lt;/h2&gt;
+&lt;p&gt;遍历模块搜索，找到符合import语句的源代码文件后，Python会检查文件的时间戳，如果发现字节码比源代码文件旧，就会在程序运行时自动重新生成字节码；如果字节码不必源文件旧，就会跳过编译这个过程。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-6&quot;&gt;运行&lt;/h2&gt;
+&lt;p&gt;import操作的最后步骤是执行模块的字节码。文件中的所有语句都会依次执行，从头至尾。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-7&quot;&gt;模块搜索路径&lt;/h1&gt;
+&lt;p&gt;Python的模块搜索路径是下面这些组件组合而成的结果，其中有些进行了预定义，而其中有些你可以进行调整来告诉Python去哪里搜索。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;程序的主目录&lt;/li&gt;
+  &lt;li&gt;PYTHONPATH目录(如果设置了的话)&lt;/li&gt;
+  &lt;li&gt;标准链接库目录&lt;/li&gt;
+  &lt;li&gt;任何.pth文件的内容(如果存在的话)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这四个组件组合起来就变成了&lt;code&gt;sys.path&lt;/code&gt;，它是目录名称字符串的列表。上面的1和3是自动定义的，2和4可以用来进行扩展。需要特别说明的是.pth文件，你可以在.pth的文本文件中一行一行地列出需要添加到模块搜索路径中的目录，它是PYTHONPATH设置的一种替代方案。&lt;/p&gt;
+
+&lt;h2 id=&quot;syspath&quot;&gt;sys.path列表&lt;/h2&gt;
+&lt;p&gt;如果你想知道模块搜索路径在机器上的实际配置，可以通过打印内置的sys.path列表来查看这个路径。目录名称字符串列表就是Python内部实际的搜索路径。导入时，Python会由左至右搜索这个列表中的每个目录。Python在程序启动时进行配置，自动将顶级文件的主目录、任何PYTHONPATH目录、已经创建的任何.pth文件路径的内容，以及标准库目录合并，结果就是sys.path中的目录名的字符串的列表。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-8&quot;&gt;模块文件的选择&lt;/h2&gt;
+&lt;p&gt;Python总是由左至右搜索sys.path的，并且加载模块搜索路径那些目录中最先出现的相符文件。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-9&quot;&gt;高级的模块选择概念&lt;/h2&gt;
+&lt;p&gt;一般来说，导入工作就是在机器上搜索并载入文件，然而重新定义Python中import操作所做的事也是有可能的，也就是使用所谓的导入钩子(import hook)。这些钩子可以让导入做各种有用的事情。&lt;/p&gt;
+
+&lt;h2 id=&quot;distutils&quot;&gt;第三方工具:distutils&lt;/h2&gt;
+&lt;p&gt;本章对模块搜索路径设置的说明，主要是针对自己编写的用户定义的源代码。Python的第三方扩展，通常是使用标准链接库中的distutils工具来自动安装，所以不需要路径设置，就能使用第三方库。&lt;/p&gt;
+
+&lt;p&gt;使用distutils的系统一般都附带setup.py脚本，执行这个脚本可以进行程序的安装。这个脚本会导入并使用distutils模块，将这种系统放在属于模块自动搜索路径的目录内(通常是在Python安装目录树下的Lib\site-packages子目录中)。&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——18.迭代和解析，第二部分</title>
