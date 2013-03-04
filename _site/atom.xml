@@ -4,13 +4,231 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-03-01T19:17:13+08:00</updated>
+ <updated>2013-03-04T20:39:46+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——22.高级模块话题</title>
+   <link href="http://username.github.com/Python/2013/03/04/Learning-Python22.html"/>
+   <updated>2013-03-04T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/04/Learning-Python22</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;在模块中隐藏数据&lt;/h1&gt;
+&lt;p&gt;正如之前所说，Python模块会导出其文件顶层所赋值的所有变量名。没有对某一变量名进行声明，使其在模块内可见或不可见这种概念。实际上，如果客户想的话，是没有放置客户端修改模块内变量名的方法的。&lt;/p&gt;
+
+&lt;p&gt;在Python中，模块内的数据隐藏是一种惯例，而不是一种约束。&lt;/p&gt;
+
+&lt;h2 id=&quot;from-xall&quot;&gt;最小化from *的破坏:_X和__all__&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如果把下划线放在变量前面，那就可以防止客户端使用from *语句导入模块时，把其中的变量名复制出去，这只是最小化对对命名空间的破坏。&lt;/li&gt;
+  &lt;li&gt;下划线不是&amp;rdquo;私有声明&amp;rdquo;:你还是可以使用其他导入形式看见并修改这类变量名。如import。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;另外，也可以在模块的顶层把需要复制出去的变量名赋值给变量名为__all__的变量，例如&lt;code&gt;__all__=[&quot;Error&quot;,&quot;encode&quot;,&quot;decode&quot;]&lt;/code&gt;，使用此功能时，from *语句只会把列在__all__列表中的变量名复制出来。&lt;/p&gt;
+
+&lt;p&gt;__all__指出需要被复制的变量名，而_X指出不被复制的变量名。&lt;/p&gt;
+
+&lt;h1 id=&quot;namemain&quot;&gt;混合用法模式:__name__和__main__&lt;/h1&gt;
+&lt;p&gt;每个模块都有个名为__name__的内置属性，Python会自动设置属性:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如果文件时以顶层程序文件执行，在启动时，__name__就会设置为字符串&amp;rdquo;__main__&amp;rdquo;&lt;/li&gt;
+  &lt;li&gt;如果文件被导入，__name__就会改设成客户端所了解的模块名&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这样模块自己就可以检测自己的__name__，来确定它是在执行还是在导入。&lt;/p&gt;
+
+&lt;p&gt;实际上，一个模块的__name__变量充当一个使用模式标志，允许它编写一个可导入的库和一个顶层脚本。&lt;/p&gt;
+
+&lt;h2 id=&quot;name&quot;&gt;以__name__进行单元测试&lt;/h2&gt;
+&lt;p&gt;通过__name__变量，我们可以在文件尾部添加测试代码，把测试代码放在__name__变量的测试中，这样当文件被导入时，测试代码不会运行；但文件当做脚本被运行时，则是运行测试代码，这样能极大提高开发的效率。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;修改模块搜索路径&lt;/h1&gt;
+&lt;p&gt;事实上，sysp.path是可以修改的，一旦人为修改后，就会对Python程序的导入产生影响，因为所有的导入和文件都共享同一个sys.path列表。&lt;/p&gt;
+
+&lt;h1 id=&quot;importfromas&quot;&gt;import语句和from语句的as扩展&lt;/h1&gt;
+&lt;p&gt;import和from语句都可以扩展的，让模块可以在脚本中给予不同的变量名。
+下面的语句:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;modulename&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;name&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;相当于:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;modulename&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modulename&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;del&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;用名称字符串导入模块&lt;/h1&gt;
+&lt;p&gt;一条import或from语句中的模块名是直接编写的变量名称，有时候我们需要动态加载不同的模块，在Python中可以使用&lt;code&gt;exec&lt;/code&gt;内置函数来实现:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;modname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;string&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;import&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;过渡性模块重载&lt;/h1&gt;
+&lt;p&gt;当我们在重载一个模块的时候，Python只会重载你给出的模块，而不会自动重载那些嵌套了的模块。例如，如果要重载某个模块A，并且A导入模块B和C，重载只适用于A，不适用于B和C。A中导入B和C的语句在重载的时候重新运行，但是，它们只是获取已经载入的B和C模块对象。&lt;/p&gt;
+
+&lt;p&gt;一种比较好的方法是，编写一个通用的工具来进行过渡性重载，通过扫描模块的&lt;code&gt;__dict__&lt;/code&gt;属性并检查每一项的type以找到要重新载入的嵌套模块。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;sd&quot;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;sd&quot;&gt;reloadall.py:transively reload nested modules&lt;/span&gt;
+&lt;span class=&quot;sd&quot;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;types&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;imp&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reload&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;reloading &amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;transive_reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;visited&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;visited&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;visited&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;None&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attrobj&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__dict__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attrobj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;types&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModuleType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;transive_reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attrobj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;visited&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;reload_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;visited&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;types&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModuleType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;transive_reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;visited&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+	&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;reloadall&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;reload_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reloadall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-4&quot;&gt;模块设计理念&lt;/h1&gt;
+&lt;p&gt;就像函数一样，模块也有设计方面的折中考虑:需要思考哪些函数放进模块、模块通信机制。以下是一些通用的概念:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;总是在Python的模块内编写代码。&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;模块耦合要降到最低:全局变量。&lt;/strong&gt;模块应尽可能和其他模块的全局变量无关。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;最大化模块的粘性:同一目标。&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;模块应该少去修改其他模块的变量。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-5&quot;&gt;模块陷阱&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-6&quot;&gt;顶层代码的语句次序的重要性&lt;/h2&gt;
+&lt;p&gt;当模块首次导入(或重载)时，Python会从头到尾执行语句。这里有些和前向引用(forward reference)相关的含义，值得在此强调:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在导入时，模块文件顶层的程序代码(不在函数内)一旦Python运行到时，就会立刻执行。因此，该语句是无法引用文件后面位置赋值的变量名。&lt;/li&gt;
+  &lt;li&gt;位于函数主体内的代码直到函数被调用后才会运行。因为函数内的变量名在函数实际执行前都不会解析，通常可以引用文件内任意地方的变量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;from&quot;&gt;from复制变量名，而不是连接&lt;/h2&gt;
+&lt;p&gt;如果我们在一个文件中导入另一个模块的一个变量，就会得到这个变量的拷贝，而不是对这个变量的连接。在导入者内修改变量名，只会重设该变量名在本地作用域版本的绑定值，而不是那个被导入的文件中的变量名。&lt;/p&gt;
+
+&lt;p&gt;然而，如果我们使用import获得了整个模块，然后赋值某个点号运算的变量名，就会修改相应的模块对象中的变量名。点号运算把Python定向到了模块对象的变量名，而不是导入者的变量名。&lt;/p&gt;
+
+&lt;h2 id=&quot;reloadfrom&quot;&gt;reload不会影响from导入&lt;/h2&gt;
+&lt;p&gt;因为from在执行时会复制(赋值)变量名，所以不连接到变量名的那个模块。通过from导入的变量名就简单地变成了对象的引用，当from运行时，这个对象恰巧在被导入者内有着相同的变量名引用。&lt;/p&gt;
+
+&lt;p&gt;所以，重载被导入者对于使用from导入模块变量名的客户端没有影响。也就是说，客户端的变量名依然引用了通过from取出的原始对象，即使之后原始模块中的变量名进行了重新赋值。&lt;/p&gt;
+
+&lt;p&gt;为了保证重载更有效，可以使用import以及点号运算，来取代from。因为点号运算总是回到模块，这样就会找到模块重载后变量名的新的绑定值。&lt;/p&gt;
+
+&lt;h2 id=&quot;from-1&quot;&gt;递归形式的from导入无法工作&lt;/h2&gt;
+&lt;p&gt;如果使用import取出整个模块，那没什么问题，模块的变量名在稍后使用点号运算，在获得值之前都不会读取。但是，如果使用from语句来取出特定的变量名，必须记住，只能读取在模块中已经赋值的变量名。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——21.模块包</title>
+   <link href="http://username.github.com/Python/2013/03/02/Learnig-Python21.html"/>
+   <updated>2013-03-02T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/02/Learnig-Python21</id>
+   <content type="html">&lt;p&gt;除了模块名之外，导入也可以指定目录路径。Python代码的目录就成为包，因此，这类导入就称为包导入。事实上，包导入是把计算机上的目录变成另一个Python的命名空间，而属性则对应于目录中所包含的子目录和模块文件。&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;包导入基础&lt;/h1&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;c&quot;&gt;#import语句&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;dir1.dir2.mod&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#from语句&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;dir1.dir2.mode&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;x&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这些语句中的&amp;rdquo;点号&amp;rdquo;路径是对应于机器上目录层次的路径，通过这个路径可以获得文件mod.py(或类似文件，扩展名可能会有变化)。也就是说，上面的语句表明了机器上有个目录dir1，而dir1里有子目dir2，而dir2内包含有一个名为mod.py的模块文件。&lt;/p&gt;
+
+&lt;p&gt;要记住:&lt;strong&gt;import语句中的目录只能是以点号间隔的变量。&lt;/strong&gt;不能在import中使用任何平台特定的路径语法。&lt;/p&gt;
+
+&lt;h2 id=&quot;initpy&quot;&gt;__init__.py包文件&lt;/h2&gt;
+&lt;p&gt;如果选择使用包导入，就必须多遵循一条约束:&lt;strong&gt;包导入语句的路径中的每个目录内都必须有__init__.py&lt;/strong&gt;这个文件，否则导入包会失败。在上面的例子中，dir1和dir2中都必须包含__init__.py这个文件。&lt;/p&gt;
+
+&lt;p&gt;__init__.py文件可以是空的也可以是非空的，当有内容时，它就像普通的模块文件，这类文件从某种程度上说就像是Python的一种声明。这些文件可以防止有相同名称的目录不小心出现在模块搜索路径中，而真正所需要的模块却排在其后面。没有这层保护，Python可能会挑选出和程序代码无关的目录，只是因为有一个同名的目录刚好出现在搜索路径上位置较前的目录内。&lt;/p&gt;
+
+&lt;p&gt;更通常的情况下，__init__.py文件扮演了包初始钩子、替目录产生模块命名空间以及使用目录导入时实现from *行为的角色。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;包的初始化&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Python首次导入某个目录时，会自动执行该目录下__init__.py文件中的所有程序代码。因此，这类文件可以作为包内文件所需要的初始化的代码的场所(例如创建需要的数据文件、连接数据库等)。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;模块命名空间的初始化&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在 __init__.py中赋值的变量都会存在于当前目录所创建的模块对象提供的命名空间中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;from*语句的行为&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;可以在 __init__.py文件内使用__all__列表来定义目录以from *语句形式导入时，需要导出些什么。在__init__.py文件中，__all__列表是指当包(目录)使用from *的时候，应该导入的子模块的名称清单。如果没有设定，from*语句不会自动加载嵌套与该目录内的子模块。&lt;/p&gt;
+
+&lt;p&gt;到一个包第一次被导入的时候，路径上每一个目录中的 __init__.py文件都会被执行，实际上，路径中的每一个目录名都会变成赋值了的模块对象的变量，而模块对象的命名空间则是由相应目录内的__init__.py文件中的赋值语句进行初始化的。&lt;/p&gt;
+
+&lt;h2 id=&quot;fromimport&quot;&gt;包对应的from语句和import语句&lt;/h2&gt;
+&lt;p&gt;在导入包的时候，from语句是比较方便的，节省了长路径的繁琐输入，而且当路径发生改变时，主需要修改from语句，而只使用import语句时，则需要修改引用这个包的每一处代码。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;包相对导入&lt;/h1&gt;
+&lt;p&gt;在包自身的内部，包文件的导入可以使用和外部导入相同的路径语法，但是，它们也可能使用特殊的包内搜索规则来简化导入语句。&lt;/p&gt;
+
+&lt;h2 id=&quot;python30&quot;&gt;Python3.0中的变化&lt;/h2&gt;
+&lt;p&gt;对于包的导入，Python3.0引入了两个变化:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;它修改了导入搜索路径语义，以默认地跳过包自己的目录。导入只会检查搜索路径的其他组件，这叫做&amp;rdquo;绝对&amp;rdquo;导入。&lt;/li&gt;
+  &lt;li&gt;它扩展了from语句的语法，以允许显示地要求导入只搜索包的目录。这叫做&amp;rdquo;相对&amp;rdquo;导入语法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;相对导入的基础知识&lt;/h2&gt;
+&lt;p&gt;在Python3.0中，from语句现在可以使用前面的点号(&amp;ldquo;.&amp;rdquo;)来指定，它们需要位于同一包中的模块(所谓的包相对导入)，而不是位于模块导入搜索路径上某处的模块(叫做绝对导入)。也就是说:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在Python3.0中，我们可以使用from前面的点号来表示，导入应该相对于外围的包——这样的导入将只是在包的内部搜索，并且不会搜索位于导入搜索路径上(sys.path)上某处的同名模块。直接效果就是包模块覆盖了外部的模块。&lt;/li&gt;
+  &lt;li&gt;在Python3.0中，在一个包中导入默认(不是用点号)是绝对的——导入忽略了包含包自身并在sys.path搜索路径上的某处查找。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;相对导入的作用域&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;相对导入适用于只在包内导入，记住，&lt;strong&gt;这种功能的模块搜索路径修改只应用在位于包内的模块文件中的import语句&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;相对导入只适用于from语句&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;模块查找规则总结&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;简单模块名通过搜索sys.path路径列表上的每个目录来查找，从左到右进行。这个列表由系统默认设置和用户配置设置组成。&lt;/li&gt;
+  &lt;li&gt;在一个包中，常规的import语句使用和其他地方的导入一样的sys.path搜索规则。包中的导入使用from语句以及前面的点号，然而，它是相对于包的；也就是说，只检查包目录，并且不使用常规的sys.path查找。&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——20.模块代码编写基础</title>
@@ -910,6 +1128,1019 @@
  </entry>
  
  <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——9.认识与学习bash</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base9.html"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base9</id>
+   <content type="html">&lt;h1 id=&quot;bashshell&quot;&gt;认识bash这个shell&lt;/h1&gt;
+
+&lt;h2 id=&quot;shell&quot;&gt;硬件、内核shell&lt;/h2&gt;
+
+&lt;p&gt;我们必须通过&amp;rdquo;Shell&amp;rdquo;将我们输入的命令与内核通信，好让内核可以控制硬件来正确无误地工作&lt;/p&gt;
+
+&lt;p&gt;其实Shell的功能只是提供用户操作系统一个接口。&lt;/p&gt;
+
+&lt;p&gt;每个用户都可以设置自己的所有使用的shell版本，这个信息是存储在&lt;code&gt;/etc/passwd&lt;/code&gt;中的，系统默认采用是的bash，但是是可以修改的。&lt;/p&gt;
+
+&lt;p&gt;系统合法的shell均写在&lt;code&gt;/etc/shells&lt;/code&gt;中&lt;/p&gt;
+
+&lt;h2 id=&quot;bash-shell&quot;&gt;bash shell的功能&lt;/h2&gt;
+&lt;p&gt;bash中的命令历史是存储在用户主文件夹的.bash_history中，不过需要注意的是，~./bash_history中记录的是前一次登陆以前所执行过的命令，而至于这一次登陆所执行的命令都被暂存在临时内存中，当你成功注销系统后，该命令记忆才会记录到.bash_history当中&lt;/p&gt;
+
+&lt;p&gt;通过type命令我们可以知道每个命令是否为bash的内置命令&lt;/p&gt;
+
+&lt;p&gt;在bash中可以通过&amp;rdquo;\[Enter]&amp;rdquo;来对[Enter]进行转义&lt;/p&gt;
+
+&lt;h1 id=&quot;shell-1&quot;&gt;Shell的变量功能&lt;/h1&gt;
+
+&lt;h2 id=&quot;echounset&quot;&gt;变量的显示与设置:echo,unset&lt;/h2&gt;
+
+&lt;p&gt;变量的显示:echo   echo ${}&lt;/p&gt;
+
+&lt;p&gt;变量的修改:直接用&amp;rdquo;=&amp;rdquo;连接变量与它的内容&lt;code&gt;myname=flyway&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;变量设置的规则:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;变量与变量内容以一个等号&amp;rdquo;=&amp;rdquo;来连接&lt;/li&gt;
+  &lt;li&gt;等号两边不能直接接空格&lt;/li&gt;
+  &lt;li&gt;变量名称只能是英文字母与数字，但是开头字符不能是数字&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;变量内容若有空格符可使用双引号或单引号将变量内容结合起来&lt;/p&gt;
+
+    &lt;p&gt;&lt;code&gt;var=&quot;lang is $LANG&quot;&lt;/code&gt;     那么&lt;code&gt;echo $var&lt;/code&gt;可得&amp;rdquo;lang is en_US&amp;rdquo;&lt;br /&gt;
+&lt;code&gt;ar='lang is $LANG'&lt;/code&gt;      那么&lt;code&gt;echo $var&lt;/code&gt;可得&amp;rdquo;lang is $LANG&amp;rdquo;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;可用转义字符&amp;rdquo;&quot;将特殊符号编程一般字符&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在一串命令中，还需要通过其他命令提供的信息，可以使用反单引号&amp;rdquo;&lt;code&gt;命令&lt;/code&gt;&amp;ldquo;或&amp;rdquo;$(命令)&amp;rdquo;。&lt;/p&gt;
+
+    &lt;p&gt;&lt;code&gt;version=$(unname -r)&lt;/code&gt;再&lt;code&gt;echo $version&lt;/code&gt;可得 &amp;ldquo;2.6.18-128.el5&amp;rdquo;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;若该变量为了增加变量内容时，则可用$(变量)或&amp;rdquo;$变量名称&amp;rdquo;累加内容&lt;code&gt;echo $var&lt;/code&gt;
+     &lt;code&gt;PATH=&quot;$PATH&quot;:/home/bin&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;若该变量需要其他其他子进程执行，则需要以export来是变量变成环境变量:
+     &lt;code&gt;export PATH&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;通常大写字符为系统默认变量，自行设置变量可以使用小写字符，方便判断&lt;/li&gt;
+  &lt;li&gt;取消变量的方法为使用&amp;rdquo;unset 变量名称&amp;rdquo;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;环境变量的功能&lt;/h2&gt;
+
+&lt;p&gt;系统中的变量一般可以分为三种:系统环境变量、与bash接口有关的变量和用户自定义变量&lt;/p&gt;
+
+&lt;p&gt;env可以用来查看环境变量与常见环境变量说明&lt;/p&gt;
+
+&lt;p&gt;环境变量的分析:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HOME:代表用户的主文件夹&lt;/li&gt;
+  &lt;li&gt;SHELL:它说明了当前这个环境使用的shell是哪个程序。Linux默认使用/bin/bash的&lt;/li&gt;
+  &lt;li&gt;HISTSIZE:我们曾今执行过的命令可以被系统记录下来，而记录的&amp;rdquo;条数&amp;rdquo;则是由这个值来设置的。&lt;/li&gt;
+  &lt;li&gt;MAIL:使用mail命令在收信时系统会去读取的邮件信箱文件(mailbox)&lt;/li&gt;
+  &lt;li&gt;PATH:执行文件查找的路径，目录与目录之间用冒号&amp;rdquo;:&amp;rdquo;隔开，由于文件的查找是依序由PATH的变量内的目录来查询，所以目录顺序也是重要的。&lt;/li&gt;
+  &lt;li&gt;LANG:语系数据，这很重要。中文编码通常是zh_CN.gb2312或者是zh_CN.UTF-8&lt;/li&gt;
+  &lt;li&gt;RANDOM:&amp;rdquo;随机数&amp;rdquo;的变量，随机数生成器，生成介于0~32767之间&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以用set查看所有的变量,包含环境变量、与bash接口有关的变量和自定义变量
+其中比较重要的有以下几个:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;PS1(提示符的设置)
+      这个东西就是我们的&amp;rdquo;命令提示符&amp;rdquo;,当我们每次按下[Enter]按键去执行某个命令后，最后要再次出现提示符时，就会主动去读取这个变量值。变量值中符号的意义:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;\d&lt;/code&gt;:可显示出&amp;rdquo;星期月日&amp;rdquo;的日期格式，如&amp;rdquo;Mon Feb 2&amp;rdquo;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\H&lt;/code&gt;:完整的主机名&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\h&lt;/code&gt;:仅取主机名的在第一个小数点之前的名字&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\t&lt;/code&gt;:显示时间,为24小时格式的&amp;rdquo;HH:MM:SS&amp;rdquo;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\T&lt;/code&gt;:显示时间,为12小时格式的&amp;rdquo;HH:MM:SS&amp;rdquo;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\A&lt;/code&gt;:显示时间,为24小时格式的&amp;rdquo;HH:MM&amp;rdquo;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\@&lt;/code&gt;:显示时间,为12小时格式的&amp;rdquo;am/pm&amp;rdquo;样式&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\u&lt;/code&gt;:目前用户的账号名称&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\w&lt;/code&gt;:BASH的版本信息&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\W&lt;/code&gt;:完整的工作目录名称，由根目录写起的目录名称。但主文件夹会以~替代&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\#&lt;/code&gt;:利用basename函数取得工作目录名称，所以仅会列出最后一个目录名&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;\$&lt;/code&gt;:提示符，如果是root时，提示符为#，否则就是$&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;$(关于shell的PID)
+  &lt;code&gt;$&lt;/code&gt;本身也是变量，这个代表的是目前这个Shell的线程代号，即所谓的PID。&lt;/li&gt;
+  &lt;li&gt;？(关于上个执行命令的回传码)
+  在bash里这个变量很重要，这个变量是上一个执行的命令所回传的值。当我们执行某个命令时，这些命令会回传一个执行后的代码。一般来说，如果成功执行该命令，则会回传一个0值。&lt;/li&gt;
+  &lt;li&gt;OSTYPE,HOSTTYPE,MACHTYPE(主机硬件与内核的等级)
+      32位CPU:i386、i586、i586、
+      64位CPU:x86_64&lt;/li&gt;
+  &lt;li&gt;export:自定义变量转换成环境变量
+      &lt;strong&gt;子进程仅会继承父进程的环境变量，子进程不会继承父进程的自定义变脸&lt;/strong&gt;
+      可以通过export命令来将一个自定义变量转变为环境变量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;locale&quot;&gt;影响显示结果的语系变量(locale)&lt;/h2&gt;
+
+&lt;p&gt;locale:表示用户的语言环境,不仅仅是指编码方式。locale包含很多习惯定义，一共有十二类:
+- LC_CTYPE:字符(文字)辨识的编码
+- LC_NUMERIC:数字系统显示的信息
+- LC_TIME:时间系统的显示数据
+- LC_COLLATE:字符串的比较和排序习惯
+- LC_MONETARY:货币格式的显示
+- LC_MESSAGES:信息提示，主要是菜单、错误信息等
+- LC_NAME:姓名书写方式
+- LC_ADDRESS:地址书写方式
+- LC_TELEPHONE:电话号码的书写方式
+- LC_MEASUREMENT:度量衡表达方式
+- LC_PAPER:默认纸张尺寸的大小
+- LC_IDENTIFICATION:对locale自身包含信息的概述&lt;/p&gt;
+
+&lt;p&gt;系统所支持的locale文件放置在&lt;code&gt;/usr/share/i18n/locales&lt;/code&gt;中&lt;/p&gt;
+
+&lt;p&gt;可以通过locale列出当前系统所支持的语系,当前所使用的语系文件都放置在&lt;code&gt;/usr/lib/locale/&lt;/code&gt;目录中&lt;/p&gt;
+
+&lt;p&gt;整体系统默认的语系定义在&lt;code&gt;/etc/sysconfig/i18n&lt;/code&gt;中&lt;/p&gt;
+
+&lt;p&gt;可以修改当前系统的locale，修改其十二个类别，然后重新生成当前系统所使用的语系文件，覆盖&lt;code&gt;/usr/lib/locale/&lt;/code&gt;中的语系文件&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;变量的有效范围&lt;/h2&gt;
+
+&lt;p&gt;基本上可以这么理解:&lt;/p&gt;
+
+&lt;p&gt;环境变量=全局变量
+自定义变量=局部变量&lt;/p&gt;
+
+&lt;h2 id=&quot;readarraydeclare&quot;&gt;变量键盘读取、数组与声明:read,array,declare&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;read&lt;/strong&gt;&lt;br /&gt;
+read [-pt] variable
+读取来自键盘输入的变量
+-p:后面可以接提示符
+-t:后面可以接等待的秒数，不会一直等待用户&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;declare/tepeset&lt;/strong&gt;&lt;br /&gt;
+declare [-aixr] variable
+声明变量的类型
+-a:将变量定义成为数组
+-i:将变量定义成为整数数字
+-x:用法与export相同，将后面的变量编程环境变量
+-r:将变量设置成readonly类型，该变量不可被更改内容，也不能重设&lt;/p&gt;
+
+&lt;p&gt;在默认情况下，bash对于变量有几个基本的定义:
+- 变量类型默认为&amp;rdquo;字符串&amp;rdquo;
+- bash环境中的数值运算，默认最多仅能到达整数类型&lt;/p&gt;
+
+&lt;h2 id=&quot;ulimit&quot;&gt;与文件系统及程序的限制关系:ulimit&lt;/h2&gt;
+
+&lt;p&gt;我们的bash是可以限制用户的某些系统资源的，包括可以打开的文件数量、可以使用的CPU时间、可以使用的内存总量等。
+可以使用ulimit进行设置。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;变量内容的删除、替代与替换&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;删除与替换&lt;/strong&gt;
+|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-|
+|  变量设置方式                |                 说明                                           |
+|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;:|
+|  ${变量#关键字}              |  若变量内容从头开始的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最短数据删除  |
+|  ${变量##关键字}             |  若变量内容从头开始的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最长数据删除  |
+|  ${变量%关键字}              |  若变量内容从尾向前的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最短数据删除  |
+|  ${变量%%关键字}             |  若变量内容从尾向前的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最长数据删除  |
+|  ${变量/旧字符串/新字符串}   |  若变量内容符合&amp;rdquo;旧字符串&amp;rdquo;，则第一个旧字符串会被新字符串替换    |
+|  ${变量//旧字符串/新字符串}  |  若变量内容符合&amp;rdquo;旧字符串&amp;rdquo;，则全部的旧字符串会被新字符串替换    |
+|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-|&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;替代&lt;/strong&gt;
+|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|
+|  变量设置方式      |  str没有设置         |  str为空字符串       |  str已设置非空字符串  |
+|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-|
+|  var=${str-expr}   |  var=expr            |  var=                |  var=$str             |
+|  var=${str:-expr}  |  var=expr            |  var=expr            |  var=$str             |
+|  var=${str+expr}   |  var=                |  var=expr            |  var=expr             |
+|  var=${str:+expr}  |  var=                |  var=                |  var=expr             |
+|  var=${str=expr}   |  var=expr\str=expr  |  str不变\var=       |  str不变\var=$str    |
+|  var=${str:=expr}  |  var=expr\str=expr  |  var=expr\str=expr  |  str不变\var=$str    |
+|  var=${str?expr}   |  expr输出至stderr    |  var=                |  var=str              |
+|  var=${str:?expr}  |  expr输出至stderr    |  expr输出至stderr    |  var=str              |
+|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|&lt;/p&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;命令别名与历史命令&lt;/h1&gt;
+
+&lt;h2 id=&quot;aliasunslias&quot;&gt;命令别名设置:alias,unslias&lt;/h2&gt;
+
+&lt;p&gt;alias 别名=&amp;rdquo;命令 参数&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;别名可以替代现有命令，也可以创造新命令。用于简便地输入长命令。例如
+- alias shutdown=&amp;rdquo;shutdown -h now&amp;rdquo;
+- alias rm=&amp;rdquo;rm -i&amp;rdquo;
+- alias ll=&amp;rdquo;ls -al&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&quot;history&quot;&gt;history&lt;/h2&gt;
+&lt;p&gt;可以通过history命令列出之前所有的历史命令&lt;/p&gt;
+
+&lt;h1 id=&quot;bash-shell-1&quot;&gt;Bash Shell的操作环境&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;路径与命令查找顺序&lt;/h2&gt;
+
+&lt;p&gt;同一个命令被执行的顺序:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;以相对/绝对路径执行命令，例如&lt;code&gt;/bin/ls&lt;/code&gt;或&lt;code&gt;./ls&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;由alias找到该命令来执行&lt;/li&gt;
+  &lt;li&gt;由bash内置的命令来执行&lt;/li&gt;
+  &lt;li&gt;通过$PATH这个变量的顺序找到第一个命令来执行&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;bashetcissueetcmotd&quot;&gt;bash的登录与欢迎信息:&lt;code&gt;/etc/issue&lt;/code&gt;,&lt;code&gt;/etc/motd&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;登录界面的字符串是写在&lt;code&gt;/etc/issue&lt;/code&gt;中的，这个文件内容可以使用反斜杠作为变量调用:
+|&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|
+|:&amp;mdash;-:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;:|
+|  \d  |  本地端时间的日期  													 |
+|  \l  |  显示第几个终端机接口                         |
+|  \m  |  显示硬件的等级(i386/i486/i586/i686&amp;hellip;)       |
+|  \n  |  显示主机的网络名称                           | 
+|  \o  |  显示domain name                              |
+|  \r  |  操作系统的版本(相当于uname -r)               | 
+|  \t  |  显示本地端时间的时间                         | 
+|  \s  |  操作系统的名称                               |
+|  \v  |  操作系统的版本                               |
+|&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;
+当使用telnet远程连接主机的时候，主机的登陆界面就会显示&lt;code&gt;/issue.net&lt;/code&gt;而不是&lt;code&gt;/etc/issue&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果想要让用户登陆后取得一些信息，例如你想要让大家都知道的信息，那么可以将信息写入到&lt;code&gt;/etc/motd&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bash&quot;&gt;bash的环境配置文件&lt;/h2&gt;
+
+&lt;p&gt;bash在启动时直接读取一些配置文件，以规划好bash的操作环境
+之前谈到的命令别名、自定义变量在你注销bash之后就会失效，所以如果想要保留你的设置，就得要将这些设置写入配置文件才行。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;login与non-login shell&lt;/strong&gt;
+login shell:取得bash时需要完整的登录流程
+non-login shell:取得bash接口的方法不需要重复登录的举动，例如在X Window登陆后再以X的图形界面启动终端机&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;login shell&lt;/strong&gt;
+一般来说，login shell其实只会读取两个配置文件:
+1. &lt;code&gt;/etc/profile&lt;/code&gt;:这是系统整体的设置，最好不要修改这个文件
+2. &lt;code&gt;~/.bash_profile&lt;/code&gt;或&lt;code&gt;~/.bash_login&lt;/code&gt;或&lt;code&gt;~/.profile&lt;/code&gt;:属于用户个人设置，你要改自己的数据，就写入这里&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;/etc/profile&lt;/code&gt;&lt;/strong&gt;
+这是每个用户登陆取得bash时一定会读取的配置文件
+这个文件设置的变量主要有:
+PATH:会依据UID决定PATH变量要不要含有sbin系统命令目录
+MAIL:依据账号设置好用户的mailbox到&lt;code&gt;/var/spool/mail/账号名&lt;/code&gt;
+USER:根据用户的账号设置此变量内容
+HOSTNAME:依据主机的hostname命令决定此变量内容
+HISTSIZE:历史命令记录条数。
+&lt;code&gt;/etc/profile&lt;/code&gt;还会去调用外部的设置数据&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;~/.bash_profile&lt;/code&gt;(login shell才会读)&lt;/strong&gt;
+bash在读完了整体环境配置的&lt;code&gt;/etc/profile&lt;/code&gt;并借此调用其他配置文件后，接下来则是会读取用户的个人配置文件。在login shell的bash环境中，所读取的个人偏好配置文件其实主要有三个，依序分别是:
+1. ~/.bash_profile
+2. ~/.bash_login
+3. ~/.profile
+其实bash的login shell只会读取上面三个文件的其中一个，而读取的顺序则是依照上面的顺序&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;source:读入环境配置文件的命令&lt;/strong&gt;
+可以通过&lt;code&gt;source 配置文件名&lt;/code&gt;的方式来将配置文件读入到bash中，而不需要重新登录&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;~/.bashrc(non-lgoin shell会读)&lt;/strong&gt;
+当以non-login shell登陆时，bash还会主动调用&lt;code&gt;/etc/bashrc&lt;/code&gt;文件，这个文件帮我们定义了下面的数据:
+- 依据不同的UID规定umask的值
+- 依据不同的UID规定提示符(就是PS1变量)
+- 调用/etc/profile.d/*.sh的设置&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;其他相关的配置文件&lt;/strong&gt;
+- &lt;code&gt;/etc/man.config&lt;/code&gt;:这个文件的内容规定了使用man的时候man page的路径到哪里去寻找
+- &lt;code&gt;~/.bash_histroy&lt;/code&gt;:历史命令记录的地方
+- &lt;code&gt;~/.bash_logout&lt;/code&gt;:记录了当我注销bash后系统再帮我做完师门操作后才离开&lt;/p&gt;
+
+&lt;h2 id=&quot;sttyset&quot;&gt;终端机的环境设置:stty,set&lt;/h2&gt;
+
+&lt;p&gt;我们可以利用&lt;code&gt;stty -a&lt;/code&gt;来列出目前环境中所有的按键列表,注意，如果出现&lt;code&gt;^&lt;/code&gt;，则表示[Ctrl]那个按键的意思
+几个重要的代表意义是:
+- eof:End of File的意思，代表结束输入
+- erase:向后删除字符
+- intr:送出一个interrupt(中断)的信号给目前正在运行的程序
+- kill:删除目前命令行上的所有文字
+- quit:送出一个quit信号给目前正在运行的进程
+- start:在某个进程停止后，重新启动它的输出
+- stop:停止目前屏幕的输出
+- susp:送出一个terminal stop的信号格正在运行的进程&lt;/p&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;通配符与特殊符号&lt;/h2&gt;
+&lt;p&gt;|&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|
+| 符号  |           意义                                   |
+|:&amp;mdash;&amp;ndash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;:|
+|  *    |  代表0个到无穷多个任意字符                       |
+|  ？   |  代表一定有一个任意字符                          |
+|  []   |  同样代表一定有一个在中括号内的字符(非任意字符)  |
+|  [-]  |  代表在编码顺序内的所有字符                      |
+|  [^]  |  逆向选择                                        |
+|&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|&lt;/p&gt;
+
+&lt;p&gt;bash中的特殊符号,理论上你的&amp;rdquo;文件名&amp;rdquo;尽量不要使用到上述的字符&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;符号&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;内容&lt;/th&gt;
+      &lt;th&gt;&amp;nbsp;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;#&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;批注符号,这个最常被使用在script中，视为说明，其后的数据均不执行&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;\&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;转义符号,将&amp;rdquo;特殊字符或通配符&amp;rdquo;还原成一般字符&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td&gt;管道(pipe)，分隔两个管道命令的界定&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;连续命令执行分隔符，连续性命令的界定(注意，与管道命令并不相同)&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;~&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;用户主文件夹&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;使用变量前导符，即是变量之前需要加的变量替代值&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;amp;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;作业控制(job control),将命令变成背景下工作&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;!&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;逻辑运算意义上的&amp;rdquo;非&amp;rdquo;(not)的意思&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;目录符号，路径分隔的符号&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;gt;,&amp;raquo;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;数据流重定向，输出导向，分别是&amp;rdquo;替换&amp;rdquo;与&amp;rdquo;累加&amp;rdquo;&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;lt;,&amp;laquo;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;数据流重定向，输入导向&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;rsquo;&amp;rsquo;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;单引号，不具有变量置换的功能&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;rdquo;&amp;rdquo;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;具有变量置换的功能&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;``&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;两个&amp;rdquo;`&amp;ldquo;中间为可以先执行的命令，也可以使用$()&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;()&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;在中间为子shell的起始与结束&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;{}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;在中间为命令块的组合&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;section-6&quot;&gt;数据流重定向&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-7&quot;&gt;什么是数据流重定向&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;standard output&lt;/strong&gt;:命令所回传的正确的信息
+&lt;strong&gt;standard error output&lt;/strong&gt;:命令执行失败后，所回传的错误信息&lt;/p&gt;
+
+&lt;p&gt;数据流重定向可以将standard output与standard error output分别传送到其他的文件或设备去&lt;/p&gt;
+
+&lt;p&gt;重定向的特殊字符:
+1. 标准输入(stdin):代码为0，使用&amp;lt;或&amp;laquo;
+2. 标准输出(stdout):代码为1，使用&amp;gt;或&amp;raquo;
+3. 标准错误输出(stderr):代码为2，使用2&amp;gt;或2&amp;raquo;&lt;/p&gt;
+
+&lt;p&gt;重定向文件的创建方式:
+1. 该文件若不存在，系统会自动将它创建
+2. 当这个文件存在时，若使用的是&amp;gt;或2&amp;gt;，则系统会将这个文件清空，然后再将数据写入
+3. 若使用的是&amp;raquo;或2&amp;raquo;，则系统会在这个文件的最下方追加进去&lt;/p&gt;
+
+&lt;p&gt;例子:
+ll / &amp;gt; ~/rootfile&lt;/p&gt;
+
+&lt;p&gt;总结:
+- 1&amp;gt;:以覆盖的方式将正确的数据输出到指定的文件或设备上
+- 1&amp;raquo;:以累加的方式将正确的数据输出到指定的文件或设备上
+- 2&amp;gt;:以覆盖的方式将错误信息的数据输出到指定的文件或设备上
+- 2&amp;raquo;:以累加的方式将错误信息的数据输出到指定的文件或设备上&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;黑洞&lt;/strong&gt;
+可以将需要忽略的信息输出导向到&lt;code&gt;/dev/null&lt;/code&gt;中，这个&lt;code&gt;/dev/null&lt;/code&gt;可以吃掉任何导向这个设备的信息&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;写入到同一个文件&lt;/strong&gt;
+如果要将正确的返回数据和错误信息的数据写入到同一个文件中，但又没有使用特殊的语法，此时两条数据可能会交叉写入该文件内，造成次序的混乱&lt;/p&gt;
+
+&lt;p&gt;find /home -name .bashrc &amp;gt; list 2&amp;gt; list    #错误
+find /home -name .bashrc &amp;gt; list 2&amp;gt;&amp;amp;1       #正确
+find /home -name .bashrc &amp;amp;&amp;gt; list           #正确&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;重定向的使用情况&lt;/strong&gt;
+- 屏幕输出信息很重要，而且我们需要将它保存下来的时候
+- 后台执行中的程序，不希望它干扰屏幕正常的输出结果时
+- 一些系统的例行命令的执行结果，希望它可以存下来时
+- 一些执行命令的可能已知错误信息时，想用&lt;code&gt;2&amp;gt; /dev/null&lt;/code&gt;将它丢掉时
+- 错误信息与正确信息需要分别输出时&lt;/p&gt;
+
+&lt;h2 id=&quot;section-8&quot;&gt;命令执行的判断依据:;,&amp;amp;&amp;amp;,||&lt;/h2&gt;
+
+&lt;p&gt;不考虑命令相关性的连续命令执行可以使用分号来分隔命令&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;$?命令回传码与&amp;amp;&amp;amp;或||&lt;/strong&gt;
+若前一个命令执行的结果为正确，在Linux下面会回传一个$?=0的值，那么我们可以通过这个变量来判断命令是否被正确执行。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;命令执行情况&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;说明&lt;/th&gt;
+      &lt;th&gt;&amp;nbsp;&lt;/th&gt;
+      &lt;th&gt;&amp;nbsp;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cmd1 &amp;amp;&amp;amp; cmd2&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若cmd1执行完毕且正确执行($?=0),则开始执行cmd2\若cmd1执行完毕且为错误($?!=0),则cmd2不执行&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cmd1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td&gt;cmd2&lt;/td&gt;
+      &lt;td&gt;若cmd1执行完毕且正确执行($?=0),则cmd2不执行\若cmd1执行完毕且为错误($?!=0),则开始执行cmd2&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;注意&lt;/strong&gt;:&amp;amp;&amp;amp;与&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td&gt;放置的顺序其实是很重要的，因为命令永远是从左往右执行的。通常来说，假设判断式是这样的:&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code&gt;cmd1 &amp;amp;&amp;amp; cmd2 || cmd3&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;section-9&quot;&gt;管道命令&lt;/h1&gt;
+
+&lt;p&gt;bash命令执行的时候有输出的数据会出现，那么如果这群数据必须要经过几道手续之后才能得到我们所想要的格式，这就牵涉到管道(pipe)命令了。
+管道命令使用的是&amp;rdquo;|&amp;rdquo;这个界定符号&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ls -al /etc | less&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;管道命令&lt;code&gt;|&lt;/code&gt;仅能够处理经由前面一个命令传来的正确信息，也就是standard output的信息，对于standard error 并没有直接处理的能力
+每个管道后面接的第一个数据必定是&amp;rdquo;命令&amp;rdquo;，而且这个命令必须要能够接受standard input的数据才行，这样的命令可以是&amp;rdquo;管道命令&amp;rdquo;
+管道命令主要有两个需要注意的地方:
+- 管道命令仅会处理standard output，对于standard error output会予以忽略
+- 管道命令必须要能够接受来自前一个命令的数据成为standard input继续处理才行&lt;/p&gt;
+
+&lt;h2 id=&quot;cutgrep&quot;&gt;选取命令:cut,grep&lt;/h2&gt;
+
+&lt;p&gt;所谓选取命令，就是将一段数据经过分析后，取出我们所想要的，或者是经由分析关键字，取得我们所想要的那一行
+不过需要注意的是，一般来说，选取信息通常是针对&amp;rdquo;行&amp;rdquo;来分析的，并不是整篇信息分析的&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;cut&lt;/strong&gt;
+这个命令可以将一段信息的某一段&amp;rdquo;切&amp;rdquo;出来，处理的信息以&amp;rdquo;行&amp;rdquo;为单位
+参数:
+-d:后面接分隔字符，与-f一起使用
+-f:依据-d的分隔符将一段信息切割成为数段，用-f取出第几段的意思
+-c:以字符(characters)的单位取出固定字符区间&lt;/p&gt;
+
+&lt;p&gt;cut主要的用途在于将同一行里面的数据进行分解，最常使用在分析一些数据或文字数据的时候。这是因为有时我们会以某些字符当做切割的参数，然后来将数据加以切割，以取得我们所需要的数据。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;grep&lt;/strong&gt;
+&lt;code&gt;grep [-acinv] [--color=auto] '查找字符串' filename&lt;/code&gt;
+参数:
+-a:将binary文件以text文件的方式查找数据
+-c:计算找到&amp;rsquo;查找字符串&amp;rsquo;的次数
+-i:忽略大小写的不同，所以大小写视为相同
+-n:顺便输出行号
+-v:反向选择，即显示出没有&amp;rsquo;查找字符串&amp;rsquo;内容的那一行
+&amp;ndash;color=auto:可以将找到的关键字部分加上颜色显示&lt;/p&gt;
+
+&lt;p&gt;grep是一个很棒的命令，grep可以解析一行文字，取得关键字，若该行又存在关键字，就会整行列出来&lt;/p&gt;
+
+&lt;h2 id=&quot;sortwcuniq&quot;&gt;排序命令:sort,wc,uniq&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;sort&lt;/strong&gt;
+sort是很有趣的命令，它可以帮我们进行排序，而且可以依据不同的数据类型来排序。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;uniq&lt;/strong&gt;
+uniq可以将重复的数据仅列出一个显示，这个命令用来将重复的行删除掉只显示一个。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;wc&lt;/strong&gt;
+这个命令可以帮助我们计算输出的信息的整体数据&lt;/p&gt;
+
+&lt;h2 id=&quot;tee&quot;&gt;双向重定向:tee&lt;/h2&gt;
+
+&lt;p&gt;tee命令会同时将数据流送到文件与大屏幕，而输出到屏幕的，其实就是stdout，可以让下个命令继续处理&lt;/p&gt;
+
+&lt;h2 id=&quot;trcoljoinpasteexpand&quot;&gt;字符转换命令:tr,col,join,paste,expand&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;tr&lt;/strong&gt;
+tr可以用来删除一段信息当中的文字，或者是进行文字信息的替换&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;col&lt;/strong&gt;
+col命令可以将[tab]按键替换成为空格键。col经常被利用于将man page转存为纯文本文件以方便查阅的功能&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;join&lt;/strong&gt;
+将两个文件当中有相同数据的那一行加在一起。需要注意的是，在使用join之前，你所需要处理的文件应该要事先经过排序(sort)处理&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;paste&lt;/strong&gt;
+&lt;code&gt;paste&lt;/code&gt;直接将两行贴在一起，且中间以[tab]键隔开&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;expand&lt;/strong&gt;
+将[tab]按键转成空格键&lt;/p&gt;
+
+&lt;h2 id=&quot;split&quot;&gt;切割命令:split&lt;/h2&gt;
+
+&lt;p&gt;如果你有文件太大，导致一些携带式设备无法复制的问题，split可以帮你将一个大文件依据文件大小或行数来切割成为小文件，快速又有效&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;split [-bl] file PREFIX&lt;/code&gt;
+-b:后面可接欲切割的文件大小，可加单位，例如b,k,m等
+-l:以行数来进行切割
+PREFIX:代表前导符，可作为切割文件的前导文字&lt;/p&gt;
+
+&lt;h2 id=&quot;xargs&quot;&gt;参数代换:xargs&lt;/h2&gt;
+
+&lt;p&gt;这个命令就是在产生某个命令的参数。xarg可以读入stdin的数据，并且以空格符或断行字符进行分辨，将stdin的数据分割成为arguments。因为是以空格符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空格符的时候，xargs可能就会误判&lt;/p&gt;
+
+&lt;h2 id=&quot;section-10&quot;&gt;关于减号-的用途&lt;/h2&gt;
+
+&lt;p&gt;某些命令需要用到文件名来进行处理，该stdin与stdout可以利用减号&amp;rdquo;-&amp;ldquo;来替代&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——8.vim程序编辑器</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base8.html"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base8</id>
+   <content type="html">&lt;p&gt;这部分内容之前已经学过了，这里不再重复了。&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——7.文件与文件系统的压缩与打包</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base7.html"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base7</id>
+   <content type="html">&lt;h1 id=&quot;linux&quot;&gt;Linux系统常见的压缩命令&lt;/h1&gt;
+
+&lt;p&gt;常见的压缩文件扩展名:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;*.z:compress程序压缩的文件&lt;/li&gt;
+  &lt;li&gt;*.gz:gzip程序压缩的文件(&lt;strong&gt;常用&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;*.bz2:bzip2程序压缩的文件(&lt;strong&gt;常用&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;*.tar:tar程序打包的数据，并没有压缩过&lt;/li&gt;
+  &lt;li&gt;*.tar.gz:tar程序打包的文件，其中经过gzip的压缩&lt;/li&gt;
+  &lt;li&gt;*.tar.bz2:tar程序打包的文件，其中经过bzip2的压缩&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;gzipzcat&quot;&gt;gzip,zcat&lt;/h2&gt;
+
+&lt;p&gt;目前gzip可以解开compress、zip与gzip等软件所压缩的文件。&lt;/p&gt;
+
+&lt;p&gt;gzip所新建的文件的后缀名是.gz&lt;/p&gt;
+
+&lt;p&gt;另外值得一说的是，使用gzip压缩的文件能在Windows系统中被winRAR解压缩&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意:默认情况下使用gzip压缩之后，源文件就不存在了&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bzip2bzcat&quot;&gt;bzip2,bzcat&lt;/h2&gt;
+&lt;p&gt;gzip是用来替代compress的，而bzip2是用来替代gzip的，它比gzip还要好用。
+用法和gzip几乎一样&lt;/p&gt;
+
+&lt;h1 id=&quot;tar&quot;&gt;打包命令:tar&lt;/h1&gt;
+&lt;p&gt;gzip和bzip2只能压缩单个文件，不能压缩多个文件，此时为了能把多个文件压缩到一起，要使用tar命令。
+tar命令可以将多个目录或文件打包成一个大文件，同时还可以通过gzip/bzip2的支持，将该文件同时进行压缩。&lt;/p&gt;
+
+&lt;p&gt;最简单的使用tar就只要记忆下面的方式即可:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;压缩:&lt;code&gt;tar -jcv -f filename.tar.bz2&lt;/code&gt;+要被压缩的文件或目录名称&lt;/li&gt;
+  &lt;li&gt;查询:&lt;code&gt;tar -jtv -f filename.tar.bz2&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;解压缩:&lt;code&gt;tar -jxv -f filename.tar.bz2 -C&lt;/code&gt;+欲解压缩的目录&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;注意，命令中的&lt;code&gt;-f filename&lt;/code&gt;必须紧紧连在一起，-f的位置不能和其他参数交换&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;光盘写入工具&lt;/h1&gt;
+
+&lt;p&gt;在命令行中实现刻录行为，通常的做法是这样的:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;先将所需要备份的数据构建成为一个镜像文件(iso)，利用mkisofs命令来处理&lt;/li&gt;
+  &lt;li&gt;将该镜像文件刻录至光盘或DVD当中，利用cdrecord命令来处理&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《鸟哥的Linux私房菜:基础篇》学习笔记——6.Linux磁盘与文件系统管理</title>
+   <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base6.html"/>
+   <updated>2013-02-14T00:00:00+08:00</updated>
+   <id>http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base6</id>
+   <content type="html">&lt;h1 id=&quot;ext2&quot;&gt;认识EXT2文件系统&lt;/h1&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;文件系统特性&lt;/h2&gt;
+
+&lt;p&gt;目前我们在格式化时已经不再说成针对分区来格式化了，通常我们可以称呼&lt;strong&gt;一个可被挂载的数据为一个文件系统而不是一个分区&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Ext2文件系统:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;super block:记录此文件系统的整体信息，包括inode/block的总量、使用量、剩余量，以及文件系统的格式与相关信息等&lt;/li&gt;
+  &lt;li&gt;inode:记录文件的属性，一个文件占用一个inode，同时记录此文件的数据所在的block号码&lt;/li&gt;
+  &lt;li&gt;block:实际记录文件的内容，若文件太大时，会占用多个block&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;linuxext2inode&quot;&gt;Linux的Ext2文件系统(inode)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;文件系统一开始就将inode与block规划好了，除非重新格式化(或者利用resize2fs等命令更改文件系统大小),否则indoe与block固定后就不再变动。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如果文件系统高达数百GB时，那么将所有的inode与block放置在一起将是很不明智的决定，因为inode与block的数量太大时，不容易管理。因此Ext2文件系统在格式化的时候基本上是区分为多个块组的，每个块组都有独立的inode/block/superblock系统。&lt;/p&gt;
+
+&lt;p&gt;在整体规划中，&lt;strong&gt;文件系统最前面有一个启动扇区(boot sector)，这个启动扇区可以安装引导装载程序&lt;/strong&gt;，这个设计可以用来制作出多重引导环境。&lt;/p&gt;
+
+&lt;p&gt;每一个块组(block group)都有以下六部分组成:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;data block(数据块)&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;data block是用来放置文件内容的地方，在Ext2文件系统中所支持的block大小有1KB,2KB及4KB三种。每个block都有编号,方便inode的记录。由于block大小而产生的Ext2文件系统限制如表所示:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th style=&quot;text-align: center&quot;&gt;Blcok大小&lt;/th&gt;
+          &lt;th style=&quot;text-align: center&quot;&gt;1KB&lt;/th&gt;
+          &lt;th style=&quot;text-align: center&quot;&gt;2KB&lt;/th&gt;
+          &lt;th style=&quot;text-align: center&quot;&gt;4KB&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;最大单一文件限制&lt;/td&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;16GB&lt;/td&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;256GB&lt;/td&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;2TB&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;最大文件系统总容量&lt;/td&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;2TB&lt;/td&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;8TB&lt;/td&gt;
+          &lt;td style=&quot;text-align: center&quot;&gt;16TB&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;p&gt;注意事项:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;原则上，block的大小与数量在格式化完后就不能再改变了(除非重新格式化)&lt;/li&gt;
+      &lt;li&gt;每个block内最多只能够放置一个文件的数据&lt;/li&gt;
+      &lt;li&gt;如果文件大于block的大小，则一个文件会占用多个block数量&lt;/li&gt;
+      &lt;li&gt;若文件小于block，则该block的剩余空间就不能再被使用了(导致空间浪费)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;inodetable(indoe表格)&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;inode记录的文件数据至少有下面这些:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;该文件的访问模式(read/write/excute)&lt;/li&gt;
+      &lt;li&gt;该文件的所有者与组(owner/group)&lt;/li&gt;
+      &lt;li&gt;该文件的大小&lt;/li&gt;
+      &lt;li&gt;该文件创建或状态改变的时间(ctime)&lt;/li&gt;
+      &lt;li&gt;最近一次的读取时间(atime)&lt;/li&gt;
+      &lt;li&gt;最近修改的时间(mtime)&lt;/li&gt;
+      &lt;li&gt;定义文件特性的标志(flag),如SetUID等。&lt;/li&gt;
+      &lt;li&gt;该文件真正内容的指向(pointer)&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;inode的数量与大小也是在格式化时就已经固定了。&lt;/p&gt;
+
+    &lt;p&gt;每个inode大小均固定为128bytes&lt;/p&gt;
+
+    &lt;p&gt;每个文件仅会占用一个inode而已,因此，文件系统能够创建的文件数量与inode的数量有关&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Superblock&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;Superblock是记录整个文件系统相关信息的地方，没有Superblock，就没有这个文件系统了。它记录的信息主要有:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;block与inode的总量&lt;/li&gt;
+      &lt;li&gt;未使用与已使用的inode/block数量&lt;/li&gt;
+      &lt;li&gt;block与inode的大小(block为1K,2K,4K   inode为128bytes)&lt;/li&gt;
+      &lt;li&gt;文件系统的挂载时间、最近一次写入数据的时间、最近一次检验磁盘(fsck)的时间等文件系统的相关信息&lt;/li&gt;
+      &lt;li&gt;一个validbit数值，若此文件系统已被挂载，则validbit为0，若未被挂载，则validbit为1&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;此外，需要特别注意的是，整个文件系统应该只有一个Superblock,但是后续的block group不一定含有superblock，若含有，则这个superblock应该是第一个block group内superblock的备份。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;File system Descritption(文件系统描述说明)&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;这个区段可以描述每个block group的开始于结束的block号码，以及说明每个区段(superblock,bitmap,inodemap,data block)分别介于哪一个block号码之间。这部分也能够用dumpe2fs来查看的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;block bitmap(块对照表)&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;记录使用与未使用的block号码&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;inode bitmap(inode对照表)&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;记录使用与未使用的inode号码&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;与目录树的关系&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;目录&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当我们在Linux下的Ext2文件系统新建一个目录时，Ext2会分配一个inode与至少一块block给该目录。此时，&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;inode:记录该目录的相关权限与属性&lt;/li&gt;
+  &lt;li&gt;block:记录这个目录下的文件名与该文件所占用的inode号码数据(&lt;strong&gt;目录并不会只占用一个block,当该目录下文件太多时，系统会多分配一个block&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;目录树与读取&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;正因为Ext2中文件名是记录在目录的block中的，所以新增/删除/重命名文件名与目录的w权限有关，要读取某个文件，必然会经过其父目录的indoe与block&lt;/p&gt;
+
+&lt;p&gt;由于目录树是由根目录开始读起，因此系统通过挂载信息可以找到挂载点的inode号码(通常一个文件系统的最顶层inode号码会由2号开始)，此时就能够得到根目录的inode内容，并依据inode读取根目录的block内的文件名数据，再一层层地往下读到正确的文件名。&lt;/p&gt;
+
+&lt;h2 id=&quot;ext2ext3&quot;&gt;Ext2/Ext3文件的访问与日志文件系统的功能&lt;/h2&gt;
+
+&lt;p&gt;当我们新增一个文件时，此时文件系统的行为是:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;先确定用户对于欲添加文件的目录是否具有w与x的权限，若有的话才能添加&lt;/li&gt;
+  &lt;li&gt;根据inode bitmap找到没有使用的inode号码，并将新文件的权限/属性写入&lt;/li&gt;
+  &lt;li&gt;根据block bitmap找到没有使用中的block号码，并将实际的数据写入block中，且更新inode的block指向数据&lt;/li&gt;
+  &lt;li&gt;将刚才写入的inode与block数据同步更新inode bitmap与block bitmap,并更新superblock&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通常来说，我们将inode table与data block称为数据存放区域，而superblock、block bitmap与inode bitmap等区段就被称为metadata(中间数据)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;日志文件系统&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在文件系统中规划出一个块，该块专门记录写入或修订文件时的步骤，那就可以简化一致性检查的步骤了，也就是说:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;预备:当系统要写入一个文件时，会先在日志记录块中记录某个文件准备要写入的信息。&lt;/li&gt;
+  &lt;li&gt;实际写入:开始写入文件的权限与数据;开始更新mata data的数据&lt;/li&gt;
+  &lt;li&gt;结束:完成数据与meta data的更新之后，在日志记录块中完成该文件的记录&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;linux&quot;&gt;Linux文件系统的操作&lt;/h2&gt;
+
+&lt;p&gt;Linux系统上的文件系统与内存有非常大的关系:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;系统会将常用的文件数据放置到主存储器的缓冲区，以加速文件系统的读/写&lt;/li&gt;
+  &lt;li&gt;Linux的物理内存最后都会被用光，这是正常的情况，可加速系统性能&lt;/li&gt;
+  &lt;li&gt;你可以手动使用sync来强迫内存中设置为Dirty的文件会写到磁盘中&lt;/li&gt;
+  &lt;li&gt;若正常关机时，关机命令会主动调用sync来将内存的数据回写入磁盘内&lt;/li&gt;
+  &lt;li&gt;但若不正常关机(如断点、死机或其他不明原因),由于数据尚未回写到磁盘内，因此重新启动后可能会花很多时间在进行磁盘检查，甚至可能导致文件系统的损毁(非磁盘损坏)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;mount-point&quot;&gt;挂载点(mount point)的意义&lt;/h2&gt;
+
+&lt;p&gt;将文件系统与目录树结合的操作我们称为&lt;strong&gt;挂载&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;挂载一定是目录，该目录为进入该文件系统的入口&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;文件系统只有被挂载到目录树中才能被使用&lt;/p&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;文件系统的简单操作&lt;/h1&gt;
+
+&lt;h2 id=&quot;dfdu&quot;&gt;磁盘与目录的容量:df,du&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;df:列出文件系统的整体磁盘使用量&lt;/li&gt;
+  &lt;li&gt;du:评估文件系统的磁盘使用量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;df命令主要读取的数据几乎都是针对整个文件系统，因此读取的范围主要是在Super block内信息，所以命令显示结果的速度非常迅速
+du命令其实会直接到文件系统内去查找所有的文件数据，所以会显示得比较慢&lt;/p&gt;
+
+&lt;h2 id=&quot;in&quot;&gt;连接文件:In&lt;/h2&gt;
+
+&lt;p&gt;Linux中的连接文件有两种:一种是类似Windows的快捷方式功能的文件，另一种则是通过文件系统的inode连接来产生新文件名，而不是产生新文件&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;hard link(硬连接或实际连接)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;提出问题:有没有可能多个文件名对应到同一个inode号码呢？
+hard link只是在某个目录下新建一条文件名连接到某个inode号码的关联记录而已(类似于指针，指向同一个inode号码/内存地址)&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;hard link仅能够在单一文件系统中进行，不能跨文件系统&lt;/li&gt;
+  &lt;li&gt;hard link不能连接到目录&lt;/li&gt;
+  &lt;li&gt;hard link不会占用inode和block&lt;/li&gt;
+  &lt;li&gt;每一个目录的&lt;code&gt;.&lt;/code&gt;与&lt;code&gt;..&lt;/code&gt;均是hard link实现的，所以当新建一个目录时，它的连接数至少是2(一个是目录名,一个是自己的&lt;code&gt;.&lt;/code&gt;),同时它的父目录的连接数会加1(新目录的&lt;code&gt;..&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;命令: &lt;code&gt;ln  /etc/crontab /root/crontab&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;symbolic link(符号连接，也即快捷方式)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;基本上，symbolic link就是在创建一个独立的文件，而这个文件会让数据的读取指向它连接的那个文件名。
+symbolic link是可以和Windows中的快捷方式画上等号，由symbolic link创建的文件作为一个独立的新文件，所以会占用掉inode与block&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;symbolic link是可以连接目录的&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;命令:&lt;code&gt;ln -s /etc/crontab crontab2&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;ln命令默认是创建hard link，加上&lt;code&gt;-s&lt;/code&gt;时，是创建symbolic link&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;磁盘的分区、格式化、检验与挂载&lt;/h1&gt;
+
+&lt;p&gt;为系统新增一个硬盘时，有以下动作需要完成&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;对磁盘分区，以新建可用的分区&lt;/li&gt;
+  &lt;li&gt;对该分区进行格式化(format),以创建系统可用的文件系统&lt;/li&gt;
+  &lt;li&gt;对刚才新建好的文件系统进行检验&lt;/li&gt;
+  &lt;li&gt;在Linux系统上，需要创建挂载点(也即是目录)，并将它挂在上来&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;fdisk&quot;&gt;磁盘分区:fdisk&lt;/h2&gt;
+
+&lt;p&gt;fdisk只有root才能执行&lt;/p&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;磁盘挂载与卸载&lt;/h2&gt;
+
+&lt;p&gt;进行挂载之前，最好要确定几件事情:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;单一文件系统不应该被重复挂载在不同的挂载点(目录)中&lt;/li&gt;
+  &lt;li&gt;单一目录不应该重复挂载多个文件系统&lt;/li&gt;
+  &lt;li&gt;作为挂载点的目录理论上应该是空目录才行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果你要用来挂载的目录里面并不是空的，那么挂载的文件系统之后，原目录下的东西就会暂时消失，被隐藏掉了，但不是被覆盖，新分区卸载之后，原来数据会再次显示出来。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mount:挂载&lt;/li&gt;
+  &lt;li&gt;umount:卸载&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-5&quot;&gt;设置开机挂载&lt;/h1&gt;
+
+&lt;h2 id=&quot;etcfstabetcmtab&quot;&gt;开机挂载/etc/fstab及/etc/mtab&lt;/h2&gt;
+
+&lt;p&gt;系统挂载的限制:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;根目录/是必须挂载的，而且一定要先于其他mount point被挂载进来&lt;/li&gt;
+  &lt;li&gt;其他挂载点必须为已新建的目录，可任意指定，但一定要遵守必须的系统目录架构原则&lt;/li&gt;
+  &lt;li&gt;所有挂载点在同一时间之内，只能挂载一次&lt;/li&gt;
+  &lt;li&gt;所有分区在同一时间之内，只能挂载一次&lt;/li&gt;
+  &lt;li&gt;如若进行挂载，你必须现将工作目录移到挂载点之外&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;/etc/fstab中的内容:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Devic&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Mount point&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;filesystem&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;parameters&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;dump&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;fsck&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;LABEL=/1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ext3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;defaults&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;LABEL=/home&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/home&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ext3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;defaults&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;LABEL=/boot&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/boot&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ext3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;defaults&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;这六个字段非常重要&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;第一列&lt;/strong&gt;:磁盘设备文件名或设备的Label&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;第二列&lt;/strong&gt;:挂载点&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;第三列&lt;/strong&gt;:磁盘分区的文件系统&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;第四列&lt;/strong&gt;:文件系统参数&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;第五列&lt;/strong&gt;:能否被dump备份命令作用。0代表不要被dump备份，1代表要每天进行dump操作，2代表其他不定日期的dump备份操作&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;第六列&lt;/strong&gt;:是否以fsck检验扇区。0代表不要检验，1表示最早检验，2也是代表要检验，不过1会比较早被检验。通常根目录是1，其他是2就可以了。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-6&quot;&gt;内存交换空间&lt;/h1&gt;
+
+&lt;p&gt;一共有三种方式来创建swap:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;装系统时就设置好&lt;/li&gt;
+  &lt;li&gt;设置一个swap分区&lt;/li&gt;
+  &lt;li&gt;创建一个虚拟内存的文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;swap&quot;&gt;使用物理分区构建swap&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;分区&lt;/strong&gt;:先使用fdisk在你的磁盘中分出一个分区给系统作为swap。由于Linux的fdisk默认会将分区的ID设置为Linux的文件系统，所以你可能还得要设置一下system ID就是了。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;格式化&lt;/strong&gt;:利用新建swap格式的&amp;rdquo;mkswap 设备文件名&amp;rdquo;就能够格式化分区成为swap格式&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;使用&lt;/strong&gt;:最后将该swap设备启动，方法为&amp;rdquo;swapon 设备文件名&amp;rdquo;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;查看&lt;/strong&gt;:最终通过free命令来查看内存的使用情况&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;swap-1&quot;&gt;使用文件构建swap&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;使用dd命令新增一个大容量的文件&lt;/li&gt;
+  &lt;li&gt;使用mkswap将这个文件格式化为swap的文件格式&lt;/li&gt;
+  &lt;li&gt;使用swapon来启动这个swap&lt;/li&gt;
+  &lt;li&gt;使用swapoff关掉swap file&lt;/li&gt;
+&lt;/ol&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>《鸟哥的Linux私房菜:基础篇》学习笔记——5.Linux文件与目录管理</title>
    <link href="http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5.html"/>
    <updated>2013-02-14T00:00:00+08:00</updated>
@@ -1337,8 +2568,9 @@
   &lt;li&gt;/var(variable):与系统运作过程有关&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;strong&gt;根目录(/)的意义与内容&lt;/strong&gt;
-FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装的软件最好不要与根目录放在同一个分区内，保持根目录越小越好。如此不但性能较好，根目录所在的文件系统也较不容易发生问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;根目录(/)的意义与内容&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;FHS标准建议:根目录(/)所在分区越小越好，且应用程序所安装的软件最好不要与根目录放在同一个分区内，保持根目录越小越好。如此不但性能较好，根目录所在的文件系统也较不容易发生问题。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:开机过程中仅有根目录会被挂载，其他分区则是在完成之后才会进行挂载行为。所以有些目录不可与根目录分开，下面五个目录是不可与根目录分开的:&lt;/p&gt;
 

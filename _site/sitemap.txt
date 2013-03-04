@@ -8,11 +8,17 @@ http://username.github.com/archive.html
 http://username.github.com/pages.html
 http://username.github.com/tags.html
 
+http://username.github.com/Python/2013/03/04/Learning-Python22.html
+http://username.github.com/Python/2013/03/02/Learnig-Python21.html
 http://username.github.com/Python/2013/03/01/Learning-Python20.html
 http://username.github.com/Python/2013/03/01/Learning-Python19.html
 http://username.github.com/Python/2013/02/26/Learning-Python18.html
 http://username.github.com/Python/2013/02/22/Learning-Python17.html
 http://username.github.com/Python/2013/02/22/Learning-Python16.html
+http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base9.html
+http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base8.html
+http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base7.html
+http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base6.html
 http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base5.html
 http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base4.html
 http://username.github.com/LinuxBase/2013/02/14/Learning-Linux-Base3.html

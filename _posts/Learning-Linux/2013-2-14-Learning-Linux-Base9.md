@@ -3,7 +3,6 @@ layout: post
 title: 《鸟哥的Linux私房菜:基础篇》学习笔记——9.认识与学习bash
 time: 2013-2-14
 category: LinuxBase
-published: false
 ---
 
 
@@ -12,6 +11,7 @@ published: false
 ##硬件、内核shell##
 
 我们必须通过"Shell"将我们输入的命令与内核通信，好让内核可以控制硬件来正确无误地工作
+
 其实Shell的功能只是提供用户操作系统一个接口。
 
 每个用户都可以设置自己的所有使用的shell版本，这个信息是存储在`/etc/passwd`中的，系统默认采用是的bash，但是是可以修改的。
@@ -19,12 +19,11 @@ published: false
 系统合法的shell均写在`/etc/shells`中
 
 ##bash shell的功能##
-
 bash中的命令历史是存储在用户主文件夹的.bash_history中，不过需要注意的是，~./bash_history中记录的是前一次登陆以前所执行过的命令，而至于这一次登陆所执行的命令都被暂存在临时内存中，当你成功注销系统后，该命令记忆才会记录到.bash_history当中
 
 通过type命令我们可以知道每个命令是否为bash的内置命令
 
-在bash中可以通过"\[Enter]"来对[Enter]进行转义
+在bash中可以通过"\\[Enter]"来对[Enter]进行转义
 
 #Shell的变量功能#
 
@@ -32,7 +31,7 @@ bash中的命令历史是存储在用户主文件夹的.bash_history中，不过
 
 变量的显示:echo   echo ${}
 
-变量的修噶:直接用"="连接变量与它的内容			myname=flyway
+变量的修改:直接用"="连接变量与它的内容`myname=flyway`
 
 变量设置的规则:
 
@@ -40,11 +39,15 @@ bash中的命令历史是存储在用户主文件夹的.bash_history中，不过
 2. 等号两边不能直接接空格
 3. 变量名称只能是英文字母与数字，但是开头字符不能是数字
 4. 变量内容若有空格符可使用双引号或单引号将变量内容结合起来
-		`var="lang is $LANG"`     那么`echo $var`可得"lang is en_US"
-		`ar='lang is $LANG'`      那么`echo $var`可得"lang is $LANG"
+
+   `var="lang is $LANG"`     那么`echo $var`可得"lang is en_US"\\
+   `ar='lang is $LANG'`      那么`echo $var`可得"lang is $LANG"
+
 5. 可用转义字符"\"将特殊符号编程一般字符
 6. 在一串命令中，还需要通过其他命令提供的信息，可以使用反单引号"`命令`"或"$(命令)"。
-		`version=$(unname -r)`	再	`echo $version`	可得 "2.6.18-128.el5"
+
+   `version=$(unname -r)`再`echo $version`可得 "2.6.18-128.el5"
+
 7. 若该变量为了增加变量内容时，则可用$(变量)或"$变量名称"累加内容`echo $var`
 		`PATH="$PATH":/home/bin`
 8. 若该变量需要其他其他子进程执行，则需要以export来是变量变成环境变量:
