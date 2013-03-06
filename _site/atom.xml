@@ -4,13 +4,175 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-03-04T20:39:46+08:00</updated>
+ <updated>2013-03-06T14:09:58+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——24.类代码编写基础</title>
+   <link href="http://username.github.com/Python/2013/03/06/Learning-Python24.html"/>
+   <updated>2013-03-06T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/06/Learning-Python24</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;类产生多个实例对象&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;类对象&lt;/strong&gt;:类对象提供默认行为，是实例对象的工厂。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;实例对象&lt;/strong&gt;:是程序处理的实际对象，各自都有独立的命名空间，但是继承创建该实例的类中的变量名。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;类对象提供默认行为&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;class语句创建类对象并将其赋值给变量名&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;class语句内的赋值语句会创建类的属性&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;类属性提供对象的状态和行为&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;实例对象是具体的元素&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;像函数那样调用类对象会创建新的实例对象&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;每个实例对象继承类的属性并获得自己的命名空间&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;在方法内对self属性做赋值运算会产生每个实例自己的属性&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;类通过继承进行定制&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;超类列在了类开头的括号中&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;类从其超类中继承属性&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;实例会继承所有可读取类的属性&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;每个object.attribute都会开启新的堵路搜索&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;逻辑的修改是通过创建子类，而不是修改超类&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;类是模块内的属性&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;python&quot;&gt;类可以截获Python运算符&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;运算符重载:&lt;/strong&gt;让用类写成的对象，可截获并响应用在内置类型上的运算。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;以双下线命名的方法(__X__)是特殊的钩子&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;Python运算符重载的实现是提供特殊命名的方法来拦截运算。Python语言替每种运算和特殊命名的方法之间定义了固定不变的映射关系。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;当实例出现在内置运算时，这类方法会自动调用&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;类可覆盖多数内置类型运算&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;运算符覆盖方法没有默认值，而且也不需要&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;运算符可让类与Python的对象模型集成&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-4&quot;&gt;世界上最简单的类&lt;/h1&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Bob&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的代码时合法的，因为类本身也是对象。事实上，类只是独立完备的命名空间，只要有类的引用值，就可以在在任何时刻设定或修改其属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;#(&amp;#39;Bob&amp;#39;,&amp;#39;Bob&amp;#39;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;但是，当建立实例的时候，实例会继承创建它们的类。其实，此时，这些实例本身是没有属性的。它们只是从类对象那里取出了name属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Sue&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;#(&amp;#39;Sue&amp;#39;,&amp;#39;Bob&amp;#39;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;但是，当对一个实例对象赋值的时候，就会在该对象内创建(或修改)该属性，而不会因属性的引用而启动继承搜索，因为属性赋值运算只会影响到赋值所在的对象。在这里，x得到自己的name，但y依然继承附加在它的类上的name。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——23.OOP:宏伟蓝图</title>
+   <link href="http://username.github.com/Python/2013/03/05/Learning-Python23.html"/>
+   <updated>2013-03-05T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/05/Learning-Python23</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;为何使用类&lt;/h1&gt;
+&lt;p&gt;类是Python的程序组成单元，就像函数和模块一样:类是封装逻辑和数据的另一种方式。实际上，类也定义新的命名空间，在很大程度上就像模块。但是，和我们已见过的其他程序组成单元相比，类有三个重要的独到之处，使其在建立对象时更为有用。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;多重实例&lt;/strong&gt;
+类基本上就是产生对象的工厂。每次调用一个类，就会产生一个有独立命名空间的新对象。每个由类产生的对象都能够读取类的属性，并获得自己的命名空间来存储数据，这些数据对于每个对象来说都是不同的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;通过继承进行定制&lt;/strong&gt;
+类也支持OOP的继承的概念。我们可以在类的外部重新定义其属性从而扩充这个类。更通用的是，类可以建立命名空间层次结构，而这种层次结构定义该结构中类创建的对象所使用的变量名。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;运算符&lt;/strong&gt;
+通过提供特定的协议方法，类可以定义对象来响应在内置类型上的几种运算。例如，通过类创建的对象可以进行切片、级联和索引等运算。Python提供了一些可以由类使用的钩子，从而能够中断并实现任何的内置类型运算。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;oop&quot;&gt;概览OOP&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;属性继承搜索&lt;/h2&gt;
+&lt;p&gt;Python中大多是OOP都可以简化为如下的代码:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attribute&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;当我们对class语句产生的对象使用这种方式时，这个表达式会在Python中启动搜索——搜索对象连接的树，来寻找attribute首次出现的对象。当类启用时，上边的代码实际上等于下面的自然语言。&lt;/p&gt;
+
+&lt;p&gt;&amp;ldquo;找出attribute首次出现的地方，先搜索object，然后是该对象之上的所有类，又下至上，由左至右。&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;换句话说，取出属性只是简单地搜索&amp;rdquo;树&amp;rdquo;而已。我们称这种搜索程序为继承，因为树中的位置较低的对象继承了树种位置较高的对象拥有的属性。当从下至上进行搜索时，连接至树中的对象就是树中所有上层对象所定义的所有属性的集合体，知道树的最低高端。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;编写类树&lt;/h2&gt;
+&lt;p&gt;用class语句来构造对象时，主要内容如下:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;每个class语句会生成一个新的类对象。&lt;/li&gt;
+  &lt;li&gt;每次类调用时，就会生成一个新的实例对象。&lt;/li&gt;
+  &lt;li&gt;实例自动连接至创建了这些实例的类。&lt;/li&gt;
+  &lt;li&gt;类连接至其超类的方式是，将超类列在类头部的括号内。其从左至右的顺序会决定树中次序。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;#Make class ojects(ovals)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;#Linked to superclasses&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;I1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;              &lt;span class=&quot;c&quot;&gt;#Make instance objects(rectangles)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;I2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;              &lt;span class=&quot;c&quot;&gt;#Linked to their classes&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这个例子使用了所谓的 &lt;strong&gt;多重继承&lt;/strong&gt;。也就是时候，在类树中，类有一个以上的超类。在Python中，如果class语句中的小括号内有一个以上的超类(就像C1一样)，它们由左至右的次序会决定超类搜索的顺序。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;who&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;who&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;I1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;I2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;I1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;bob&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;I2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;mel&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;在上面的代码中，def语法没什么特别之处。从操作角度来看，当def出现在这种类的内部时，通常称为方法，而且会自动接收第一个特殊参数(通常称为self)，这个参数提供了被处理的实例的参照值。这里的self就像C++或JAVA中的this，但是在Python中必须明确地写出self。&lt;/p&gt;
+
+&lt;p&gt;当方法对self属性进行赋值时，会创建或修改类树低端实例内的属性，因为self自动引用正在处理的实例。&lt;/p&gt;
+
+&lt;p&gt;对于上面的代码来说，直到setname方法被调用之前，C1类不会把name属性附加在实例之上。事实上，调用I1.setname前引用I1.name会产生未定义变量名的错误。如果类想确保像name这样的变量名一定会在其实例中设置，通常都会在构造时填好这个属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;who&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;who&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;I1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;bob&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;I2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;mel&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;每次从类产生实例时，Python会自动调用名为__init__的方法。新实例会如往常那样传入__init__的self参数，而列在类调用小括号内的任何值会成为第二以及其后的参数。其效果就是在创建实例时初始化这个实例，而不需要额外的方法调用。&lt;/p&gt;
+
+&lt;p&gt;其实 __init__的运行机制，就是构造函数。&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——22.高级模块话题</title>
