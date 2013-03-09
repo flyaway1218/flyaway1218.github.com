@@ -4,13 +4,84 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-03-06T14:09:58+08:00</updated>
+ <updated>2013-03-09T12:16:59+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——25.类代码编写细节</title>
+   <link href="http://username.github.com/Python/2013/03/08/Learning-Python25.html"/>
+   <updated>2013-03-08T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/08/Learning-Python25</id>
+   <content type="html">&lt;h1 id=&quot;class&quot;&gt;class语句&lt;/h1&gt;
+&lt;p&gt;class语句是对象的创建者，并且是一个隐式的赋值运算——执行时，产生类对象。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;一般形式&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;superclass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+      &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;member&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;说明&lt;/h2&gt;
+&lt;p&gt;当Python执行class语句的时候(不是调用类)，会从头至尾执行其主体内的所有语句。在这个过程中，进行的赋值运算会在这个作用域中创建变量名，从而成为对应的类对象内的属性。所有由这个类对象产生的实例对象，都会继承这个属性，这种累属性可以用来贯穿所有实例的信息。(这有点像C++中的静态数据成员)&lt;/p&gt;
+
+&lt;p&gt;但是，如果我们对实例对象的属性进行赋值运算会在该实例对象内创建或修改变量名，而不是在共享的类对象中。通常情况下，继承属性只会在属性 &lt;strong&gt;引用&lt;/strong&gt;时发生，而不是在赋值运算时发生:对对象属性进行赋值总是会修改该对象，除此之外没有其他的影响。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SharedData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SharedData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SharedData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;                      &lt;span class=&quot;c&quot;&gt;#Print (42,42)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;SharedData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;99&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SharedData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;#Print (99,99,99)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;88&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SharedData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spam&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;#Print (88,99,99)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;方法&lt;/h1&gt;
+&lt;p&gt;从程序设计的角度来说，方法的工作方式和简单函数完全一致，唯一的产别就是:方法的第一个参数总是接受方法调用的隐形主体，也就是实例对象。&lt;/p&gt;
+
+&lt;p&gt;换句话说，Python会自动把实例方法的调用对应到类方法函数&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的代码会被替换成&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;在类方法中，按惯例第一个参数通常都称为self(严格的说，只有其位置重要，而不是它的名称)。这个参数给方法提供了一个钩子，从而返回调用的主题，也就是实例对象:因为类可以产生许多实例对象，所以需要这个参数来管理每个实例彼此各不相同的数据。&lt;/p&gt;
+
+&lt;p&gt;在Python中，self一定要在程序代码中明确地写出:方法一定要通过self来取出或修改由当前方法或正在处理的实例的属性。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;调用超类构造函数&lt;/h2&gt;
+&lt;p&gt;在构造实例的时候，Python会找出并且只调用一个__init__方法，如果要保证子类的构造方法也会执行超类构造时的逻辑，一般都必须通过类明确地调用超类的__init__方法。&lt;/p&gt;
+
+&lt;p&gt;你也可以在同一个类中写几个 __init__方法，但只会使用最后的定义。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-4&quot;&gt;继承&lt;/h1&gt;
+&lt;p&gt;在Python中，当对对象进行点号运算时，就会发生继承，而且涉及了搜索属性定义树。每次使用object.attr形式的表达式时(object是实例或类对象)，Python会从头至尾搜索命名空间，先从对象开始，寻找所能找到的第一个attr。这包括在方法中对self属性的引用。因为树中较低的定义会覆盖较高的定义，继承构成了专有化的基础。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;属性树的构造&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;实例属性是由命名空间内self属性进行赋值运算而生成的。&lt;/li&gt;
+  &lt;li&gt;类属性是通过class语句内的语句(赋值语句)而生成的。&lt;/li&gt;
+  &lt;li&gt;超类的连接是通过class语句首行括号内列出类而生成的。&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——24.类代码编写基础</title>
@@ -1388,33 +1459,50 @@
       &lt;li&gt;&lt;code&gt;\$&lt;/code&gt;:提示符，如果是root时，提示符为#，否则就是$&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;$(关于shell的PID)
-  &lt;code&gt;$&lt;/code&gt;本身也是变量，这个代表的是目前这个Shell的线程代号，即所谓的PID。&lt;/li&gt;
-  &lt;li&gt;？(关于上个执行命令的回传码)
-  在bash里这个变量很重要，这个变量是上一个执行的命令所回传的值。当我们执行某个命令时，这些命令会回传一个执行后的代码。一般来说，如果成功执行该命令，则会回传一个0值。&lt;/li&gt;
-  &lt;li&gt;OSTYPE,HOSTTYPE,MACHTYPE(主机硬件与内核的等级)
-      32位CPU:i386、i586、i586、
-      64位CPU:x86_64&lt;/li&gt;
-  &lt;li&gt;export:自定义变量转换成环境变量
-      &lt;strong&gt;子进程仅会继承父进程的环境变量，子进程不会继承父进程的自定义变脸&lt;/strong&gt;
-      可以通过export命令来将一个自定义变量转变为环境变量&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;$(关于shell的PID)&lt;/p&gt;
+
+    &lt;p&gt;&lt;code&gt;$&lt;/code&gt;本身也是变量，这个代表的是目前这个Shell的线程代号，即所谓的PID。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;？(关于上个执行命令的回传码)&lt;/p&gt;
+
+    &lt;p&gt;在bash里这个变量很重要，这个变量是上一个执行的命令所回传的值。当我们执行某个命令时，这些命令会回传一个执行后的代码。一般来说，如果成功执行该命令，则会回传一个0值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;OSTYPE,HOSTTYPE,MACHTYPE(主机硬件与内核的等级)&lt;/p&gt;
+
+    &lt;p&gt;32位CPU:i386、i586、i586&lt;/p&gt;
+
+    &lt;p&gt;64位CPU:x86_64&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;export:自定义变量转换成环境变量&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;子进程仅会继承父进程的环境变量，子进程不会继承父进程的自定义变脸&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;可以通过export命令来将一个自定义变量转变为环境变量&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;locale&quot;&gt;影响显示结果的语系变量(locale)&lt;/h2&gt;
 
-&lt;p&gt;locale:表示用户的语言环境,不仅仅是指编码方式。locale包含很多习惯定义，一共有十二类:
-- LC_CTYPE:字符(文字)辨识的编码
-- LC_NUMERIC:数字系统显示的信息
-- LC_TIME:时间系统的显示数据
-- LC_COLLATE:字符串的比较和排序习惯
-- LC_MONETARY:货币格式的显示
-- LC_MESSAGES:信息提示，主要是菜单、错误信息等
-- LC_NAME:姓名书写方式
-- LC_ADDRESS:地址书写方式
-- LC_TELEPHONE:电话号码的书写方式
-- LC_MEASUREMENT:度量衡表达方式
-- LC_PAPER:默认纸张尺寸的大小
-- LC_IDENTIFICATION:对locale自身包含信息的概述&lt;/p&gt;
+&lt;p&gt;locale:表示用户的语言环境,不仅仅是指编码方式。locale包含很多习惯定义，一共有十二类:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;LC_CTYPE:字符(文字)辨识的编码&lt;/li&gt;
+  &lt;li&gt;LC_NUMERIC:数字系统显示的信息&lt;/li&gt;
+  &lt;li&gt;LC_TIME:时间系统的显示数据&lt;/li&gt;
+  &lt;li&gt;LC_COLLATE:字符串的比较和排序习惯&lt;/li&gt;
+  &lt;li&gt;LC_MONETARY:货币格式的显示&lt;/li&gt;
+  &lt;li&gt;LC_MESSAGES:信息提示，主要是菜单、错误信息等&lt;/li&gt;
+  &lt;li&gt;LC_NAME:姓名书写方式&lt;/li&gt;
+  &lt;li&gt;LC_ADDRESS:地址书写方式&lt;/li&gt;
+  &lt;li&gt;LC_TELEPHONE:电话号码的书写方式&lt;/li&gt;
+  &lt;li&gt;LC_MEASUREMENT:度量衡表达方式&lt;/li&gt;
+  &lt;li&gt;LC_PAPER:默认纸张尺寸的大小&lt;/li&gt;
+  &lt;li&gt;LC_IDENTIFICATION:对locale自身包含信息的概述&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;系统所支持的locale文件放置在&lt;code&gt;/usr/share/i18n/locales&lt;/code&gt;中&lt;/p&gt;
 
@@ -1434,22 +1522,33 @@
 &lt;h2 id=&quot;readarraydeclare&quot;&gt;变量键盘读取、数组与声明:read,array,declare&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;read&lt;/strong&gt;&lt;br /&gt;
-read [-pt] variable
-读取来自键盘输入的变量
--p:后面可以接提示符
--t:后面可以接等待的秒数，不会一直等待用户&lt;/p&gt;
+read [-pt] variable&lt;/p&gt;
+
+&lt;p&gt;读取来自键盘输入的变量&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-p:后面可以接提示符&lt;/li&gt;
+  &lt;li&gt;-t:后面可以接等待的秒数，不会一直等待用户&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;&lt;strong&gt;declare/tepeset&lt;/strong&gt;&lt;br /&gt;
-declare [-aixr] variable
-声明变量的类型
--a:将变量定义成为数组
--i:将变量定义成为整数数字
--x:用法与export相同，将后面的变量编程环境变量
--r:将变量设置成readonly类型，该变量不可被更改内容，也不能重设&lt;/p&gt;
+declare [-aixr] variable&lt;/p&gt;
 
-&lt;p&gt;在默认情况下，bash对于变量有几个基本的定义:
-- 变量类型默认为&amp;rdquo;字符串&amp;rdquo;
-- bash环境中的数值运算，默认最多仅能到达整数类型&lt;/p&gt;
+&lt;p&gt;声明变量的类型&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-a:将变量定义成为数组&lt;/li&gt;
+  &lt;li&gt;-i:将变量定义成为整数数字&lt;/li&gt;
+  &lt;li&gt;-x:用法与export相同，将后面的变量编程环境变量&lt;/li&gt;
+  &lt;li&gt;-r:将变量设置成readonly类型，该变量不可被更改内容，也不能重设&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在默认情况下，bash对于变量有几个基本的定义:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;变量类型默认为&amp;rdquo;字符串&amp;rdquo;&lt;/li&gt;
+  &lt;li&gt;bash环境中的数值运算，默认最多仅能到达整数类型&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;ulimit&quot;&gt;与文件系统及程序的限制关系:ulimit&lt;/h2&gt;
 
@@ -1458,31 +1557,105 @@ declare [-aixr] variable
 
 &lt;h2 id=&quot;section-2&quot;&gt;变量内容的删除、替代与替换&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;删除与替换&lt;/strong&gt;
-|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-|
-|  变量设置方式                |                 说明                                           |
-|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;:|
-|  ${变量#关键字}              |  若变量内容从头开始的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最短数据删除  |
-|  ${变量##关键字}             |  若变量内容从头开始的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最长数据删除  |
-|  ${变量%关键字}              |  若变量内容从尾向前的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最短数据删除  |
-|  ${变量%%关键字}             |  若变量内容从尾向前的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最长数据删除  |
-|  ${变量/旧字符串/新字符串}   |  若变量内容符合&amp;rdquo;旧字符串&amp;rdquo;，则第一个旧字符串会被新字符串替换    |
-|  ${变量//旧字符串/新字符串}  |  若变量内容符合&amp;rdquo;旧字符串&amp;rdquo;，则全部的旧字符串会被新字符串替换    |
-|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-|&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;删除与替换&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;替代&lt;/strong&gt;
-|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|
-|  变量设置方式      |  str没有设置         |  str为空字符串       |  str已设置非空字符串  |
-|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-|
-|  var=${str-expr}   |  var=expr            |  var=                |  var=$str             |
-|  var=${str:-expr}  |  var=expr            |  var=expr            |  var=$str             |
-|  var=${str+expr}   |  var=                |  var=expr            |  var=expr             |
-|  var=${str:+expr}  |  var=                |  var=                |  var=expr             |
-|  var=${str=expr}   |  var=expr\str=expr  |  str不变\var=       |  str不变\var=$str    |
-|  var=${str:=expr}  |  var=expr\str=expr  |  var=expr\str=expr  |  str不变\var=$str    |
-|  var=${str?expr}   |  expr输出至stderr    |  var=                |  var=str              |
-|  var=${str:?expr}  |  expr输出至stderr    |  expr输出至stderr    |  var=str              |
-|&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;变量设置方式&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;${变量#关键字}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若变量内容从头开始的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最短数据删除&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;${变量##关键字}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若变量内容从头开始的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最长数据删除&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;${变量%关键字}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若变量内容从尾向前的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最短数据删除&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;${变量%%关键字}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若变量内容从尾向前的数据符合&amp;rdquo;关键字&amp;rdquo;，则将符合的最长数据删除&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;${变量/旧字符串/新字符串}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若变量内容符合&amp;rdquo;旧字符串&amp;rdquo;，则第一个旧字符串会被新字符串替换&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;${变量//旧字符串/新字符串}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若变量内容符合&amp;rdquo;旧字符串&amp;rdquo;，则全部的旧字符串会被新字符串替换&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;替代&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;变量设置方式&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;str没有设置&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;str为空字符串&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;str已设置非空字符串&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str-expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;var=$str&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str:-expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;var=$str&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str+expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;var=expr&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str:+expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;var=expr&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str=expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr\str=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;str不变\var=&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;str不变\var=$str&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str:=expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr\str=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=expr\str=expr&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;str不变\var=$str&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str?expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;expr输出至stderr&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;var=str&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;var=${str:?expr}&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;expr输出至stderr&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;expr输出至stderr&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;var=str&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;h1 id=&quot;section-3&quot;&gt;命令别名与历史命令&lt;/h1&gt;
 
@@ -1490,10 +1663,13 @@ declare [-aixr] variable
 
 &lt;p&gt;alias 别名=&amp;rdquo;命令 参数&amp;rdquo;&lt;/p&gt;
 
-&lt;p&gt;别名可以替代现有命令，也可以创造新命令。用于简便地输入长命令。例如
-- alias shutdown=&amp;rdquo;shutdown -h now&amp;rdquo;
-- alias rm=&amp;rdquo;rm -i&amp;rdquo;
-- alias ll=&amp;rdquo;ls -al&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;别名可以替代现有命令，也可以创造新命令。用于简便地输入长命令。例如&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;alias shutdown=&amp;rdquo;shutdown -h now&amp;rdquo;&lt;/li&gt;
+  &lt;li&gt;alias rm=&amp;rdquo;rm -i&amp;rdquo;&lt;/li&gt;
+  &lt;li&gt;alias ll=&amp;rdquo;ls -al&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;history&quot;&gt;history&lt;/h2&gt;
 &lt;p&gt;可以通过history命令列出之前所有的历史命令&lt;/p&gt;
@@ -1513,22 +1689,52 @@ declare [-aixr] variable
 
 &lt;h2 id=&quot;bashetcissueetcmotd&quot;&gt;bash的登录与欢迎信息:&lt;code&gt;/etc/issue&lt;/code&gt;,&lt;code&gt;/etc/motd&lt;/code&gt;&lt;/h2&gt;
 
-&lt;p&gt;登录界面的字符串是写在&lt;code&gt;/etc/issue&lt;/code&gt;中的，这个文件内容可以使用反斜杠作为变量调用:
-|&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|
-|:&amp;mdash;-:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;:|
-|  \d  |  本地端时间的日期  													 |
-|  \l  |  显示第几个终端机接口                         |
-|  \m  |  显示硬件的等级(i386/i486/i586/i686&amp;hellip;)       |
-|  \n  |  显示主机的网络名称                           | 
-|  \o  |  显示domain name                              |
-|  \r  |  操作系统的版本(相当于uname -r)               | 
-|  \t  |  显示本地端时间的时间                         | 
-|  \s  |  操作系统的名称                               |
-|  \v  |  操作系统的版本                               |
-|&amp;mdash;&amp;mdash;+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|&lt;/p&gt;
+&lt;p&gt;登录界面的字符串是写在&lt;code&gt;/etc/issue&lt;/code&gt;中的，这个文件内容可以使用反斜杠作为变量调用:&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;
-当使用telnet远程连接主机的时候，主机的登陆界面就会显示&lt;code&gt;/issue.net&lt;/code&gt;而不是&lt;code&gt;/etc/issue&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\d&lt;/td&gt;
+      &lt;td&gt;本地端时间的日期&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\l&lt;/td&gt;
+      &lt;td&gt;显示第几个终端机接口&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\m&lt;/td&gt;
+      &lt;td&gt;显示硬件的等级(i386/i486/i586/i686&amp;hellip;)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\n&lt;/td&gt;
+      &lt;td&gt;显示主机的网络名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\o&lt;/td&gt;
+      &lt;td&gt;显示domain name&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\r&lt;/td&gt;
+      &lt;td&gt;操作系统的版本(相当于uname -r)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\t&lt;/td&gt;
+      &lt;td&gt;显示本地端时间的时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\s&lt;/td&gt;
+      &lt;td&gt;操作系统的名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;\v&lt;/td&gt;
+      &lt;td&gt;操作系统的版本&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当使用telnet远程连接主机的时候，主机的登陆界面就会显示&lt;code&gt;/issue.net&lt;/code&gt;而不是&lt;code&gt;/etc/issue&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;如果想要让用户登陆后取得一些信息，例如你想要让大家都知道的信息，那么可以将信息写入到&lt;code&gt;/etc/motd&lt;/code&gt;&lt;/p&gt;
 
@@ -1537,69 +1743,120 @@ declare [-aixr] variable
 &lt;p&gt;bash在启动时直接读取一些配置文件，以规划好bash的操作环境
 之前谈到的命令别名、自定义变量在你注销bash之后就会失效，所以如果想要保留你的设置，就得要将这些设置写入配置文件才行。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;login与non-login shell&lt;/strong&gt;
-login shell:取得bash时需要完整的登录流程
-non-login shell:取得bash接口的方法不需要重复登录的举动，例如在X Window登陆后再以X的图形界面启动终端机&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;login与non-login shell&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;login shell&lt;/strong&gt;
-一般来说，login shell其实只会读取两个配置文件:
-1. &lt;code&gt;/etc/profile&lt;/code&gt;:这是系统整体的设置，最好不要修改这个文件
-2. &lt;code&gt;~/.bash_profile&lt;/code&gt;或&lt;code&gt;~/.bash_login&lt;/code&gt;或&lt;code&gt;~/.profile&lt;/code&gt;:属于用户个人设置，你要改自己的数据，就写入这里&lt;/p&gt;
+&lt;p&gt;login shell:取得bash时需要完整的登录流程&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;code&gt;/etc/profile&lt;/code&gt;&lt;/strong&gt;
-这是每个用户登陆取得bash时一定会读取的配置文件
-这个文件设置的变量主要有:
-PATH:会依据UID决定PATH变量要不要含有sbin系统命令目录
-MAIL:依据账号设置好用户的mailbox到&lt;code&gt;/var/spool/mail/账号名&lt;/code&gt;
-USER:根据用户的账号设置此变量内容
-HOSTNAME:依据主机的hostname命令决定此变量内容
-HISTSIZE:历史命令记录条数。
-&lt;code&gt;/etc/profile&lt;/code&gt;还会去调用外部的设置数据&lt;/p&gt;
+&lt;p&gt;non-login shell:取得bash接口的方法不需要重复登录的举动，例如在X Window登陆后再以X的图形界面启动终端机&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;code&gt;~/.bash_profile&lt;/code&gt;(login shell才会读)&lt;/strong&gt;
-bash在读完了整体环境配置的&lt;code&gt;/etc/profile&lt;/code&gt;并借此调用其他配置文件后，接下来则是会读取用户的个人配置文件。在login shell的bash环境中，所读取的个人偏好配置文件其实主要有三个，依序分别是:
-1. ~/.bash_profile
-2. ~/.bash_login
-3. ~/.profile
-其实bash的login shell只会读取上面三个文件的其中一个，而读取的顺序则是依照上面的顺序&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;login shell&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;source:读入环境配置文件的命令&lt;/strong&gt;
-可以通过&lt;code&gt;source 配置文件名&lt;/code&gt;的方式来将配置文件读入到bash中，而不需要重新登录&lt;/p&gt;
+&lt;p&gt;一般来说，login shell其实只会读取两个配置文件:&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;~/.bashrc(non-lgoin shell会读)&lt;/strong&gt;
-当以non-login shell登陆时，bash还会主动调用&lt;code&gt;/etc/bashrc&lt;/code&gt;文件，这个文件帮我们定义了下面的数据:
-- 依据不同的UID规定umask的值
-- 依据不同的UID规定提示符(就是PS1变量)
-- 调用/etc/profile.d/*.sh的设置&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;code&gt;/etc/profile&lt;/code&gt;:这是系统整体的设置，最好不要修改这个文件&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;~/.bash_profile&lt;/code&gt;或&lt;code&gt;~/.bash_login&lt;/code&gt;或&lt;code&gt;~/.profile&lt;/code&gt;:属于用户个人设置，你要改自己的数据，就写入这里&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;p&gt;&lt;strong&gt;其他相关的配置文件&lt;/strong&gt;
-- &lt;code&gt;/etc/man.config&lt;/code&gt;:这个文件的内容规定了使用man的时候man page的路径到哪里去寻找
-- &lt;code&gt;~/.bash_histroy&lt;/code&gt;:历史命令记录的地方
-- &lt;code&gt;~/.bash_logout&lt;/code&gt;:记录了当我注销bash后系统再帮我做完师门操作后才离开&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;/etc/profile&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这是每个用户登陆取得bash时一定会读取的配置文件&lt;/p&gt;
+
+&lt;p&gt;这个文件设置的变量主要有:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PATH:会依据UID决定PATH变量要不要含有sbin系统命令目录&lt;/li&gt;
+  &lt;li&gt;MAIL:依据账号设置好用户的mailbox到&lt;code&gt;/var/spool/mail/账号名&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;USER:根据用户的账号设置此变量内容&lt;/li&gt;
+  &lt;li&gt;HOSTNAME:依据主机的hostname命令决定此变量内容&lt;/li&gt;
+  &lt;li&gt;HISTSIZE:历史命令记录条数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;/etc/profile&lt;/code&gt;还会去调用外部的设置数据&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;~/.bash_profile(login shell才会读)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;bash在读完了整体环境配置的&lt;code&gt;/etc/profile&lt;/code&gt;并借此调用其他配置文件后，接下来则是会读取用户的个人配置文件。在login shell的bash环境中，所读取的个人偏好配置文件其实主要有三个，依序分别是:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;~/.bash_profile&lt;/li&gt;
+  &lt;li&gt;~/.bash_login&lt;/li&gt;
+  &lt;li&gt;~/.profile&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;其实bash的login shell只会读取上面三个文件的其中一个，而读取的顺序则是依照上面的顺序&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;source:读入环境配置文件的命令&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;可以通过&lt;code&gt;source 配置文件名&lt;/code&gt;的方式来将配置文件读入到bash中，而不需要重新登录&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;~/.bashrc(non-lgoin shell会读)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当以non-login shell登陆时，bash还会主动调用&lt;code&gt;/etc/bashrc&lt;/code&gt;文件，这个文件帮我们定义了下面的数据:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;依据不同的UID规定umask的值&lt;/li&gt;
+  &lt;li&gt;依据不同的UID规定提示符(就是PS1变量)&lt;/li&gt;
+  &lt;li&gt;调用/etc/profile.d/*.sh的设置&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;其他相关的配置文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;/etc/man.config&lt;/code&gt;:这个文件的内容规定了使用man的时候man page的路径到哪里去寻找&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;~/.bash_histroy&lt;/code&gt;:历史命令记录的地方&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;~/.bash_logout&lt;/code&gt;:记录了当我注销bash后系统再帮我做完师门操作后才离开&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;sttyset&quot;&gt;终端机的环境设置:stty,set&lt;/h2&gt;
 
-&lt;p&gt;我们可以利用&lt;code&gt;stty -a&lt;/code&gt;来列出目前环境中所有的按键列表,注意，如果出现&lt;code&gt;^&lt;/code&gt;，则表示[Ctrl]那个按键的意思
-几个重要的代表意义是:
-- eof:End of File的意思，代表结束输入
-- erase:向后删除字符
-- intr:送出一个interrupt(中断)的信号给目前正在运行的程序
-- kill:删除目前命令行上的所有文字
-- quit:送出一个quit信号给目前正在运行的进程
-- start:在某个进程停止后，重新启动它的输出
-- stop:停止目前屏幕的输出
-- susp:送出一个terminal stop的信号格正在运行的进程&lt;/p&gt;
+&lt;p&gt;我们可以利用&lt;code&gt;stty -a&lt;/code&gt;来列出目前环境中所有的按键列表,注意，如果出现&lt;code&gt;^&lt;/code&gt;，则表示[Ctrl]那个按键的意思&lt;/p&gt;
+
+&lt;p&gt;几个重要的代表意义是:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;eof:End of File的意思，代表结束输入&lt;/li&gt;
+  &lt;li&gt;erase:向后删除字符&lt;/li&gt;
+  &lt;li&gt;intr:送出一个interrupt(中断)的信号给目前正在运行的程序&lt;/li&gt;
+  &lt;li&gt;kill:删除目前命令行上的所有文字&lt;/li&gt;
+  &lt;li&gt;quit:送出一个quit信号给目前正在运行的进程&lt;/li&gt;
+  &lt;li&gt;start:在某个进程停止后，重新启动它的输出&lt;/li&gt;
+  &lt;li&gt;stop:停止目前屏幕的输出&lt;/li&gt;
+  &lt;li&gt;susp:送出一个terminal stop的信号格正在运行的进程&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;section-5&quot;&gt;通配符与特殊符号&lt;/h2&gt;
-&lt;p&gt;|&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|
-| 符号  |           意义                                   |
-|:&amp;mdash;&amp;ndash;:|:&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;:|
-|  *    |  代表0个到无穷多个任意字符                       |
-|  ？   |  代表一定有一个任意字符                          |
-|  []   |  同样代表一定有一个在中括号内的字符(非任意字符)  |
-|  [-]  |  代表在编码顺序内的所有字符                      |
-|  [^]  |  逆向选择                                        |
-|&amp;mdash;&amp;mdash;-+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;|&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;符号&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;意义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;*&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;代表0个到无穷多个任意字符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;？&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;代表一定有一个任意字符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;[]&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;同样代表一定有一个在中括号内的字符(非任意字符)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;[-]&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;代表在编码顺序内的所有字符&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;[^]&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;逆向选择&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;p&gt;bash中的特殊符号,理论上你的&amp;rdquo;文件名&amp;rdquo;尽量不要使用到上述的字符&lt;/p&gt;
 
@@ -1608,89 +1865,72 @@ bash在读完了整体环境配置的&lt;code&gt;/etc/profile&lt;/code&gt;并借
     &lt;tr&gt;
       &lt;th style=&quot;text-align: center&quot;&gt;符号&lt;/th&gt;
       &lt;th style=&quot;text-align: center&quot;&gt;内容&lt;/th&gt;
-      &lt;th&gt;&amp;nbsp;&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;#&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;批注符号,这个最常被使用在script中，视为说明，其后的数据均不执行&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;\&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;转义符号,将&amp;rdquo;特殊字符或通配符&amp;rdquo;还原成一般字符&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;管道(pipe)，分隔两个管道命令的界定&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;|&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;管道(pipe)，分隔两个管道命令的界定&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;;&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;连续命令执行分隔符，连续性命令的界定(注意，与管道命令并不相同)&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;~&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;用户主文件夹&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;$&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;使用变量前导符，即是变量之前需要加的变量替代值&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&amp;amp;&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;作业控制(job control),将命令变成背景下工作&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;!&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;逻辑运算意义上的&amp;rdquo;非&amp;rdquo;(not)的意思&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;/&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;目录符号，路径分隔的符号&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&amp;gt;,&amp;raquo;&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;数据流重定向，输出导向，分别是&amp;rdquo;替换&amp;rdquo;与&amp;rdquo;累加&amp;rdquo;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&amp;lt;,&amp;laquo;&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;数据流重定向，输入导向&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&amp;rsquo;&amp;rsquo;&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;单引号，不具有变量置换的功能&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;&amp;rdquo;&amp;rdquo;&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;具有变量置换的功能&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;``&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;两个&amp;rdquo;`&amp;ldquo;中间为可以先执行的命令，也可以使用$()&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;()&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;在中间为子shell的起始与结束&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;{}&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;在中间为命令块的组合&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1699,93 +1939,101 @@ bash在读完了整体环境配置的&lt;code&gt;/etc/profile&lt;/code&gt;并借
 
 &lt;h2 id=&quot;section-7&quot;&gt;什么是数据流重定向&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;standard output&lt;/strong&gt;:命令所回传的正确的信息
-&lt;strong&gt;standard error output&lt;/strong&gt;:命令执行失败后，所回传的错误信息&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;standard output&lt;/strong&gt;:命令所回传的正确的信息&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;standard error output&lt;/strong&gt;:命令执行失败后，所回传的错误信息&lt;/p&gt;
 
 &lt;p&gt;数据流重定向可以将standard output与standard error output分别传送到其他的文件或设备去&lt;/p&gt;
 
-&lt;p&gt;重定向的特殊字符:
-1. 标准输入(stdin):代码为0，使用&amp;lt;或&amp;laquo;
-2. 标准输出(stdout):代码为1，使用&amp;gt;或&amp;raquo;
-3. 标准错误输出(stderr):代码为2，使用2&amp;gt;或2&amp;raquo;&lt;/p&gt;
+&lt;p&gt;重定向的特殊字符:&lt;/p&gt;
 
-&lt;p&gt;重定向文件的创建方式:
-1. 该文件若不存在，系统会自动将它创建
-2. 当这个文件存在时，若使用的是&amp;gt;或2&amp;gt;，则系统会将这个文件清空，然后再将数据写入
-3. 若使用的是&amp;raquo;或2&amp;raquo;，则系统会在这个文件的最下方追加进去&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;标准输入(stdin):代码为0，使用&amp;lt;或&amp;laquo;&lt;/li&gt;
+  &lt;li&gt;标准输出(stdout):代码为1，使用&amp;gt;或&amp;raquo;&lt;/li&gt;
+  &lt;li&gt;标准错误输出(stderr):代码为2，使用2&amp;gt;或2&amp;raquo;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;重定向文件的创建方式:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;该文件若不存在，系统会自动将它创建&lt;/li&gt;
+  &lt;li&gt;当这个文件存在时，若使用的是&amp;gt;或2&amp;gt;，则系统会将这个文件清空，然后再将数据写入&lt;/li&gt;
+  &lt;li&gt;若使用的是&amp;raquo;或2&amp;raquo;，则系统会在这个文件的最下方追加进去&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;例子:
 ll / &amp;gt; ~/rootfile&lt;/p&gt;
 
-&lt;p&gt;总结:
-- 1&amp;gt;:以覆盖的方式将正确的数据输出到指定的文件或设备上
-- 1&amp;raquo;:以累加的方式将正确的数据输出到指定的文件或设备上
-- 2&amp;gt;:以覆盖的方式将错误信息的数据输出到指定的文件或设备上
-- 2&amp;raquo;:以累加的方式将错误信息的数据输出到指定的文件或设备上&lt;/p&gt;
+&lt;p&gt;总结:&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;黑洞&lt;/strong&gt;
-可以将需要忽略的信息输出导向到&lt;code&gt;/dev/null&lt;/code&gt;中，这个&lt;code&gt;/dev/null&lt;/code&gt;可以吃掉任何导向这个设备的信息&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;1&amp;gt;:以覆盖的方式将正确的数据输出到指定的文件或设备上&lt;/li&gt;
+  &lt;li&gt;1&amp;raquo;:以累加的方式将正确的数据输出到指定的文件或设备上&lt;/li&gt;
+  &lt;li&gt;2&amp;gt;:以覆盖的方式将错误信息的数据输出到指定的文件或设备上&lt;/li&gt;
+  &lt;li&gt;2&amp;raquo;:以累加的方式将错误信息的数据输出到指定的文件或设备上&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;&lt;strong&gt;写入到同一个文件&lt;/strong&gt;
-如果要将正确的返回数据和错误信息的数据写入到同一个文件中，但又没有使用特殊的语法，此时两条数据可能会交叉写入该文件内，造成次序的混乱&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;黑洞&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;find /home -name .bashrc &amp;gt; list 2&amp;gt; list    #错误
-find /home -name .bashrc &amp;gt; list 2&amp;gt;&amp;amp;1       #正确
-find /home -name .bashrc &amp;amp;&amp;gt; list           #正确&lt;/p&gt;
+&lt;p&gt;可以将需要忽略的信息输出导向到&lt;code&gt;/dev/null&lt;/code&gt;中，这个&lt;code&gt;/dev/null&lt;/code&gt;可以吃掉任何导向这个设备的信息&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;重定向的使用情况&lt;/strong&gt;
-- 屏幕输出信息很重要，而且我们需要将它保存下来的时候
-- 后台执行中的程序，不希望它干扰屏幕正常的输出结果时
-- 一些系统的例行命令的执行结果，希望它可以存下来时
-- 一些执行命令的可能已知错误信息时，想用&lt;code&gt;2&amp;gt; /dev/null&lt;/code&gt;将它丢掉时
-- 错误信息与正确信息需要分别输出时&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;写入到同一个文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如果要将正确的返回数据和错误信息的数据写入到同一个文件中，但又没有使用特殊的语法，此时两条数据可能会交叉写入该文件内，造成次序的混乱&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;find /home -name .bashrc &amp;gt; list 2&amp;gt; list    &lt;span class=&quot;c&quot;&gt;#错误&lt;/span&gt;
+find /home -name .bashrc &amp;gt; list 2&amp;gt;&amp;amp;1       &lt;span class=&quot;c&quot;&gt;#正确&lt;/span&gt;
+find /home -name .bashrc &amp;amp;&amp;gt; list           &lt;span class=&quot;c&quot;&gt;#正确&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;重定向的使用情况&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;屏幕输出信息很重要，而且我们需要将它保存下来的时候&lt;/li&gt;
+  &lt;li&gt;后台执行中的程序，不希望它干扰屏幕正常的输出结果时&lt;/li&gt;
+  &lt;li&gt;一些系统的例行命令的执行结果，希望它可以存下来时&lt;/li&gt;
+  &lt;li&gt;一些执行命令的可能已知错误信息时，想用&lt;code&gt;2&amp;gt; /dev/null&lt;/code&gt;将它丢掉时&lt;/li&gt;
+  &lt;li&gt;错误信息与正确信息需要分别输出时&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;section-8&quot;&gt;命令执行的判断依据:;,&amp;amp;&amp;amp;,||&lt;/h2&gt;
 
 &lt;p&gt;不考虑命令相关性的连续命令执行可以使用分号来分隔命令&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;$?命令回传码与&amp;amp;&amp;amp;或||&lt;/strong&gt;
-若前一个命令执行的结果为正确，在Linux下面会回传一个$?=0的值，那么我们可以通过这个变量来判断命令是否被正确执行。&lt;/p&gt;
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;**$?命令回传码与&amp;amp;&amp;amp;或&lt;/td&gt;
+      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+      &lt;td&gt;**&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;若前一个命令执行的结果为正确，在Linux下面会回传一个$?=0的值，那么我们可以通过这个变量来判断命令是否被正确执行。&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style=&quot;text-align: center&quot;&gt;命令执行情况&lt;/th&gt;
       &lt;th style=&quot;text-align: center&quot;&gt;说明&lt;/th&gt;
-      &lt;th&gt;&amp;nbsp;&lt;/th&gt;
-      &lt;th&gt;&amp;nbsp;&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;cmd1 &amp;amp;&amp;amp; cmd2&lt;/td&gt;
       &lt;td style=&quot;text-align: center&quot;&gt;若cmd1执行完毕且正确执行($?=0),则开始执行cmd2\若cmd1执行完毕且为错误($?!=0),则cmd2不执行&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;cmd1&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;cmd2&lt;/td&gt;
-      &lt;td&gt;若cmd1执行完毕且正确执行($?=0),则cmd2不执行\若cmd1执行完毕且为错误($?!=0),则开始执行cmd2&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cmd1 || cmd2&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;若cmd1执行完毕且正确执行($?=0),则cmd2不执行\若cmd1执行完毕且为错误($?!=0),则开始执行cmd2&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;注意&lt;/strong&gt;:&amp;amp;&amp;amp;与&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;放置的顺序其实是很重要的，因为命令永远是从左往右执行的。通常来说，假设判断式是这样的:&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;code&gt;cmd1 &amp;amp;&amp;amp; cmd2 || cmd3&lt;/code&gt;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;:&amp;amp;&amp;amp;与||放置的顺序其实是很重要的，因为命令永远是从左往右执行的。通常来说，假设判断式是这样的:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;cmd1 &amp;amp;&amp;amp; cmd2 || cmd3&lt;/code&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;section-9&quot;&gt;管道命令&lt;/h1&gt;
 
@@ -1796,46 +2044,60 @@ find /home -name .bashrc &amp;amp;&amp;gt; list           #正确&lt;/p&gt;
 
 &lt;p&gt;管道命令&lt;code&gt;|&lt;/code&gt;仅能够处理经由前面一个命令传来的正确信息，也就是standard output的信息，对于standard error 并没有直接处理的能力
 每个管道后面接的第一个数据必定是&amp;rdquo;命令&amp;rdquo;，而且这个命令必须要能够接受standard input的数据才行，这样的命令可以是&amp;rdquo;管道命令&amp;rdquo;
-管道命令主要有两个需要注意的地方:
-- 管道命令仅会处理standard output，对于standard error output会予以忽略
-- 管道命令必须要能够接受来自前一个命令的数据成为standard input继续处理才行&lt;/p&gt;
+管道命令主要有两个需要注意的地方:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;管道命令仅会处理standard output，对于standard error output会予以忽略&lt;/li&gt;
+  &lt;li&gt;管道命令必须要能够接受来自前一个命令的数据成为standard input继续处理才行&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;cutgrep&quot;&gt;选取命令:cut,grep&lt;/h2&gt;
 
 &lt;p&gt;所谓选取命令，就是将一段数据经过分析后，取出我们所想要的，或者是经由分析关键字，取得我们所想要的那一行
 不过需要注意的是，一般来说，选取信息通常是针对&amp;rdquo;行&amp;rdquo;来分析的，并不是整篇信息分析的&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;cut&lt;/strong&gt;
-这个命令可以将一段信息的某一段&amp;rdquo;切&amp;rdquo;出来，处理的信息以&amp;rdquo;行&amp;rdquo;为单位
-参数:
--d:后面接分隔字符，与-f一起使用
--f:依据-d的分隔符将一段信息切割成为数段，用-f取出第几段的意思
--c:以字符(characters)的单位取出固定字符区间&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;cut&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这个命令可以将一段信息的某一段&amp;rdquo;切&amp;rdquo;出来，处理的信息以&amp;rdquo;行&amp;rdquo;为单位
+参数:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-d:后面接分隔字符，与-f一起使用&lt;/li&gt;
+  &lt;li&gt;-f:依据-d的分隔符将一段信息切割成为数段，用-f取出第几段的意思&lt;/li&gt;
+  &lt;li&gt;-c:以字符(characters)的单位取出固定字符区间&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;cut主要的用途在于将同一行里面的数据进行分解，最常使用在分析一些数据或文字数据的时候。这是因为有时我们会以某些字符当做切割的参数，然后来将数据加以切割，以取得我们所需要的数据。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;grep&lt;/strong&gt;
-&lt;code&gt;grep [-acinv] [--color=auto] '查找字符串' filename&lt;/code&gt;
-参数:
--a:将binary文件以text文件的方式查找数据
--c:计算找到&amp;rsquo;查找字符串&amp;rsquo;的次数
--i:忽略大小写的不同，所以大小写视为相同
--n:顺便输出行号
--v:反向选择，即显示出没有&amp;rsquo;查找字符串&amp;rsquo;内容的那一行
-&amp;ndash;color=auto:可以将找到的关键字部分加上颜色显示&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;grep&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;grep [-acinv] [--color=auto] '查找字符串' filename&lt;/code&gt;
+参数:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-a:将binary文件以text文件的方式查找数据&lt;/li&gt;
+  &lt;li&gt;-c:计算找到&amp;rsquo;查找字符串&amp;rsquo;的次数&lt;/li&gt;
+  &lt;li&gt;-i:忽略大小写的不同，所以大小写视为相同&lt;/li&gt;
+  &lt;li&gt;-n:顺便输出行号&lt;/li&gt;
+  &lt;li&gt;-v:反向选择，即显示出没有&amp;rsquo;查找字符串&amp;rsquo;内容的那一行&lt;/li&gt;
+  &lt;li&gt;&amp;ndash;color=auto:可以将找到的关键字部分加上颜色显示&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;grep是一个很棒的命令，grep可以解析一行文字，取得关键字，若该行又存在关键字，就会整行列出来&lt;/p&gt;
 
 &lt;h2 id=&quot;sortwcuniq&quot;&gt;排序命令:sort,wc,uniq&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;sort&lt;/strong&gt;
-sort是很有趣的命令，它可以帮我们进行排序，而且可以依据不同的数据类型来排序。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;sort&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;uniq&lt;/strong&gt;
-uniq可以将重复的数据仅列出一个显示，这个命令用来将重复的行删除掉只显示一个。&lt;/p&gt;
+&lt;p&gt;sort是很有趣的命令，它可以帮我们进行排序，而且可以依据不同的数据类型来排序。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;wc&lt;/strong&gt;
-这个命令可以帮助我们计算输出的信息的整体数据&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;uniq&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;uniq可以将重复的数据仅列出一个显示，这个命令用来将重复的行删除掉只显示一个。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;wc&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这个命令可以帮助我们计算输出的信息的整体数据&lt;/p&gt;
 
 &lt;h2 id=&quot;tee&quot;&gt;双向重定向:tee&lt;/h2&gt;
 
@@ -1843,29 +2105,37 @@ uniq可以将重复的数据仅列出一个显示，这个命令用来将重复�
 
 &lt;h2 id=&quot;trcoljoinpasteexpand&quot;&gt;字符转换命令:tr,col,join,paste,expand&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;tr&lt;/strong&gt;
-tr可以用来删除一段信息当中的文字，或者是进行文字信息的替换&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;tr&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;col&lt;/strong&gt;
-col命令可以将[tab]按键替换成为空格键。col经常被利用于将man page转存为纯文本文件以方便查阅的功能&lt;/p&gt;
+&lt;p&gt;tr可以用来删除一段信息当中的文字，或者是进行文字信息的替换&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;join&lt;/strong&gt;
-将两个文件当中有相同数据的那一行加在一起。需要注意的是，在使用join之前，你所需要处理的文件应该要事先经过排序(sort)处理&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;col&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;paste&lt;/strong&gt;
-&lt;code&gt;paste&lt;/code&gt;直接将两行贴在一起，且中间以[tab]键隔开&lt;/p&gt;
+&lt;p&gt;col命令可以将[tab]按键替换成为空格键。col经常被利用于将man page转存为纯文本文件以方便查阅的功能&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;expand&lt;/strong&gt;
-将[tab]按键转成空格键&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;join&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;将两个文件当中有相同数据的那一行加在一起。需要注意的是，在使用join之前，你所需要处理的文件应该要事先经过排序(sort)处理&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;paste&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;paste&lt;/code&gt;直接将两行贴在一起，且中间以[tab]键隔开&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;expand&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;将[tab]按键转成空格键&lt;/p&gt;
 
 &lt;h2 id=&quot;split&quot;&gt;切割命令:split&lt;/h2&gt;
 
 &lt;p&gt;如果你有文件太大，导致一些携带式设备无法复制的问题，split可以帮你将一个大文件依据文件大小或行数来切割成为小文件，快速又有效&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;split [-bl] file PREFIX&lt;/code&gt;
--b:后面可接欲切割的文件大小，可加单位，例如b,k,m等
--l:以行数来进行切割
-PREFIX:代表前导符，可作为切割文件的前导文字&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;split [-bl] file PREFIX&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-b:后面可接欲切割的文件大小，可加单位，例如b,k,m等&lt;/li&gt;
+  &lt;li&gt;-l:以行数来进行切割&lt;/li&gt;
+  &lt;li&gt;PREFIX:代表前导符，可作为切割文件的前导文字&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;xargs&quot;&gt;参数代换:xargs&lt;/h2&gt;
 
