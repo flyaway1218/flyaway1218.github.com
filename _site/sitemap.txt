@@ -12,7 +12,7 @@ http://username.github.com/Python/2013/03/08/Learning-Python25.html
 http://username.github.com/Python/2013/03/06/Learning-Python24.html
 http://username.github.com/Python/2013/03/05/Learning-Python23.html
 http://username.github.com/Python/2013/03/04/Learning-Python22.html
-http://username.github.com/Python/2013/03/02/Learnig-Python21.html
+http://username.github.com/Python/2013/03/02/Learning-Python21.html
 http://username.github.com/Python/2013/03/01/Learning-Python20.html
 http://username.github.com/Python/2013/03/01/Learning-Python19.html
 http://username.github.com/Python/2013/02/26/Learning-Python18.html
