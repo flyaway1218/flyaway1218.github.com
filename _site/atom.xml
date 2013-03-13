@@ -4,13 +4,182 @@
  <title>Flyaway's Wiki</title>
  <link href="http://username.github.com/atom.xml" rel="self"/>
  <link href="http://username.github.com"/>
- <updated>2013-03-12T21:03:32+08:00</updated>
+ <updated>2013-03-13T16:08:21+08:00</updated>
  <id>http://username.github.com</id>
  <author>
    <name>Flyaway</name>
    <email>flyaway1217@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——29.异常基础</title>
+   <link href="http://username.github.com/Python/2013/03/13/Learning-Python29.html"/>
+   <updated>2013-03-13T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/13/Learning-Python29</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;捕获异常&lt;/h1&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;spam&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fetcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;ne&quot;&gt;IndexError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;got exception&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;continuing&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;引发异常&lt;/h1&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;ne&quot;&gt;IndexError&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;ne&quot;&gt;IndexError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;got exception&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;如果没有捕获到异常，用户定义的异常就会向上传递，直到顶层默认的异常处理器，并通过标准出错消息终止该程序。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;用户定义的异常&lt;/h1&gt;
+&lt;p&gt;用户定义的异常能够通过类编写，它继承自一个内置的异常类:通常这个类名称为Exception。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;bad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ne&quot;&gt;Exception&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;doomed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;doomed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;got Bad&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;终止行为&lt;/h1&gt;
+&lt;p&gt;可以在finally中定义一些一定会在执行时收尾的行为，无论try中代码是否发生异常。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>《Learning Python》学习笔记——28.类的高级主题</title>
+   <link href="http://username.github.com/Python/2013/03/12/Learning-Python28.html"/>
+   <updated>2013-03-12T00:00:00+08:00</updated>
+   <id>http://username.github.com/Python/2013/03/12/Learning-Python28</id>
+   <content type="html">&lt;h1 id=&quot;section&quot;&gt;新式类&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;对于Python3.0来说，所有的类都是新式类，不管它们是否显示地继承自object。所有的类都继承自object，并且，所有对象都是object的实例。&lt;/li&gt;
+  &lt;li&gt;在Python2.6及其以前的版本中，类必须显示地声明继承自object才被看做是新式类。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;新式类变化&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;类和类型合并
+类现在就是类型，类型就是类。type(I)内置函数返回一个实例所创建自的类，而不是一个通用的实例类型，并且，通常是和I.__class__相同的。此外，类是type类的实例。&lt;/li&gt;
+  &lt;li&gt;继承搜索顺序
+多继承的钻石模式有一种略微不同的搜索顺序，总体而言，它们可能先横向搜索，再总想搜索，并先宽度优先搜索，再深度优先搜索。&lt;/li&gt;
+  &lt;li&gt;针对内置函数的属性获取
+__getattr__和__getattribute__方法不再针对内置运算的隐式属性获取而运行。这意味着，它们不再针对__X__运算符重载方法名而调用，这样的名称搜索从类开始，而不是从实例开始。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;类型模式变化&lt;/h2&gt;
+&lt;p&gt;在新式类中，类型和类的区别已经完全消失了。类自身就是类型:type对象产生类作为自己的实例，并且类产生它们的类型的实例。实际上，像列表和字符串这样的内置类型和编写为类的用户定义类型之间没有真正的区别，这就是为什么我们可以子类化内置类型。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;钻石继承变动&lt;/h2&gt;
+&lt;p&gt;在新式类中，搜索相对来说是宽度优先度的。Python先寻找第一个搜索的右侧的所有超类(&lt;strong&gt;层次遍历继承树&lt;/strong&gt;)，然后才一路往上搜索至顶端共同的超类。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-4&quot;&gt;新式类的扩展&lt;/h1&gt;
+&lt;p&gt;将字符串属性名称顺序赋值给特殊的 __slots__类属性，新式类就有可能既限制类的实例将有的合法属性集，又能够优化内存和速度性能。&lt;/p&gt;
+
+&lt;p&gt;这个特殊属性一般是在class语句顶层内将字符串名称顺序赋值给变量__slots__而设置:只有在__slots__列表内的这些变量名可赋值为实例属性。但是，需要强调的是，Python中的所有变量名、实例属性名必须在引用前赋值，即使是列在__slots__中也是这样。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Slot和通用代码&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;使用slots的时候，实例通常没有一个属性字典(__dict__)，只有slot列表中的名称才可以分配给实例。但是这不影响一些通用工具的使用。&lt;/p&gt;
+
+&lt;h2 id=&quot;class-property&quot;&gt;Class Property&lt;/h2&gt;
+&lt;p&gt;有一种称为 &lt;strong&gt;特性(property)&lt;/strong&gt;的机制，提供另一种方式让新式类定义自动调用的方法，来读取或赋值实例属性。这可以作为__getattr__和__setattr__重载方法的替代做法。Property和这两个方法由类似的效果，但是只在读取所需要动态计算的变量名时，才会发生额外的方法调用。&lt;/p&gt;
+
+&lt;p&gt;可以通过三种不同的操作(set、get and delete)和文档字符串来激活一个property，如果是传递参数是None或省略的的话，则不会支持相应的操作。property需要在class语句中的最顶层进行赋值，一旦赋值好了，所有对相应属性的访问操作(get)都会被传递给property，就像__getattr__拦截对未定义的属性的引用一样。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;newprops&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;#get,set,del,docs&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newprops&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;                                       &lt;span class=&quot;c&quot;&gt;#40&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;                                      &lt;span class=&quot;c&quot;&gt;#AttributeError:newprops instance has no attribute &amp;#39;name&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;getattributeescriptors&quot;&gt;__getattribute__和escriptors&lt;/h2&gt;
+&lt;p&gt;__getattribute__只适用于新式类，它允许一个类能够截获&lt;strong&gt;所有&lt;/strong&gt;对属性的引用，而不只是未定义的属性引用。&lt;/p&gt;
+
+&lt;h1 id=&quot;section-5&quot;&gt;静态方法和类方法&lt;/h1&gt;
+&lt;p&gt;从Python2.2开始，在类中是可以定义两种能够不通过实例就能调用的方法:一种是和普通的函数很类似的不需要实例参数的&lt;strong&gt;静态方法&lt;/strong&gt;，另外一种就是通过类名来调用的&lt;strong&gt;类方法&lt;/strong&gt;，而不是通过实例调用。&lt;/p&gt;
+
+&lt;p&gt;为了使用这些方法，必须在类中调用名为 &lt;strong&gt;staticmethod&lt;/strong&gt;和&lt;strong&gt;classmethod&lt;/strong&gt;的特殊内置函数。在Python3.0中，无实例的方法只通过类名来调用，而不需要一个&lt;strong&gt;staticmethod&lt;/strong&gt;的声明，但是如果通过实例来调用，那就需要声明。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-6&quot;&gt;为什么使用特殊方法&lt;/h2&gt;
+&lt;p&gt;静态方法用来处理类的数据而不是实例的数据，静态方法从不需要一个自动传入的self 参数，不管是通过类调用还是通过实例调用。它们通常追踪横跨多个实例的数据，而不是为实例提供行为。&lt;/p&gt;
+
+&lt;p&gt;虽然比较少用，Python也支持类方法的概念——被调用的时候，自动传入一个类对象，而不是一个实例对象作为第一参数，不管它是被实例调用还是被类调用。这样的方法能够通过self参数访问类的数据，即使是通过一个实例调用的。&lt;/p&gt;
+
+&lt;h2 id=&quot;python26python30&quot;&gt;Python2.6和Python3.0中的静态方法&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在Python2.6中，从一个类获取一个方法会产生一个&lt;strong&gt;未绑定的方法&lt;/strong&gt;，没有手动传递一个实例，它是无法被调用的。&lt;/li&gt;
+  &lt;li&gt;在Python3.0中，从一个类获取一个方法会产生一个&lt;strong&gt;简单函数&lt;/strong&gt;，没有传递一个实例也能正常被调用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;换句话说，在Python2.6中，类方法总是要求传入一个实例参数，不过是通过类还是实例调用。然后，在Python3.0中，只有当一个方法期待实例额时候，我们才需要传递给它，没有self参数的方法可以通过类来调用而不需要传入一个实例。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在Python2.6中，我们必须总是把一个方法声明为静态的，从而不带一个实例而调用它，不管是通过一个类或一个方法。&lt;/li&gt;
+  &lt;li&gt;在Python3.0中，如果方法只通过一个实例调用的话，我们不需要将这样的方法声明为静态的，但是，想要通过一个实例调用的时候，那就必须手动声明为静态方法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-7&quot;&gt;使用静态方法和类方法&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;imeth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sefl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;smeth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cmeth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;semth&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;staticmethod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;semth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;cmeth&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmeth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;section-8&quot;&gt;装饰器和元类:第一部分&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;函数装饰器(function decorator)&lt;/strong&gt;提供了一种方式，替函明确了特定的运算模式。Python提供了一些内置函数装饰器，来做一些运算，例如，标识静态方法，但是程序员也可以编写自己的任意装饰器。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-9&quot;&gt;函数装饰器基础&lt;/h2&gt;
+&lt;p&gt;静态方法可以用下面的装饰器语法来编写:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;nd&quot;&gt;@staticmethod&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;meth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的代码和如下的代码等同：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python3&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;meth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;meth&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;staticmethod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;meth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;记住，staticmethod仍然是一个内置函数，它可以用于装饰器语法中，只是因为它把一个函数当错参数并且返回一个可调用对象。实际上，任何这样的函数都可以以这种方式使用。&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>《Learning Python》学习笔记——27.类的设计</title>
