@@ -8,6 +8,8 @@ http://username.github.com/archive.html
 http://username.github.com/pages.html
 http://username.github.com/tags.html
 
+http://username.github.com/Python/2013/03/14/Learning-Python31.html
+http://username.github.com/Python/2013/03/14/Learning-Python30.html
 http://username.github.com/Python/2013/03/13/Learning-Python29.html
 http://username.github.com/Python/2013/03/12/Learning-Python28.html
 http://username.github.com/Python/2013/03/11/Learning-Python27.html
